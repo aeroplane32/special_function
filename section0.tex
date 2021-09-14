@@ -1,0 +1,64 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section*{前言：函数的究极定义（数学哲学向）}
+
+现代数学大厦建立在\textbf{集合论}(set theory)上. 从集合论的角度看来：
+\begin{itemize}
+    \item [\(\bullet\)] \uline{原始观念}(primitive notion)，即不能被其他更基本的概念定义的概念，只有\uline{集合}(set)、\uline{类}(class)和\uline{属于}(“\(\in\)”)三个，其中“属于”是二元谓词，用来连接数学对象.
+    \item [\(\bullet\)] 其他一切数学对象可以解释为集合或类，其他一切谓词都可解释为基本的逻辑连接词（或、且、非）以及“属于”.
+\end{itemize}
+例如命题“\(1+1=2\)”在集合论中改写为（在ZF集合论和冯·诺依曼序数定义的框架下）
+\[\{\emptyset\} \cup \{\{\emptyset\}\} = \{\emptyset, \{\emptyset\}\}\]
+上式仍然是“给人看”的表达式，还可以继续形式化展开，用一阶形式语言描述上面这个式子，最终结果为：
+\begin{align*}
+    &(\exists x(x \in l) \wedge \neg\exists y((y \in x) \wedge (x \in l))) \wedge \\
+    &(\neg \exists x(((x \in m) \wedge (\exists y(((y \in x) \wedge \neg(y \in l)) \vee (\neg (y \in x) \wedge (y \in l))))) \vee (\neg(x \in m) \wedge (\exists y((y \in x) \wedge (y \in l)))))) \wedge \\
+    &(\neg \exists x(((x \in l) \vee (x \in m)) \wedge \neg(x \in n)) \vee (\neg((x \in l) \vee (x \in m)) \wedge (x \in n))) \wedge \\
+    &(\exists x(\exists y((y \in x) \wedge (x \in p) \wedge (y \in p))) \wedge (\neg\exists z(\exists x(\exists y((z \in y) \wedge (y \in x) \wedge (x \in p) \wedge (y \in p)))) \wedge \\
+    &(\neg\exists x(((x \in n) \wedge \neg(x \in p)) \vee (\neg(x \in n) \wedge (x \in p))))
+\end{align*}
+
+\uline{有序对}(ordered pair)，形式上写作\(\langle x,y \rangle\)，无论怎么定义，都要满足“提出有序对这个概念时希望它满足的性质”：
+\[\langle a,b \rangle = \langle c,d \rangle \Leftrightarrow a=c \wedge b=d\]
+所以目前采用的定义是
+\[\langle x,y \rangle := \{\{a\},\{a,b\}\}\] 
+易验证它满足以上性质，其实我们曾经就见过有序对，只不过那时我们把它叫做“坐标”.
+
+在有序对的基础上，定义两个集合之间的\uline{直积}(Cartesian product)为有序对组成的集合，通俗地理解，左元来自第一个集合、右元来自第二个集合的所有可能的有序对组成的集合就是两个集合的直积.
+\[A \times B := \{\langle x,y \rangle | x \in A \wedge y \in B\}\] 
+例如\(A=\{1,2\},B=\{3,4,5\}\)，则\(A\times B=\{\langle 1,3 \rangle,\langle 2,3 \rangle,\langle 1,4 \rangle,\langle 2,4 \rangle,\langle 1,5 \rangle,\langle 2,5 \rangle\}\).
+
+\uline{二元关系}(binary relation)是直积的子集，我们常说的描述关系的语句都符合这种格式：“\(A\)和\(B\)具有\(R\)关系”，以表明不同的对象之间存在联系. 有序对就体现了这样的联系，而同种联系可能存在不止一对对象之间，把具有同种联系的一对对对象放入一个集合\(R\)，则该集合就完整地刻画了这种联系. 因此“\(x\)和\(y\)具有\(R\)关系”就形式地写成\(\langle x,y \rangle \in R\)，有时也写作\(xRy\)，这种写法暗示了函数的雏形.
+
+例如已知集合\(A=\{1,2,3,4\}\)，在上面建立二元关系“\(<\)”，其含义同我们日常所理解的“\(<\)”，因为\(1<2\)、\(1<3\)、\(1<4\)、\(2<3\)、\(2<4\)和\(3<4\)，所以\(<\,\,=\,\,\{\langle 1,2 \rangle,\langle 1,3 \rangle,\langle 1,4 \rangle,\langle 2,3 \rangle,\langle 2,4 \rangle,\langle 3,4 \rangle\}\)，充分贯彻了集合论“万物皆集合”的思想.
+
+有些特殊的二元关系\(R \subseteq A \times B\)，只要左元确定后，右元也能唯一地确定，即
+\[\langle x,y \rangle \in R \wedge \langle x,z \rangle \in R \Rightarrow y=z\]
+就称二元关系\(R\)在集合\(B\)上具有\uline{外延性}(extensionality). 明显，上例中的“\(<\)”在集合\(A\)上就不具有外延性. 到现在为止，函数的定义呼之欲出了.
+
+\begin{definition}{函数}
+    具有外延性的二元关系称为\uline{函数}(function)或\uline{映射}(mapping)，形式化地表达：
+    \[f \mbox{是函数} \Longleftrightarrow \forall p (p \in f \rightarrow (\exists x \exists y(p = \langle x,y \rangle \wedge (\exists z((\langle x,z \rangle \in f) \rightarrow y=z)))))\]
+    \begin{itemize}
+        \item [\(\bullet\)] 左元组成的集合称为\uline{定义域}(domain)，记作\(\trm{dom}(f)= \{x | \langle x,y \rangle \in f\}\)； 右元组成的集合称为\uline{值域}(range)，记作\(\trm{ran}(f)= \{y | \langle x,y \rangle \in f\}\)；陪域的超集称为\uline{陪域}(codomain)；将函数写作\(f:A \to B\)以表明函数\(f\)的定义域是\(A\)、陪域是\(B\).
+        \item [\(\bullet\)] 定义域中的元素或定义域的子集都称为\uline{原象}(preimage)，定义域中的元素\(x\)所唯一确定的值域中的元素\(y\)称为\(x\)的\uline{像}(image)，记作\(y=f(x)\)；定义域的子集\(X\)所唯一确定的值域的子集\(Y=\{f(x)|x \in X\}\)称为集合\(X\)在\(f\)下的象，也记作\(Y=f(X)\). 这两种原象和象需要注意区分，但以下将不再强调这两种原象和象的区别.
+        \item [\(\bullet\)] 若\(f\)在定义域上也有外延性，即\(f(x)=f(y) \rightarrow x=y\)，则称\(f\)是\uline{单射}(injection)；若\(X\subseteq\trm{dom}(f), Y=f(Y)\)，则称\(f:X\to Y\)是\uline{满射}(surjection)，注意这里需要强调定义域和值域；若\(f:X \to Y\)既是单射又是满射，则称\(f\)为\uline{双射}(bijection).
+        \item [\(\bullet\)] 对于定义域的子集\(X\)，\(f\upharpoonright X=\{\langle x,y \rangle|x \in X\}\)称为\(f\)的\uline{限制}(restriction)；在满足定义域外延性的前提下，\(f^{-1}=\{\langle y,x \rangle | \langle x,y \rangle \in f\}\)称为\(f\)的\uline{反函数}(inversion)；对于两个函数\(f,g\)，称\(g \circ f = \{\langle x,z | \exists y(y=f(x) \wedge z=g(x))\}\)称为\(f\)和\(g\)的\uline{复合函数}(composition).
+    \end{itemize}
+\end{definition}
+
+上面的定义需要注意几点：
+\begin{itemize}
+    \item [\(\bullet\)] 任何函数都是定义域到值域上的满射，所以“满射”这个概念往往伴随着“限制”的概念. 当定义域受到限制而对应法则不变的情况下，\(f\)是否能射满某个集合，这一点值得讨论.
+    \item [\(\bullet\)] 以前我们见到的说法都是“给定一个函数\(f(x)\)……”，而在以上的定义中，\(f\)才是函数本身，而\(f(x)\)是元素\(x\)在\(f\)下的像，是一个值. 尽管我们在平时经常忽略它们两者之间的微小区别，而且在后面的讨论中也会接着忽略，但这个区别正是接下来从\(\lambda\)演算和类型论的角度看待函数的引子.
+\end{itemize}
+
+先把集合论放在一边，看看\(\trm{\lambda}\)\textbf{演算}(\(\lambda\)-calculus)是怎么看待函数的. 集合论将函数定义为一个集合，常常命名为\(f\).但这样的处理方法有一些缺点，我们常说函数是一个对应法则，单从这个\(f\)，或者将\(f\)的元素逐个列举出来（如果可能的话），很难看出这究竟是一个怎样的法则. 而在\(\lambda\)演算中，使用\(\lambda x.M[x]\)来代替\(f\)本身，其中\(M[x]\)是一个和\(x\)有关的语句. 例如函数\(f(x)=x^2\)，从计算的角度来看，就是把输入的变量取平方然后输出. 在\(\lambda\)演算中，就用\(\lambda x.x^2\)来代替这个\(f\)，此时\(f(5)=25\)这个命题就写成\((\lambda x.x^2)(5)=25\). 这种写法既可以表现函数的对应法则，又可以免去为函数命名的麻烦.
+
+集合论关心的是某个对象属不属于某个集合的问题，\textbf{类型论}(type theory)则关心某个对象具有什么样的类型的问题. 例如上文的\(f(5)=25\)中，这个“\(5\)”究竟是以自然数还是实数的身份放入函数参与运算的呢？毕竟函数是一个集合，定义在自然数和定义在实数上的函数是不同的. 而且在之后“实数集的构造”一章中就可以了解到，从集合论的角度看来，实数的“5”和自然数的“5”是两个完全不同的集合，前者要比后者复杂得多. 其实这种事情其实对不关心数学大厦基础的人来说完全就是自作多情，希尔伯特之前的数学家也是这么想的，但这个基础不牢固会动摇上层（例如集合论中的Mediate基数可以引出和古典分析学完全对立的理论）.
+
+在类型论中，说明某个对象是某种类型的语句称为\uline{判断}(judgement)，是类型论中最基本的语句，谓词是冒号“：”，对应集合论中的“属于”符号. 例如\(a:{\sf nat}\)和\(a:{\sf real}\)分别表示对象\(a\)为自然数和实数类型. 而对于函数，\(\lambda x^{\sf nat}. (x^2)^{\sf real}\)意味着这个函数输入为自然数类型的对象，输出为实数类型的对象，而该函数的类型为\({\sf nat}\to{\sf real}\). 不过大多数时候，用\((\lambda x^{\sf nat}. x^2):{\sf nat} \to {\sf real}\)来表示输出为实数类型.
+
+\end{document}

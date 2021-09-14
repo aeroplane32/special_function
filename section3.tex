@@ -1,0 +1,616 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{函数的展开}
+
+如何刻画一个函数？解析式直接表达当然是其中一种方法，但未必是唯一的一种. 例如\(n\)次多项式函数在复数域有\(n\)个零点，这\(n\)个零点就唯一地刻画了一个高次多项式函数；若一个函数在某个区间内有任意高阶导数，则区间内内任意一点的高阶导数值就唯一地刻画了一个这样的函数. 函数展开的目的就在于把满足某些条件的函数（无论它有多复杂）表示为有限或无穷多个简单部分的基本运算，展开的思路有很多种，其思想大多都是找到一个数列\(\{a_n\}_{n=0}^{\infty}\)，使得该数列能承载被展开的函数的全部信息.
+
+\subsection{正交展开}
+
+正交展开不是某种特殊的展开定理，而是一种重要的展开思想，首先回顾一下线性代数的知识.
+
+\begin{reference}
+    \(n\)维向量空间中只要确定了一组基底\(\mathcal{A} = \{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)，则空间中的所有向量都可以用基底的线性组合表示出来：
+    \[\bm{\alpha} = k_1\bm{e}_1+k_2\bm{e}_2+\cdots+k_n\bm{e}_n\]
+    其中\(k_i\)是数，可以是实数、复数或其他无向的量.
+    \newline
+    如果空间中还定义了\textbf{内积}，则称该向量空间为\textbf{内积空间}，内积是一种运算，其结果为一个数量（实数或复数），两个向量的内积记为\(\langle \bm{\alpha},\bm{\beta} \rangle\)，满足
+    \begin{itemize}
+        \item [(1)] \(\langle \bm{\alpha},\bm{\beta} \rangle = \overline{\langle \bm{\beta},\bm{\alpha} \rangle}\)，如果内积运算定义在实数域上，则可推出\(\langle \bm{\alpha},\bm{\beta} \rangle = \langle \bm{\beta},\bm{\alpha} \rangle\).
+        \item [(2)] \(\langle m\bm{\alpha}+n\bm{\beta},\bm{\gamma} \rangle = m\langle \bm{\alpha},\bm{\gamma} \rangle + n\langle \bm{\beta},\bm{\gamma} \rangle\)，其中\(m,n\)是数量.
+        \item [(3)] \(\langle \bm{\alpha},\bm{\alpha} \rangle \geq 0\)，当且仅当\(\bm{\alpha}=\bm{0}\)时等号成立.
+    \end{itemize}
+    定义了内积之后，向量的\textbf{模长}便可定义为\(\|\bm{\alpha}\|=\sqrt{\langle \bm{\alpha},\bm{\alpha} \rangle}\)，易知\(\|\bm{\alpha}\| \geq 0\)；
+    \newline
+    向量的\textbf{正交}则表示\(\langle \bm{\alpha},\bm{\beta} \rangle=0\)这种情况，可简记为\(\bm{\alpha} \perp \bm{\beta}\).
+    \newline
+    假设\(\mathcal{A}=\{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)是自然基，即两两正交且\(\|\bm{e}_i\|=1\)，则立即可以确定线性组合的系数：\(k_i = \langle\bm{\alpha},\bm{e}_i\rangle\)，而模也可以立即确定为\(\|\bm{\alpha}\| = \sqrt{k_1^2+k_2^2+\cdots+k_n^2} = \sqrt{\langle\bm{\alpha},\bm{e}_1\rangle^2+\langle\bm{\alpha},\bm{e}_2\rangle^2+\cdots+\langle\bm{\alpha},\bm{e}_n\rangle^2}\)
+\end{reference}
+
+正交展开的核心就是这些，但以上只给了抽象的框架，具体操作起来大有可为. 如果将函数看做向量，那么它的内积需要仔细考虑.
+
+\textit{
+线性代数告诉我们，实区间\([a,b]\)上的连续实变函数构成了一个线性空间，但函数空间不像向量空间那么直观，它的内积并没有那么容易定义出来。假设函数\(f\)在实区间\([a,b]\)上等距抽样，例如间隔\(\dfrac{1}{n}\)取值，然后用一个向量\(\vec{\bm{u}}_f\)来记录这些值：
+\[\vec{\bm{u}}_f = \left[f(a), f(a+\frac{b-a}{n}), f(a+\frac{2(b-a)}{n}), f(a+\frac{3(b-a)}{n}), \cdots, f(a+\frac{(n-1)(b-a)}{n}), f(b)\right]\]
+对于另一个在区间\([a,b]\)上连续的函数\(g(x)\)，也采用相同的操作：
+\[\vec{\bm{u}}_g = \left[g(a), g(a+\frac{b-a}{n}), g(a+\frac{2(b-a)}{n}), g(a+\frac{3(b-a)}{n}), \cdots, g(a+\frac{(n-1)(b-a)}{n}), g(b)\right]\]
+此时对两个向量求内积：
+\[\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = f(a)g(a)+f(a+\frac{b-a}{n})g(a+\frac{b-a}{n})+f(a+\frac{2(b-a)}{n})g(a+\frac{2(b-a)}{n})+\cdots+f(b)g(b)\]
+现在令\(n \to \infty\)，意味着抽样间隔\(\dfrac{1}{n} \to 0\)，由于两个函数都是连续函数，不会发生跳跃，因此可以认为\(\vec{\bm{u}}_f\)和\(\vec{\bm{u}}_g\)这两个向量记录了函数的所有信息. 但是这样的内积往往会趋近于无穷大. 由于是等距抽样，每个样本的权重相等，所以在每个单项式上乘以权重\(1/n\)，然后奇迹般地凑出了积分的定义式
+\[\lim_{n \to \infty}\frac{1}{n}\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = \lim_{n \to \infty}\frac{1}{n}\sum_{k=0}^{n}f(a+\frac{k(b-a)}{n})g(a+\frac{k(b-a)}{n}) := \int_{a}^{b} f(x)g(x)\trm{d}x\]
+以上是实变函数的情况，在这种情况下，才满足\([f(x)]^2\equiv|f(x)|^2\)，根据定积分的保号性，这样才能满足线性空间中\(\|f\|\leq 0\)的要求. 如果扩展到复变函数，由于两个复数的乘积还是复数，复变函数作定积分以后也是复数，不一定能与\(0\)比大小，所以为了符合模长的定义，需要将被积函数由\([f(z)]^2\)改为\(|f(z)|^2\)，而后者等价于\(f(z)\overline{f(z)}\)，这就得到了复变函数空间的内积.
+}
+\begin{definition}{函数空间的内积}
+    对于在复连通域\(D\)上定义的连续函数\(f(z),g(z)\)，规定其\uline{内积}(inner product)为
+    \[ \langle f,g \rangle := \int_{D} f(z)\overline{g(z)}\trm{d}z\]
+    若\(\langle f,g \rangle=0\)，则称这两个函数是\uline{正交的}(orthonormal). 函数的模定义为
+    \[ \|f\| := \sqrt{\int_{D}f(z)\overline{f(z)}\trm{d}z}\]
+    当复连通域定退化为区间\([a,b]\)时，复变函数退化为实变函数时，其内积便退化为
+    \[ \langle f,g \rangle := \int_{a}^{b} f(x)g(x)\trm{d}x\]
+    模长退化为
+    \[ \|f\| := \sqrt{\int_{a}^{b}[f(x)]^2\trm{d}x}\]
+\end{definition}
+
+定义好函数空间的内积之后，便可以尝试在空间中寻找一组函数作为基底\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)，然后把空间中的任意都写成它们的线性组合的形式，
+\[f(z) = c_1\varphi_1(z)+c_2\varphi_2(z)+c_3\varphi_3(z)+\cdots\]
+如果基底\(\mathcal{A}\)是正交基底，则可以进一步得到
+\[c_n=\frac{\langle f,\varphi_n \rangle}{\langle \varphi_n,\varphi_n \rangle} = \frac{\displaystyle{\int_{D} f(z)\overline{\varphi_n(z)}\trm{d}z}}{\displaystyle{\int_{D}\varphi_n(z)\overline{\varphi_n(z)}\trm{d}z}}\]
+这便是正交展开的基本思路，由于这个思路最早应用在傅里叶级数上，所以又称这种展开方式为广义傅里叶展开.
+
+\textit{
+    以上有个细节需要注意，函数空间的基底写成\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)而不是\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots,\varphi_n\}\)，是因为基向量的个数可能是无限的，甚至可能是不可数无穷多的. 如果是不可数无穷多个的基向量\(\mathcal{A}=\{\varphi_s\}_{s \in I}\)，那么每个基向量的分量\(c_n\)中的下标取值也不再可数，此时\(f(z)\)就不能简单地展开成基向量线性组合的形式，而是像上面那样间隔取样，缩小间隔，最后凑出积分的形式，即
+    \[f(z)=\int_{I}c_s\varphi_s(z)\trm{d}s\]
+    这实际上就是傅里叶反变换公式的意义.
+}
+
+% 更一般地，如果在内积的定义中加入一个\uline{权函数}\(\rho\)，使得
+% \[ \left.\langle f,g \rangle\right|_{\rho} := \int_{a}^{b} \rho(x)f(x)g(x)\trm{d}x = 0\]
+% 则称这两个函数是\uline{带权正交的}，显然，当\(\rho(x)\equiv 1\)时即为一般的正交.
+
+\subsection{渐进展开}
+
+同正交展开，\uline{渐进展开}(asymptotic expansion)是一种将函数展开的思想. 傅里叶级数是典型的正交展开，其特征是部分和在整个定义域上“贴近原函数的程度差不多”；而泰勒级数和洛朗级数就是典型的渐进展开，其特征是选取一个极限点\(x_0\)，\(x\)越接近\(x_0\)，部分和就越贴近原函数. 
+
+如果在极限点\(L\)处（\(L\)可能是无穷远点），存在一系列函数\(\{\varphi_n(x)\}_{n=0}^{\infty}\)，使得
+\[\lim_{x \to L} \frac{\varphi_{n+1}(x)}{\varphi_n(x)} = 0 \quad \mbox{或写作} \quad \varphi_{n+1}(x)=o(\varphi_n(x)) \,\, (x \to L)\]
+则这一系列的函数可以作为\uline{渐进程度的标尺}(asymptotic scale)，\(n\)越大，在\(L\)的某个邻域内\(\varphi_n(x)\)就变化得越慢. 
+
+\begin{definition}{渐进展开}
+    设被展开的函数为\(f(x)\)，极限点为\(L\). 若一系列函数\(\{\varphi_n(x)\}_{n=0}^{\infty}\)可以作为渐进尺度的标尺，且存在一系列常数\(\{a_n\}_{n=0}^{+\infty}\)，使得
+    \[\lim_{x \to L} \frac{f(x) - \displaystyle{\sum_{n=0}^{N}a_n\varphi_n(x)}}{\varphi_N(x)} = 0 \quad \mbox{或写作} \quad f(x) - \sum_{n=0}^{N}a_n\varphi_n(x) = o(\varphi_N(x)) \,\, (x \to L)\]
+    则称幂级数（不一定收敛）\(\displaystyle{\sum_{n=0}^{\infty}a_n\varphi_n(x)}\)为\(f(x)\)的\uline{渐近级数}(asymptotic series)，记作
+    \[f(x) \sim \sum_{n=0}^{\infty}a_n\varphi_n(x) \quad (x \to L)\]
+\end{definition}
+
+一般来说，当\(L=0\)时，常选\(\varphi_n(x)=x^n\)，此时展开式即为麦克劳林级数；\(L\)为任意复数\(x_0\)时，常选\(\varphi_n(x) = (x-x_0)^n\)，此时展开式为一般的泰勒级数或洛朗级数；当\(L=\infty\)时，常选\(\varphi_n(x)=x^{-n}\)，此时展开式即为无穷远处的洛朗级数.
+
+尤其需要注意的是\(L=\infty\)的情况，因为这时级数可能不收敛. 如果\(f(z)\)在某个圆域之外\(|z| > R\)之外解析，则可以展开成洛朗级数.
+
+\subsection{泰勒展开}
+
+\subsubsection{泰勒定理}
+
+一次函数没有极值，二次函数有一个极值，三次函数至多有两个极值，随着次数的增加，极值和拐点的个数可以任意多甚至是可数无穷多个，函数图像可以任意弯曲，由此可以以任意高的精确度逼近任何一个连续函数. 在连续函数上取一个点作为起点，用高次多项式函数逼近连续函数，就是泰勒公式的思想，有一个定理保证了可行性.
+
+\begin{theorem}{魏尔斯特拉斯逼近定理(Stone-Weierstrass theorem)}
+    若\(f(z)\)是在区间\([a,b]\)上连续的复函数，则存在一个多项式序列\(\{P_n\}_{n=1}^{\infty}\)，使得\(\lim \limits_{\substack{n \to \infty}} P_n(z)\)一致收敛于\(f(z)\).
+\end{theorem}
+
+假设可能实现这样的逼近，那么对于任意一个连续函数\(f(x)\)，取它定义域内的一点\(x_0\)，按照渐进展开的思想，设高次多项式\(p_n(x)=a_0+a_1x+a_2x^2+\cdots+a_nx_n\)，使得当\(x \to x_0\)时\(f(x)=p_n(x)+o(x^n)\). 为了顺带求出\(p_{n+1}(x)\)的系数，直接令\(o(x^n)=p_{n+1}(x)\)，此时式子就可以改写为
+\[\lim_{x \to x_0}\frac{f(x)-p_n(x)}{p_{n+1}(x)} = 1 \]
+不必讨论\(p_n(x)\)的唯一性，毕竟我们的目标只是找到这样一个实用的高次多项式。
+
+当\(n=0\)时，\(p_0(x)=a_0\)，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)}{a_0}=1\)，自然有\(a_0=f(x_0)\).
+
+当\(n=1\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0}{a_0+a_1x}=1\)，运用洛必达法则，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'(x)}{a_1}=1\)，所以\(a_1=f'(x_0)\).
+
+当\(n=2\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x}{a_0+a_1x+a_2x^2}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f''(x)}{2a_2}=1\)，所以\(a_2=\dfrac{f''(x_0)}{2}\).
+
+当\(n=3\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x-a_2x^2}{a_0+a_1x+a_2x^2+a_3x^3}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'''(x)}{6a_2}=1\)，所以\(a_3=\dfrac{f'''(x_0)}{6}\).
+
+由此推广到更大的\(n\)值，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-p_n(x)}{p_{n+1}(x)}=1\)，运用\(n\)次洛必达法则，洛到函数祖坟上，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f^{(n)}(x)}{n!a_n}=1\)，即\(a_n=\dfrac{f^{(n)}(x_0)}{n!}\)，这样就得到了
+
+\begin{theorem}{一元函数的泰勒定理(Taylor's theorem)}
+    若函数在\(x_0\)处解析，且存在\(n\)阶导数，则
+    \[f(x) = f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)\]
+    其中\(R_n(x)\)是泰勒公式的\(n\)阶余项，它有几种形式：\\
+    (1) 皮亚诺余项(Peano remainder)
+    \[ R_n(x) = o(x^n) \]
+    (2) 拉格朗日余项(Lagrange remainder)
+    \[ R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}, \quad \xi\mbox{介于}x_0\mbox{和}x\mbox{之间}\]
+    (3) 柯西余项(Cauchy remainder)
+    \[ R_n(x) = \frac{f^{(n+1)}(\xi)}{n!}(x-\xi)^{n}(x-x_0), \quad \xi\mbox{介于}x_0\mbox{和}x\mbox{之间}\]
+    (4) 施莱米尔奇余项(Schlömilch remainder)
+    \[ R_n(x) = \frac{f^{(n+1)}(\xi)}{n!p}(x-x_0)^{n+1-p}(x-x_0)^p, \quad \xi\mbox{介于}x_0\mbox{和}x\mbox{之间}\]
+    (5) 积分余项(integral remainder)
+    \[ R_n(x) = \int_{x_0}^{x}f^{(n+1)}(\xi)\frac{(x-\xi)^{n}}{n!}\trm{d}{\xi} \]
+    如果\(x_0=0\)，则泰勒公式又称为麦克劳林公式.
+\end{theorem}
+
+\subsubsection{积分余项和列表积分公式}
+
+泰勒定理的积分余项可以明确地给定余项表达式，而且它的推导也非常简洁. 在接下来的推导中，还可以顺便推出泰勒定理. 首先改写\(f(x)\).
+\[f(x)=f(x_0)+f(x)-f(x_0)=f(x_0)+\int_{x_0}^{x}f'(t)\trm{d}t\]
+由于\(x\)是一个与\(t\)无关的量，所以\(\trm{d}t=\trm{d}(t-x)\)，然后使用分部积分，让\(f'(t)\)为被积函数，把其他部分放到微分号后面.
+\[\int_{x_0}^{x}f'(t)\trm{d}(t-x) = \left.f'(t)(t-x)\right|_{t=x_0}^{t=x} - \int_{x_0}^{x}f''(t)(t-x)\trm{d}t\]
+这时就有
+\[f(x) = f(x_0)+f'(x_0)(x-x_0)+\int_{x_0}^{x}f''(t)(x-t)\trm{d}t\]
+对其中的积分项再使用分部积分，让\(f''(t)\)为被积函数，其他部分放到微分号后面.
+\[\int_{x_0}^{x}f''(t)(x-t)\trm{d}t = \int_{x_0}^{x}f''(t)\trm{d}\frac{(t-x)^2}{2} = \left.f''(t)\frac{(t-b)^2}{2}\right|_{t=x_0}^{t=x} + \int_{x_0}^{x}f'''(t)\trm{d}\frac{(t-b)^2}{2}\trm{d}t\]
+这时就有
+\[f(x) = f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2}(x-x_0)^2+\int_{x_0}^{x}f'''(t)\frac{(x-t)^2}{2}\trm{d}t\]
+重复上述过程，用分部积分法对操作下列积分，让\(f^{(n)}(t)\)为被积函数，把其他部分放到微分号后面.
+\[\int_{x_0}^{x}f^{(n)}(t)\frac{(x-t)^{n-1}}{(n-1)!}\trm{d}t = \int_{x_0}^{x}f^{(n)}(t)\trm{d}\left(-\frac{(x-t)^n}{n!}\right) = \left.f^{(n)}(t)\frac{(x-t)^n}{n!}\right|_{t=x}^{t=x_0} + \int_{x_0}^{x}f^{(n+1)}(t)\frac{(x-t)^{n}}{n!}\trm{d}t\]
+
+代入原式，就得到了
+\begin{theorem}{带积分余项的泰勒定理}
+    若函数\(f(x)\)在\(x=x_0\)的某个邻域\(U\)内有\(n+1\)阶连续导数，则对于任意\(x\in U\)，有
+    \[f(x)=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+\int_{x_0}^{x}f^{(n+1)}(t)\frac{(x-t)^{n}}{n!}\trm{d}t\]
+\end{theorem}
+
+以上的推导过程非常具有启发性，原来分部积分法还可以这样用！回想分部积分法最初是用来解决两函数相乘的积分问题，它由乘积的导数推出：
+\[(uv)'=u'v+uv' \longrightarrow uv = \int u\trm{d}v+\int v\trm{d}u  \longrightarrow \int f(x)g(x)\trm{d}x = F(x)g(x)-\int F'(x)g(x)\trm{d}x\]
+如果再使用一次分部积分呢？为方便起见，把\(f(x)\)和\(g(x)\)简记为\(f\)和\(g\)，\(f(x)\)求\(1\)次积分得到的函数记为\(f^{(-1)}\)（不需要补上任意常数\(C\)），求\(2\)次积分得到的函数记为\(f^{(-2)}\)，以此类推，那么分部积分法就可以写成
+\[\int fg\trm{d}x=f^{(-1)}g-\int f^{(-1)}g^{(1)} \trm{d}x\]
+再用一次分部积分，得到
+\[\int fg\trm{d}x=f^{(-1)}g-f^{(-2)}g^{(1)}+\int f^{(-1)}g^{(1)} \trm{d}x\]
+重复上述过程，就可以得到
+\begin{theorem}{列表积分公式}
+    设函数\(f(x),g(x)\)均有\(n\)阶连续导数和反导数，则
+    \[\int fg\trm{d}x=f^{(-1)}g-f^{(-2)}g^{(1)}+f^{(-3)}g^{(2)}+\cdots+(-1)^{n-1}f^{(-n)}g^{(n-1)}+(-1)^n\int f^{(-n)}g^{(n)} \trm{d}x\]
+\end{theorem}
+
+列表积分公式是分部积分的扩展，适用于如下两种情况
+\newline
+(1) \(g\)经过有限次求导后变为\(0\)，例如多项式；\newline
+(2) \(fg\)经过有限次操作后能变为原来的式子（的倍数），即积分和求导得到的函数形式存在循环，例如\(e^{\alpha x}\cos(\beta x)\).
+
+举两个例子，用列表积分法可以口算出答案，首先是第一种情况
+\[\int e^{2x}(3x^2+2x)\trm{d}x = \frac{1}{2}e^{2x}(3x^2+2x)-\frac{1}{4}e^{2x}(6x+2)+\frac{3}{4}e^{2x}+C=\frac{1}{4}e^{2x}(6x^2-2x+1)+C\]
+其次是第二种情况
+\[\int e^{2x}\sin(3x)\trm{d}x = \frac{1}{2}e^{2x}\sin(3x)-\frac{3}{4}e^{2x}\cos(3x)-\frac{9}{4}\int e^{2x}\sin(3x)\trm{d}x\]
+得到
+\[\int e^{2x}\sin(3x)\trm{d}x = \frac{1}{13}\left(2e^{2x}\sin(3x)-3e^{2x}\cos(3x)\right)+C\]
+
+\subsubsection{泰勒级数}
+
+泰勒定理是用有限高次的多项式来逼近连续函数，泰勒级数则是让连续函数严格地等于某个幂级数，即把余项\(R_n\)改成省略号:
+\[f(x) ~ \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n = f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+\cdots\]
+从有限扩展到无限的过程可能会丧失一些好的性质，泰勒定理的适用条件是函数在某邻域内有若干阶导数，但是想把函数展成泰勒级数，不但要保证有任意高阶导数，还要保证\(\lim \limits_{\substack{x \to x_0}}R_n(x) \to 0\)才行，这就需要考虑收敛域。
+
+\newpage
+\subsubsection{快查表：常用的麦克劳林级数}
+
+首先是指数函数和对数函数的. 如2.1节所述，适用于整个复数域的指数函数的麦克劳林展开式实际上是它的定义.
+\begin{align*}
+    e^z \quad&=\quad \sum_{n=0}^{\infty} \frac{1}{n!}z^n &=&\quad 1+z+\frac{1}{2!}z^2+\frac{1}{3!}z^3 +\cdots &z\in \mathbb{C} \\
+    \ln(1+z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{(n+1)!}z^{n+1} &=&\quad z-\frac{1}{2}z^2+\frac{1}{3}z^3-\frac{1}{4}z^4+\cdots & |z|<1\mbox{或}z=1
+\end{align*}
+
+\((1+x)^{\alpha}\)的展开也很有来头，将通式以及常用的几个\(\alpha\)列举如下，为了查阅方便，一并给出洛朗级数. 其中牛顿二项式系数\(\begin{pmatrix}n\\m\end{pmatrix}\)是组合数\(C_n^m\)的推广，它允许\(n\)不是整数. \((1+x)^{\alpha}\)展开式的特点就是它的麦克劳林级数和洛朗级数的适用范围恰好覆盖整个定义域（除了\(x=1\)处）
+
+\begin{align*}
+    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} \begin{pmatrix}\alpha\\n\end{pmatrix}z^n &=&\quad 1+\alpha z+\begin{pmatrix}\alpha\\2\end{pmatrix}z^2+\begin{pmatrix}\alpha\\3\end{pmatrix}z^3+\cdots & |z|<1 \\
+    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} \begin{pmatrix}\alpha\\n\end{pmatrix}z^{n+\alpha} &=&\quad z^{\alpha}+\alpha z^{1+\alpha}+\begin{pmatrix}\alpha\\2\end{pmatrix}z^{2+\alpha}+\begin{pmatrix}\alpha\\3\end{pmatrix}z^{3+\alpha}+\cdots & {\color{red}|z|>1} \\
+    \frac{1}{1+z} \quad&=\quad \sum_{n=0}^{\infty}(-1)^nz^n &=&\quad 1-z+z^2-z^3+\cdots & |z|<1 \\
+    \frac{1}{1+z} \quad&=\quad \sum_{n=0}^{\infty}(-1)^nz^{-n-1} &=&\quad z^{-1}+z^{-2}-z^{-3}+z^{-4}-\cdots & {\color{red}|z|>1} \\
+    \frac{1}{1-z} \quad&=\quad \sum_{n=0}^{\infty}z^n &=&\quad 1+z+z^2+z^3+\cdots & |z|<1 \\
+    \frac{1}{1-z} \quad&=\quad \sum_{n=0}^{\infty}-z^{-n-1} &=&\quad -z^{-1}-z^{-2}-z^{-3}-z^{-4}-\cdots & {\color{red}|z|>1} \\
+    \sqrt{1+z} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}1/2\\n\end{pmatrix}z^n &=&\quad 1+\frac{1}{2}z-\frac{1}{8}z^2+\frac{1}{16}z^3-\cdots & |z|<1\\
+    \frac{1}{\sqrt{1+z}} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}-1/2\\n\end{pmatrix}z^n &=&\quad 1-\frac{1}{2}z+\frac{3}{8}z^2-\frac{5}{16}z^3+\cdots & |z|<1
+\end{align*}
+
+接下来是6个三角函数的麦克劳林级数或洛朗级数，其中\(B_n\)表示第\(n\)个伯努利数，\(E_n\)表示第\(n\)个欧拉数，后面将会介绍. 不同于\((1+x)^{\alpha}\)的展开式，由于\(\tan,\cot,\sec,\csc\)具有周期性，而且有无穷多个极点，所以麦克劳林级数和洛朗级数都只能在一个连续区间内生效，后面将要介绍的极点展开就很好地解决了这个问题.
+\begin{align*}
+    \sin(z)\quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{(2n+1)!}z^{2n+1} &=&\quad z-\frac{1}{3!}z^3+\frac{1}{5!}z^5-\frac{1}{7!}z^7+\cdots & z \in \mathbb{C} \\
+    \cos(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{(2n)!}z^{2n} &=&\quad 1-\frac{1}{2!}z^2+\frac{1}{4!}z^4-\frac{1}{6!}z^6+\cdots & z \in \mathbb{C} \\
+    \tan(z) \quad&=\quad \sum_{n=1}^{\infty}\frac{(4^{n}-1)B_{2n}}{4^{-n}(2n)!}z^{2n-1} &=&\quad z + \frac{1}{3}z^3 + \frac{2}{15}z^5 + \frac{17}{315}z^7+\cdots & |z|<\frac {\pi}{2} \\
+    \cot(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{B_{2n}2^{2n}}{(-1)^n(2n)!}z^{2n-1} &=&\quad \frac{1}{z}-\frac{1}{3}z-\frac{1}{45}z^3-\frac{2}{945}z^5-\cdots & |z|<{\pi} \\
+    \sec(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^nE_{2n}}{(2n)!}z^{2n} &=&\quad 1+\frac{1}{2}z^2+\frac{5}{24}z^4+\frac{61}{720}z^6+\cdots & |z|<\frac{\pi}{2} \\
+    \csc(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(2-2^{2n})B_{2n}}{(-1)^{n}(2n)!}z^{2n-1} &=&\quad \frac{1}{z} + \frac{1}{6}z + \frac{7}{360}z^3 + \frac{31}{15120}z^5 +\cdots & \quad |z|<\pi
+\end{align*}
+
+接下来是双曲函数，它们的展开式系数和对应的三角函数正好差了因式\((-1)^n\). 注意欧拉数的生成函数就是\({\rm sech}(z)\)，所以这个展开式只是把欧拉数的定义抄了一遍.
+
+\begin{align*}
+    \sinh(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{1}{(2n+1)!}z^{2n+1} &=&\quad z+\frac{1}{3!}z^3+\frac{1}{5!}z^5+\frac{1}{7!}z^7+\cdots & z \in \mathbb{C} \\
+    \cosh(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{1}{(2n)!}z^{2n} &=&\quad 1+\frac{1}{2!}z^2+\frac{1}{4!}z^4+\frac{1}{6!}z^6+\cdots & z \in \mathbb{C} \\
+    \tanh(z) \quad&=\quad \sum_{n=1}^{\infty}\frac{(4^{n}-1)B_{2n}}{(-4)^n(2n)!}z^{2n-1} &=&\quad z - \frac{1}{3}z^3 + \frac{2}{15}z^5 - \frac{17}{315}z^7+\cdots & |z|<\frac {\pi}{2} \\
+    {\rm coth}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{B_{2n}2^{2n}}{(2n)!}z^{2n-1} &=&\quad \frac{1}{z}-\frac{1}{3}z+\frac{1}{45}z^3-\frac{2}{945}z^5+\cdots & |z|<{\pi} \\
+    {\rm sech}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{E_{2n}}{(2n)!}z^{2n} &=&\quad 1-\frac{1}{2}z^2+\frac{5}{24}z^4-\frac{61}{720}z^6+\cdots & |z|<\frac{\pi}{2} \\
+    {\rm csch}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(2-2^{2n})B_{2n}}{(2n)!}z^{2n-1} &=&\quad \frac{1}{z} - \frac{1}{6}z + \frac{7}{360}z^3 - \frac{31}{15120}z^5 +\cdots & \quad |z|<\pi
+\end{align*}
+
+接下来是反三角和反双曲函数，其中\((x)^{(n)}=x(x+1)(x+2)\cdots(x+n-1)\)是上升阶乘幂，是阶乘的推广. 以下给出两组，另外的三角或双曲函数的展开式可以根据恒等变换获得.
+\begin{align*}
+    \arcsin(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(\frac{1}{2})^{(n)}}{2n+1}z^{2n+1} &=&\quad z+\frac{1}{6}z^3+\frac{3}{40}z^5+\frac{5}{112}z^7+\cdots & |z| < 1 \\
+    \arctan(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{2n+1}z^{2n+1} &=&\quad z-\frac{1}{3}z^3+\frac{1}{5}z^5-\frac{1}{7}z^7+\cdots & |z|<1 \mbox{或} z=\pm 1\\
+    \trm{arsinh}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n(\frac{1}{2})^{(n)}}{2n+1}z^{2n+1} &=&\quad z-\frac{1}{6}z^3+\frac{3}{40}z^5-\frac{5}{112}z^7+\cdots & |z| < 1 \\
+    \trm{artanh}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{1}{2n+1}z^{2n+1} &=&\quad z+\frac{1}{3}z^3+\frac{1}{5}z^5+\frac{1}{7}z^7+\cdots & |z|\leq 1 \mbox{且} z \neq \pm 1
+\end{align*}
+
+
+\subsection{洛朗级数}
+
+带有极点的函数在极点处无法进行泰勒展开，例如\(y=e^{\frac{1}{x^2}}\)，在\(x=0\)处无法进行泰勒展开，但是如果把它强行代入泰勒级数中，可以发现该级数在定义域内都收敛，只不过\(x\)的次数会出现负数，因此可以大胆地改写泰勒级数的形式，得到\uline{双边幂级数}(bilateral power series)：
+\[f(z)=\sum_{n=0}^{\infty}a_n(z-z_0) \Longrightarrow f(z)\sim\sum_{n=-\infty}^{\infty}a_n(z-z_0)\]
+这相当于把泰勒级数中\(z-z_0\)的次数从\(\mathbb{N}\)扩展到了\(\mathbb{Z}\)，其中次数为负数的部分称为\uline{主部}(principal part)，记为\(P(z)\)，剩下的部分即为泰勒级数，姑且记作\(T(z)\)，此时这个级数就可以写成：
+\[f(z) \sim P(z)+T(z), \qquad P(z) = \sum_{n=-\infty}^{-1}a_n(z-z_0)^n, \qquad T(z) = \sum_{n=0}^{\infty}a_n(z-z_0)^n\]
+这里使用了符号“\(\sim\)”而不是等于号，非常令人不满，因为把次数扩展到了负数之后，级数的收敛域可能就变了. 这好办，做代换，令\(\zeta = (z-z_0)^{-1}\)，这样就有
+\[P(z) = \sum_{n=1}^{\infty}a_n\zeta^n\]
+并设其收敛域为\(|\zeta|<1/r\)，这样就得到了\(P(z)\)的收敛域\(|z-z_0|>r\)，如果\(T(z)\)的收敛域为\(|z-z_0|<R, R>r\)，那么整个级数的收敛域就为\(r<|z-z_0|<R\)，此时就可以欢快地把“\(\sim\)”换成等号了.
+
+在收敛域内任取一点\(s\)，并做两个半径不等的圆环\(C_1:|z-z_0|=r_1\)和\(C_2:|z-z_0|=r_2\)夹住点\(s\)，其中\(r_1<r_2\)，根据复连通域的柯西积分公式\footnote{复连通域的柯西积分公式：若\(\Omega\)是一个复连通区域，其边界\(\partial \Omega = C^++C_1^-+C_2^-+\cdots+C_n^-\)是分段光滑闭曲线，函数\(f(z)\)在\(\Omega\)内解析，则\[\int_{\partial \Omega}f(z)\trm{d}z=0\]}，可得
+\[f(s) = \frac{1}{2\pi i}\oint_{C_1^-}\frac{f(z)}{z-s}\trm{d}z + \frac{1}{2\pi i}\oint_{C_2^+}\frac{f(z)}{z-s}\trm{d}z\]
+其中的第一个积分（沿着内环负方向的积分）
+\[\frac{1}{2\pi i}\oint_{\color{red} C_1^-}\frac{f(z)}{z-s}\trm{d}z = \frac{1}{2\pi i}\oint_{\color{red} C_1^+}\frac{f(z)}{(s-z_0)-(z-z_0)}\trm{d}z = \frac{1}{2\pi i}\oint_{C_1^+}\frac{f(z)}{s-z_0}\frac{\trm{d}z}{1-\frac{z-z_0}{s-z_0}}\]
+由于\(z\)在内环上，\(s\)在内外环之间，因此\(s>z\)，即\(\dfrac{z-z_0}{s-z_0}<1\)，所以可以使用泰勒展开
+\[\frac{1}{1-\frac{z-z_0}{s-z_0}} = \sum_{n=0}^{\infty}\left(\frac{z-z_0}{s-z_0}\right)^{n} = \sum_{n=1}^{\infty}\left(\frac{z-z_0}{s-z_0}\right)^{n-1}\]
+回代，得到
+\[\frac{1}{2\pi i}\oint_{C_1^-}\frac{f(z)}{z-s}\trm{d}z = \frac{1}{2\pi i}\oint_{C_1^+}\frac{f(z)}{s-z_0}\sum_{n=1}^{\infty}\left(\frac{z-z_0}{s-z_0}\right)^{n-1}\trm{d}z = \sum_{n=1}^{\infty}{\color{red}\left[\frac{1}{2\pi i}\oint_{C_1^+}\frac{f(z)}{(z-z_0)^{1-n}}\trm{d}z\right]}(s-z_0)^{-n} = P(z)\]
+然后对于第二个积分（沿着外环的积分），也用同样的方法讨论
+\[\frac{1}{2\pi i}\oint_{C_2^+}\frac{f(z)}{z-s}\trm{d}z = \frac{1}{2\pi i}\oint_{C_2^+}\frac{f(z)}{z-z_0}\frac{\trm{d}z}{1-\frac{z-z_0}{s-z_0}} = \sum_{n=0}^{\infty}{\color{red}\left[\frac{1}{2\pi i}\oint_{C_2^+}\frac{f(z)}{(z-z_0)^{1+n}}\trm{d}z\right]}(s-z_0)^{n} = T(z)\]
+若令\(C_1,C_2\)圆环重叠于\(s\)点，则\(T(z)\)和\(P(z)\)可以合并，就得到了
+\begin{theorem}{洛朗级数(Laurent series)}
+    如果函数\(f(z)\)在圆环域\(r<|z-z_0|<R\)内解析，则该函数可以展开为双边幂级数
+    \[f(z) = \sum_{n=-\infty}^{\infty}a_n(z-z_0)^n\]
+    其中
+    \[a_n=\frac{1}{2\pi i}\oint_{C^+}\frac{f(z)}{(z-z_0)^{n+1}}\trm{d}z\]
+    \(C\)为圆环内绕\(z_0\)的任意闭曲线.
+\end{theorem}
+这个公式很少用到，但它为我们之前对与泰勒公式的大胆套用提供了坚实的理论基础.
+
+\subsection{反函数的幂级数展开}
+
+前几节探索泰勒公式和洛朗级数时，很快就推出了泰勒定理和洛朗级数表达式，之后好几节都是它们的应用. 这一节则不同，首先需要引入较多相关概念，比如卷绕数和对数留数等，然后再将其推广，之后才能导出最终的拉格朗日反演定理.
+
+\subsubsection{卷绕数和对数留数}
+
+通俗理解，用笔在纸上随意画一个首尾相接的曲线（一笔画完），画出的曲线可能会绕某个点转好几圈，这个“圈数”就称为该曲线对于这个点的\uline{卷绕数}(winding number).
+
+现在用数学的语言把卷绕数的概念重新叙述一遍. 假设你画线的那张纸是复平面，记该简单闭曲线为\(C\)，记你开始画线的时间为\(t=0\)，画完的时间\(t=1\)，这个曲线围绕点\(z_0\)转了若干圈（可以一圈也不转），画成的曲线方程便可以按极坐标的思路写作
+\[C(t) = z_0 + r(t)e^{i\theta(t)}, \qquad 0 \leq t \leq 1\]
+通俗理解，\(r(t)\)是\(t\)时刻笔尖离\(z_0\)的距离，\(\theta(t)\)则是笔尖相对\(z_0\)的辐角. 由于辐角每变化\(2\pi\)，就表明曲线绕\(z_0\)转了一圈，所以曲线的卷绕数为
+\[ \trm{Ind}_C(z_0) = \frac{\theta(1)-\theta(0)}{2\pi} \]
+改写解析式，分离出\(\theta(t)\)，得到\(\theta(t) = \ln \left(C(t) - z_0\right) - \ln r(t)\)，回代
+\begin{align*}
+    \trm{Ind}_C(z_0) &= \frac{1}{2\pi i}\left[\left[\ln \left(C(1) - z_0\right) - \ln r(1)\right]-\left[\ln \left(C(0) - z_0\right) - \ln r(0)\right]\right] \\
+    & \xlongequal[]{r(1)=r(0)} \frac{1}{2\pi i}\left[\ln \left(C(1) - z_0\right)-\ln \left(C(0) - z_0\right)\right] \\
+    & = \int_{0}^{1} \frac{C'(t)}{C(t)-z_0} \trm{d}t = \oint_{C}\frac{\trm{d}z}{z-z_0}
+\end{align*}
+这就得到了卷绕数的定义
+\begin{definition}{卷绕数}
+    连续的闭曲线\(C\)对点\(z_0\)的\uline{卷绕数}(winding number)定义为
+    \[\trm{Ind}_C(z_0) = \oint_{C}\frac{\trm{d}z}{z-z_0}\]
+\end{definition}
+
+来套一层娃，之前在定义卷绕数时，自变量是时间\(t\)，随着\(t\)的变化笔尖在纸上画出一个闭曲线\(C\)；现在假设自变量是简单闭曲线\(C\)，围绕的点是原点，\(C\)上的点经过半纯函数\(f(z)\)映射为另一个简单闭曲线，那么\(f(z)\)对于\(C\)的卷绕数为
+\[\trm{Ind} = \frac{1}{2\pi}\Delta\trm{arg} [f(z)] = \frac{1}{2\pi i}\oint_{C}\frac{\trm{d}f(z)}{f(z)} = \frac{1}{2\pi i}\oint_{C}\frac{f'(z)}{f(z)}\trm{d}z\]
+
+设\(f(z)\)在\(C\)上和\(C\)内解析
+\subsubsection{对数留数定理}
+
+首先来证明函数的对数留数定理，这个定理可以让我们了解某个闭区域内函数的零极点数量.
+
+\textit{
+给定一个函数\(\psi(z)\)，然后在复平面上画一个圆周\(C\)，在\(C\)内它只有\(m\)个极点\(p_1, p_2, \cdots, p_m\)，而零点\(z_1, z_2, z_3, \cdots\)可以任意多. 接着考虑函数\(\ln\psi(z)\)，此时\(\psi(z)\)的零点和极点都变成了\(\ln\psi(z)\)的极点. 然后再取一个在\(C\)内和\(C\)上都解析的函数\(\varphi(z)\)，那么根据复连通域的柯西积分公式，可以在\(\ln\psi(z)\)的每个极点周围作小圆周，使得每个圆周只包含一个极点，并把包含\(p_i\)的圆周记为\((p_i)\)，\(z_i\)类似，这样就可以把沿着\(C\)的积分转到\((p_i)\)和\((z_i)\)上.
+\[\frac{1}{2\pi i}\oint_{C}\varphi(z)\trm{d}\ln\psi(z) = \frac{1}{2\pi i}\left[\sum_{i}\oint_{(p_i)}\varphi(z)\trm{d}\ln\psi(z)+\oint_{(z_i)}\varphi(z)\trm{d}\ln\psi(z)\right]\]
+其中对于每一个零点\(z_i\)，假设其为\(n_i\)阶零点，那么存在一个解析函数\(\psi_i(z)\)，使得\(\psi(z_i) = (z-z_i)^{n_i}\psi_i(z_i)\)，其中\(\psi_i(z_i)\neq 0\). 对\(\ln\psi(z)\)求导，得
+\[\frac{\trm{d}}{\trm{d}z}\ln\psi(z) = \frac{\psi'(z)}{\psi(z)} = \frac{n_i}{z-z_i}+\frac{\psi_k'(z)}{\psi_k(z)}\]
+由于\(\psi_i(z)\)解析，所以只要\((z_i)\)的半径足够小，\(\frac{\psi_k'(z)}{\psi_k(z)}\)在小圆周内也是解析的，根据柯西-古萨定理，沿着小圆周上对其积分得到\(0\)，然后由留数定理\footnote{留数定理：若简单闭曲线\(C\)包含\(f(z)\)的极点\(p_1, p_2, \cdots, p_n\)，且\(f(z)\)在\(C\)内其他地方处处解析，则有
+\[\oint_C f(z)\trm{d}z = 2\pi i\sum_{k=1}^{n}\trm{Res}[f(z),z_k]\]}
+\[\frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = \frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\left(\frac{n_i}{z-z_i}+\frac{\psi_k'(z)}{\psi_k(z)}\right)\trm{d}z = \frac{n_i}{2\pi i}\oint_{(z_i)}\frac{\varphi(z)}{z-z_i}\trm{d}z = n_i\varphi(z_i)\]
+对极点\(p_i\)用同样的方法讨论，可得
+\[\frac{1}{2 \pi i}\oint_{(p_i)}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = -p_i\varphi(p_i)\]
+代回，就得到了
+}
+\begin{theorem}{对数留数定理(logarithmic residue theorem)}
+    若\(\psi(z)\)在简单闭曲线\(C\)内除了\(m\)个极点\(p_1, p_2, \cdots, p_m\)以外处处解析，并有至多可数无穷多个零点\(z_1, z_2, z_3, \cdots\)，函数\(\varphi(z)\)在\(C\)内处处解析，则
+    \[\frac{1}{2\pi i}\oint_{C}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = \sum_{i}n_i\varphi(z_i) - \sum_{j}n_j\varphi(p_j)\]
+\end{theorem}
+如果令\(\varphi(z) \equiv 1\)，则定理可以化简为
+\begin{theorem}{辐角原理(argument principle)}
+    若\(\psi(z)\)在简单闭区域\(C\)内除了有限个极点以外解析，并有至多可数无穷多个零点，则
+    \[\frac{1}{2\pi i}\oint_{C}\trm{d}\ln\psi(z) = N-P\]
+    其中\(N\)表示\(C\)内零点的个数，\(P\)表示\(C\)内极点的个数，注意这里的零点和极点要按照阶数来算，例如\(n\)级零点要看做\(n\)个零点.
+\end{theorem}
+
+\vspace{1cm}
+
+\textit{
+如果在区域\(C\)内\(f(z)\)处处解析，且只有\(1\)个一级零点\(z_0\)，则可以令\(f(z)=\psi(z)-\psi(z_0)\)，易知\(\psi(z)\)在\(C\)内解析且无零点. 此时
+\[\frac{\trm{d}}{\trm{d}z}\ln f(z) = \frac{f'(z)}{f(z)}=\frac{\psi'(z)}{\psi(z)-\psi(z_0)}\]
+代入对数留数定理，得到
+\[\varphi(z) = \frac{1}{2\pi i}\oint_C \varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \frac{1}{2\pi i}\oint_C\frac{\varphi(z)\psi'(z)}{\psi(z)-\psi(z_0)}\trm{d}z\]
+此即为
+}
+\begin{theorem}{扩展的柯西积分公式}
+    设\(\psi(z)\)在区域\(C\)内解析且没有零点，\(\varphi(z)\)在\(C\)内解析，则
+    \[\varphi(z)=\frac{1}{2 \pi i}\oint_C\frac{\varphi(\xi)\psi'(\xi)}{\psi(\xi)-\psi(z)}\trm{d}\xi\]
+\end{theorem}
+令\(\psi(z)=z\)得到的就是常见的柯西积分公式.
+
+\subsubsection{拉格朗日级数}
+
+设目标函数\(f(z)\)和一个辅助函数\(g(z)\)在\(C\)内解析，然后取\(C\)内一点\(s\)，并令\(\psi(z) = z-s-tg(z)\)，其中\(t\)是参数，由辐角原理可得
+\[N-P=\frac{1}{2\pi i}\oint_{C}\frac{1-tg'(z)}{z-s-tg(z)}\trm{d}z = \frac{1}{2\pi i}\oint_{C}\frac{1-tg'(z)}{z-s}\frac{\trm{d}z}{1-\frac{tg(z)}{z-s}}\]
+如果再令\(|tg(z)|<|z-s|\)，那么又可以作泰勒展开
+\[N-P = \frac{1}{2\pi i}\oint_{C}\frac{1-tg'(z)}{z-s}\sum_{n=0}^{\infty}\left(\frac{tg(z)}{z-s}\right)^n\trm{d}z = \frac{t^n}{2\pi i}\sum_{n=0}^{\infty}\oint_{C}\frac{[g(z)]^n}{(z-s)^{n+1}}\trm{d}z-\frac{t^{n+1}}{2 \pi i}\sum_{n=0}^{\infty}\oint_{C}\frac{g'(z)[g(z)]^{n}}{(z-s)^{n+1}}\]
+由复变函数的高阶导数公式\footnote{复变函数的高阶导数公式：若函数\(f(z)\)在简单闭曲线及其内部解析，\(z_0\)是\(C\)内一点，则\[\oint_C \frac{f(z)}{(z-z_0)^{n+1}} = \frac{2\pi i}{n!}\dfrac{\trm{d}}{\trm{d}z}f(z_0)\]}可得
+\[\frac{t^n}{2\pi i}\oint_{C}\frac{[g(z)]^n}{(z-s)^{n+1}}\trm{d}z = \frac{t^{n}}{n!}\frac{\trm{d}^n}{\trm{d}z^n}[g(s)]^{n}, \qquad \frac{t^{n+1}}{2\pi i}\oint_{C}\frac{g'(z)[g(z)]^n}{(z-s)^{n+1}}\trm{d}z = \frac{t^{n+1}}{(n+1)!}\frac{\trm{d}^{n+1}}{\trm{d}z^{n+1}}[g(s)]^{n+1}\]
+代回，得到
+\[N-P=\sum_{n=0}^{\infty}\frac{t^{n}}{n!}\frac{\trm{d}^n}{\trm{d}z^n}[g(s)]^{n}-\sum_{n=0}^{\infty}\frac{t^{n+1}}{(n+1)!}\frac{\trm{d}^{n+1}}{\trm{d}z^{n+1}}[g(s)]^{n+1}\]
+比较两端的\(t^n\)系数，可以得到
+\[N-P=\frac{t^{0}}{0!}\frac{\trm{d}^0}{\trm{d}z^0}[g(s)]^{0}=1\]
+由于\(\psi(x)\)在\(C\)内解析，所以不存在极点，即\(P=0\)，因此\(N=1\)，这就说明了方程\(\psi(x)=0\)在\(C\)内只有一个根，把它记作\(z\)，由对数留数定理得
+\[f(z)=\frac{1}{2\pi i}\oint_{C}f(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = \frac{1}{2\pi i}\oint_{C}f(z)\frac{1-tg'(z)}{z-s-tg(z)}\trm{d}z\]
+仿照上面推导的过程，就得到了
+\begin{theorem}{拉格朗日展开公式}
+    若\(f(z)\)和辅助函数\(g(z)\)在\(C\)上及\(C\)内解析，\(C\)内一点\(s\)、\(C\)上一点\(z\)和参数\(t\)满足\(|tg(z)|<|z-s|\)，则\newline
+    (1) 方程\(z=s+tg(z)\)在\(C\)内有且仅有一根；\newline
+    (2) 该根可以展开为
+    \[f(z) = f(s)+\sum_{n=1}^{\infty}\frac{t^n}{n!}\frac{d^{n-1}}{dz^{n-1}}\{f'(s)[g(s)]^n\}\]
+\end{theorem}
+
+% \subsubsection{利用勒让德多项式展开}
+
+% 一个函数的泰勒展开可以写成无穷维向量内积的形式：
+% \[f(x) = \sum_{n=0}^{\infty}a_nx^n = \left\langle [a_n]_{n=0}^{\infty}, [x^n]_{n=0}^{\infty} \right\rangle\]
+% 线性组合的形式就出来了，其中向量\([a_n]_{n=0}^{\infty}\)为线性组合的系数，\([x^n]_{n=0}^{\infty}\)为基函数. 然而这组基底不是正交的，例如\(\displaystyle{\langle 1,x^2 \rangle = \int_{a}^{b}x^2=x^3|_a^b}\)，无论\(a,b\)取什么值，由于\(f(x)=x^3\)是单调递增的，因此只要\(a\neq b\)，就不可能为\(0\). 然而根据泰勒公式的普适性，我们有理由相信这是一组完备的基函数，因此可以尝试对它进行施密特正交化. 在区间\([-1,1]\)实施正交化得到的结果称为\uline{勒让德多项式}(Legendre polynomials)，记作\(\{P_n(x)\}_{n=0}^{\infty}\)，以下列举前几项：
+% \begin{align*}
+%     P_0(x) &= 1 \\
+%     P_1(x) &= x \\
+%     P_2(x) &= \frac{3x^2-1}{2} \\
+%     P_3(x) &= \frac{5x^3-3x}{2} \\
+%     P_4(x) &= \frac{35x^4-30x+3}{8} \\
+%     P_5(x) &= \frac{63x^5-70x^3+15x}{8}
+% \end{align*}
+
+\subsection{傅里叶级数}
+
+移至第四章
+
+\subsection{极点展开}
+
+来捋一捋奇点和极点的关系. 首先极点肯定是奇点，因为它没有定义，更不用说解析了. 若\(z_0\)为\(f(z)\)的极点，则在\(z_0\)的某个邻域内可以找到一个解析函数\(g(z)\)，使得\(f(z)=g(z)/(z-z_0)^n\)，而\(n\)表示极点的等级. 可以这样理解，\(f(z)\)在\(z_0\)不解析，是因为出现了\(1/(z-z_0)^n\)这个因子，在\(z \to z_0\)的过程中，\(f(z)\)趋于无穷就是这个因子导致的. 由于\(g(z)\)是解析的，在\(z_0\)的某个邻域内是有界量，所以\(f(z)\)趋近于无穷的“速度”完全由极点的等级决定.
+
+在某区域内解析的函数称为\uline{全纯函数}(holomorphic function)，存在极点但除去极点以外处处解析的函数称为\uline{半纯函数}(meromorphic function)，例如\(\cot(z)\)就是一个半纯函数，它有无穷多个极点，而且都是一级极点，像这样的函数可以通过它的极点来刻画. 
+
+全纯函数\(g(z)\)可以展开成泰勒级数\(g(z)=a_0+a_1z+a_2z^2+a_3z^3+\cdots\)，此时具有\(n\)个一阶极点\(p_1, p_2, \cdots, p_n\)半纯函数\(f(z)\)就可以改写为
+\[f(z)=\frac{a_0+a_1z+a_2z^2+a_3z^3+\cdots}{(z-p_0)(z-p_1)\cdots(z-p_n)}\]
+如果\(f(z)\)有无穷多个极点，则也许可以大胆地写成
+\[f(z)=\frac{a_0+a_1z+a_2z^2+a_3z^3+\cdots}{(z-p_1)(z-p_2)(z-p_3)\cdots}\]
+如果我们此时大胆地认为分子分母次数相同（都是无穷多次），就可以大胆地使用有理分式展开，即
+\[f(z)=k_0+\frac{k_1}{z-p_1}+\frac{k_2}{z-p_2}+\frac{k_3}{z-p_3}+\cdots\]
+欧拉发现\(\cot(z)\)存在这种形式的展开，之后米塔格-累夫勒证明了一个定理保证这种展开是可行的.
+
+\begin{theorem}{米塔格-累夫勒定理(Mittag-Leffler's theorem, 1876)}
+    设\(\{p_n\}_{n=1}^{\infty}\)为没有聚点的复数数列，\(\{P_n(z)\}_{n=1}^{\infty}\)为一系列常数项为零的多项式，则存在一个半纯函数\(f(z)\)，\(p_1,p_2,p_3,\cdots\)为其极点，且在以\(p_n\)为圆心的某个去心圆域内，\(f(z)\)洛朗展开式的主部为\(\displaystyle{P_n\left(\frac{1}{z-p_n}\right)}\).
+\end{theorem}
+
+如果极点全为一级极点，则其洛朗展开式即为有理分式的形式. 但该定理只给有理分式形式的展开提供了可能性，而并没有给出确切的展开式，这就是接下来要做的事.
+
+\vspace{1cm}
+
+\textit{
+给出确切展开式需要做较多的铺垫和限制. 把极点\(p_i\)重新编号，使得\(0<|p_1|\leq|p_2|\leq|p_2|\leq|p_3|\leq \cdots\)，然后作出一系列闭曲线\(\{C_m\}_{m=1}^{\infty}\)，使得闭曲线\(C_m\)围住\(p_1, p_2, \cdots, p_m\)，接下来记\((z_0)\)表示围住点\(z_0\)足够小的闭曲线.
+}
+
+\textit{
+在\(C_m\)取一点\(z\)，根据复合闭路定理和柯西积分公式，有
+\begin{align}
+    {\color{red} \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi-z}\trm{d}\xi} &= 
+    \frac{1}{2\pi i}\oint_{(z)}\frac{f(\xi)}{\xi-z}\trm{d}\xi
+    +\sum_{n=1}^m\frac{1}{2\pi i}\int_{(p_n)}\frac{f(\xi)}{\xi-z}\trm{d}\xi \notag \\ 
+    &= f(z) + {\color{blue}\sum_{n=1}^m\frac{1}{2\pi i}\int_{(p_n)}\frac{f(\xi)}{\xi-z}\trm{d}\xi} \tag{1}
+\end{align} 
+接下来分别整理 这个式子的左边和右边，先整理右边. 假设\(f(\xi)\)在点\(p_n\)的洛朗级数为\(P(\xi-p_n)+T(\xi-p_n)\)，其中\(P(\xi-p_n)\)表示主部，则蓝色部分即为
+\[{\color{blue}\sum_{n=1}^m\frac{1}{2\pi i}\oint_{(p_n)}\frac{f(\xi)}{\xi-z}\trm{d}\xi} = 
+\sum_{n=1}^m\left[\frac{1}{2\pi i}\oint_{(p_n)}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi
++{\color{brown}\frac{1}{2\pi i}\oint_{(p_n)}\frac{T(\xi-p_n)}{\xi-z}\trm{d}\xi}\right] 
+\tag{2}\]
+因为\(\dfrac{T(\xi-p_n)}{\xi-z}\)在\(p_n\)的邻域内解析，根据柯西积分公式，可以知道棕色部分为零. 现在作封闭曲线\(C_R\)，是以\(\xi\)为圆心、半径为\(R\)的圆，\(R\)足够大以至于包含\(z\)和\(p_n\)两点，根据复合闭路定理
+\[\frac{1}{2\pi i}\oint_{\color{red}(p_n)}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi = 
+\frac{1}{2\pi i}\oint_{\color{red}C_R}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi 
+- \frac{1}{2\pi i}\oint_{\color{red}(z)}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi
+\tag{3}\]
+注意到当\(R\to\infty\)时，\(\dfrac{P(\xi-p_n)}{\xi-z}=o(\xi^{-2})\)，此时该积分趋于\(0\)，这样就得到了
+\[\frac{1}{2\pi i}\oint_{\color{red}(p_n)}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi = -\frac{1}{2\pi i}\oint_{\color{red}(z)}\frac{P(\xi-p_n)}{\xi-z}\trm{d}\xi = -P(z-p_n)\tag{4}\]
+代回\((1)\)式，得到
+\[\frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi-z}\trm{d}\xi = f(z) - \sum_{n=1}^{m}P(z-p_n) \tag{5}\]
+接下来整理\((1)\)式左边，这是一个技巧性很强的地方，由等比数列求和公式可知
+\[\sum_{n=0}^{p}\left(\frac{z}{\xi}\right)^n = \frac{1-(z/\xi)^p}{1-z/\xi} \Longrightarrow \frac{1}{1-z/\xi} = \frac{1-(z/\xi)^p+(z/\xi)^p}{1-z/\xi} = \sum_{n=0}^{p}\left(\frac{z}{\xi}\right)+\frac{(z/\xi)^p}{1-z/\xi}\]
+因此\((1)\)式左边可以化为
+\begin{align}
+    {\color{red} \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi-z}\trm{d}\xi} &= 
+    \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi}\frac{1}{1-z/\xi}\trm{d}\xi \notag \\
+    &= \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi}\left[\sum_{n=0}^{p}\left(\frac{z}{\xi}\right)^n+\frac{(z/\xi)^p}{1-z/\xi}\right]\trm{d}\xi \notag \\
+    &= \sum_{n=0}^{p}\frac{z^n}{\color{blue}2\pi i}{\color{blue}\oint_{C_m}\frac{f(\xi)}{\xi^{n+1}}\trm{d}\xi}
+    +\frac{z^{p+1}}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi-z)}\trm{d}\xi \tag{6}
+\end{align}
+对蓝色部分像\((1)(2)\)式那样操作，先用复合闭路定理，再用高阶导数公式和洛朗级数展开，其中展开式\(T(\xi-p_k)\)的部分为零.
+\begin{align}
+    {\color{blue}\frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{n+1}}\trm{d}\xi} &= 
+    \frac{1}{2\pi i}\oint_{(z)}\frac{f(\xi)}{\xi^{n+1}}\trm{d}\xi
+    +\sum_{k=1}^m\frac{1}{2\pi i}\int_{(p_k)}\frac{f(\xi)}{\xi^{n+1}}\trm{d}\xi \notag \\ 
+    &= \frac{f^{(n)}(0)}{n!} + \sum_{k=1}^m\frac{1}{2\pi i}\int_{(p_k)}\frac{P(\xi-p_k)}{\xi^{n+1}}\trm{d}\xi \tag{7}
+\end{align}
+像之前一样，作圆\(C_R:|z|=R\)，\(R\)足够大使得极点\(p_k\)能含在内，这时候根据复合闭路定理和高阶导数公式
+\begin{align}
+    \frac{1}{2\pi i}\oint_{\color{red}(p_k)}\frac{P(\xi-p_k)}{\xi^{n+1}}\trm{d}\xi &= 
+    \frac{1}{2\pi i}\oint_{\color{red}C_R}\frac{P(\xi-p_k)}{\xi^{n+1}}\trm{d}\xi
+    - \frac{1}{2\pi i}\oint_{\color{red}(0)}\frac{P(\xi-p_k)}{\xi^{n+1}}\trm{d}\xi \notag \\
+    &= \frac{1}{2\pi i}\oint_{\color{red}C_R}\frac{P(\xi-p_k)}{\xi^{n+1}}\trm{d}\xi 
+    - \left.\frac{1}{n!}\frac{\trm{d}^{n}}{\trm{d}z^n}P(\xi-p_k)\right|_{\xi=0}
+    \tag{8}
+\end{align}
+像之前那样讨论，当\(R \to \infty\)时，该积分趋于零，这样就得到了
+\[\frac{1}{2\pi i}\oint_{\color{red}(p_k)}\frac{P(\xi-p_n)}{\xi^{n+1}}\trm{d}\xi = -\left.\frac{1}{k!}\frac{\trm{d}^{k}}{\trm{d}z^k}P(\xi-p_k)\right|_{\xi=0} \tag{9}\]
+代回\((7)\)式，得到
+\[{\color{blue}\frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{n+1}}\trm{d}\xi} = \frac{f^{(n)}(0)}{n!} - \sum_{k=1}^m\left.\frac{1}{n!}\frac{\trm{d}^{n}}{\trm{d}z^n}P(\xi-p_k)\right|_{\xi=0} \tag{10}\]
+代回\((6)\)式，得到
+\[{\color{red} \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi-z}\trm{d}\xi} = 
+\sum_{n=0}^{p}\frac{z^n}{n!}\left[f^{(n)}(0) - \sum_{k=1}^m\left.\frac{\trm{d}^{n}}{\trm{d}z^n}P(\xi-p_k)\right|_{\xi=0}\right]
++\frac{z^{p+1}}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi-z)}\trm{d}\xi \tag{11}\]
+若记
+\(\displaystyle{\varphi_{kp}(z)=\sum_{n=0}^{p}\frac{z^n}{n!}\left.\frac{\trm{d}^{n}}{\trm{d}z^n}P(\xi-p_k)\right|_{\xi=0}}\)
+则\((11)\)式变为
+\[{\color{red} \frac{1}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi-z}\trm{d}\xi} = 
+\sum_{n=0}^{p}\frac{z^n}{n!}f^{(n)}(0) - \sum_{k=1}^m\varphi_{kp}(z)
++\frac{z^{p+1}}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi-z)}\trm{d}\xi \tag{12}\]
+比较\((12)\)式和\((5)\)式，得到
+\[f(z) = \sum_{n=0}^{p}\frac{z^n}{n!}f^{(n)}(0) + \sum_{n=1}^{m}[P(z-p_n)-\varphi_{np}(z)]
++{\color{blue}\frac{z^{p+1}}{2\pi i}\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi-z)}\trm{d}\xi} \tag{13}\]
+现在来讨论蓝色这一节，稍微放缩一下
+\begin{align*}
+    {\color{blue}\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi-z)}\trm{d}\xi} & \leq
+    \oint_{C_m}\frac{|f(\xi)|}{|\xi^{p+1}||\xi-z|}|\trm{d}\xi| \quad(\mbox{积分放缩不等式}) \\
+    & \leq \oint_{C_m}\frac{|\xi^{-p}f(\xi)|}{R_m|R_m-|z||}|\trm{d}\xi| \quad (\mbox{因为}R_m<|\xi|) \\
+    & \leq \frac{Ml_m}{R_m|R_m-|z||} \quad (\mbox{因为}|z^{-p}f(z)|<M)
+\end{align*}
+如果进一步假设闭曲线的周长\(l_m\)和闭曲线上的点离原点的最近距离\(R_m\)的比值\(|l_m/R_m|\)有界，则当\(m \to \infty\)时，\(\displaystyle{\oint_{C_m}\frac{f(\xi)}{\xi^{p+1}(\xi^{n+1})}\trm{d}\xi}=0\)，而无穷多个极点正是被展开的函数应当具有的性质，所以把该结果带入\((13)\)式，最终就得到了
+}
+\begin{theorem}{米塔格-累夫勒定理(Mittag-Leffler's theorem, 1884)}
+    设有半纯函数\(f(z)\)和一组围线序列\(\{C_m\}_{m=1}^{\infty}\)满足
+    \begin{itemize}
+        \item[(1)] \(f(z)\)有可数无穷多个极点，按绝对值大小排列为\(0<|a_1|\leq|a_2|\leq|a_3|\leq\cdots\)；
+        \item[(2)] 围线\(C_m\)围住\(p_1, p_2, \cdots, p_m\)；
+        \item[(3)] 当\(m \to \infty\)时围线周长\(l_m \to \infty\)，围线上的点到原点的最小距离\(R_m \to \infty\)，但\(l_m/R_m\)有界；
+        \item[(4)] \(C_m\)上存在一点\(z_m\)，使得存在最小的自然数\(p\)能让\(|z_m^{-p}f(z_m)|<M\)，\(M\)与\(m\)无关.
+    \end{itemize}
+    则
+    \[f(z) = \sum_{n=0}^{p}\frac{z^n}{n!}f^{(n)}(0) + \sum_{n=1}^{\infty}[P(z-p_n)-\varphi_{np}(z)]\]
+    其中\(P(z-z_n)\)表示\(f(z)\)在极点\(p_n)\)处洛朗展开的主部，\(\displaystyle{\varphi_{kp}(z)=\sum_{n=0}^{p}\frac{z^n}{n!}\left.\frac{\trm{d}^{n}}{\trm{d}z^n}P(\xi-p_k)\right|_{\xi=0}}\).
+\end{theorem}
+
+这个展开式非常复杂，可以添加几个条件来简化. 若函数的所有极点均为1级极点，则\(\displaystyle{P(z-p_n)=\frac{k_n}{z-p_n}}\)，其中\(k_n\)是常数\footnote{极点：若\(f(z)\)在\(p_n\)处的洛朗展开式有有限多个负幂项，而且负幂项的最高次为\(m\)，则\(p_n\)为\(f\)的\(m\)级极点，因此在1级极点的洛朗展开式主部仅有一项\(c_{-1}(z-p_n)\).}；若\(f(z)\)在\(C_m\)上有界，则\(p=0\)，此时展开式可以化简为
+\[f(z) = f(0) + \sum_{n=0}^{\infty}k_n\left(\frac{1}{z-p_n}+\frac{1}{p_n}\right)\]
+其中\(\displaystyle{k_n=\frac{1}{2\pi i}\oint_{(p_n)}f(z)\trm{d}z}\).
+
+米塔格-累夫勒定理适合用于展开含有1级极点的周期函数，以下给出几个例子. 作为对比，麦克劳林展开需要强调收敛域，极点展开则在整个定义域内都成立.
+\begin{align*}
+    \tan(z) \quad&=\quad \sum_{n=-\infty}^{\infty}\frac{-1}{z-\left(n+\frac{1}{2}\right)\pi} &=&\quad -\frac{1}{z-\frac{1}{2}\pi}-\frac{1}{z+\frac{3}{2}\pi}-\frac{1}{z-\frac{3}{2}\pi}-\cdots & \\
+    \cot(z) \quad&=\quad \sum_{n=-\infty}^{\infty}\frac{1}{z-n\pi} &=&\quad \frac{1}{z}+\frac{1}{z+\pi}+\frac{1}{z-\pi}+\frac{1}{z-2\pi}+\frac{1}{z-2\pi}+\cdots & \\
+    \sec(z) \quad&=\quad \sum_{n=-\infty}^{\infty}\frac{(-1)^{n-1}}{z-\left(n+\frac{1}{2}\right)\pi} &=&\quad \frac{1}{z+\frac{1}{2}\pi}-\frac{1}{z-\frac{1}{2}\pi}+\frac{1}{z+\frac{3}{2}\pi}-\frac{1}{z-\frac{3}{2}\pi}+\cdots & \\
+    \csc(z) \quad&=\quad \sum_{n=-\infty}^{\infty}\frac{(-1)^{n}}{z-n\pi} &=&\quad \frac{1}{z}-\frac{1}{z+\pi}-\frac{1}{z-\pi}+\frac{1}{z-2\pi}+\frac{1}{z-2\pi}+\cdots & \\
+\end{align*}
+
+\subsection{零点分解}
+
+零点分解和之前的极点展开充分体现了对偶性，这里说的是“分解”而不是“展开”其区别就在于“分解”是把函数写成无穷乘积的形式，有别于“展开”的无穷级数. 代数基本定理告诉我们，任意一个多项式都可以在复数范围内分解成多个一次因子. 要分解
+\[P(z)=a_nz^n+a_{n-1}z^{n-1}+\cdots+a_2z^2+a_1z+a_0\]
+只要令\(P(z)=0\)，解出它的\(n\)个根\(z_1,z_2,\cdots,z_n\)，就可以作分解
+\[P(z) = (z-z_1)(z-z_2)\cdots(z-z_{n-1})(z-z_n)\]
+这就把多项式函数和它的零点关联起来了.
+
+顺着这个想法，魏尔斯特拉斯思考到：全纯函数能被高次多项式拟合，那么这种能“看出”函数零点的分解是否能扩展到任意全纯函数上呢？更进一步地，任意给定一个递增且无界的复数数列\(\{z_n\}_{n=1}^{\infty}\)，是否能找到一个函数正好以\(z_1,z_2,z_3,\cdots\)为零点呢？
+
+\subsubsection{基本因式}
+
+无论以上想法是否合理，被零点所确定的函数一定不可能是\(e^{z}\)或随意一个\(e^{f(z)}\)形式的函数，因为这样的函数没有零点，因此在无穷乘积分解某个函数\(f(z)\)的时候，还需要考虑到这一类函数对分解的影响，办法就是把它们作为因子提出来，得到\(f(z)=e^{g(z)}h(z)\)的形式. 但实际上\(h(z)\)也没有办法直接分解成一次因式，但可以分解为类似于一次因式的基本因式.
+
+\begin{definition}{基本因式}
+    函数
+    \[E_p(z) := \left\{\begin{aligned} & (1-z) & p=0, \\ & (1-z)e^{z+\frac{z^2}{2}+\frac{z^3}{3}+\cdots+\frac{z^p}{p}} & p > 0 \end{aligned}\right.\]
+    称为\uline{基本因式}(elementary factor).
+\end{definition}
+
+魏尔斯特拉斯的第二个想法由以下引理证实.
+\begin{lemma}{无界的零点序列可以确定一个整函数}
+    设\(\{z_n\}_{n=1}^{\infty}\)为复数数列，满足任意\(z_n \neq 0\)且\(\lim \limits_{\substack{n \to \infty}} |z_n|=+\infty\)；\(\{p_n\}_{n=1}^{\infty}\)为自然数数列，若对于任意\(r>0\)，级数\(\displaystyle{\sum_{n=1}^{\infty}\left(\frac{r}{|z_n|}\right)^{1+p_n}}\)收敛，那么函数\(\displaystyle{h(z)=\prod_{n=1}^{\infty}E_{p_n}\left(\frac{z}{z_n}\right)}\)是一个整函数，且零点恰好为所有\(z_n\).
+\end{lemma}
+\textit{
+    证明：分两步，第一步证明当\(|z|<1\)时\(|1-E_p(z)| \leq |z|^{p+1}\). 当\(p=0\)时显然成立；当\(p > 0\)时，求导然后用等比数列求和公式
+    \[E_p'(z) = [(1-z)(1+z+z^2+\cdots+z^{p-1})-1]e^{z+\frac{z^2}{2}+\frac{z^3}{3}+\cdots+\frac{z^p}{p}} = -z^pe^{z+\frac{z^2}{2}+\frac{z^3}{3}+\cdots+\frac{z^p}{p}}\]
+    所以\(-E_p'(z)\)在\(z=0\)处有\(p\)级零点，且洛朗展开的系数都是非负实系数. 由于
+    \[1-E_p(z)=\int_0^z E_p(\xi)\trm{d}\xi\]
+    所以\(1-E_p(z)\)在\(z=0\)处有\(p+1\)级零点，且洛朗展开的系数都是非负实系数. 这时只要设\(\displaystyle{\varphi(z)=\frac{1-E_p(z)}{z^{p+1}}}\)，则\(\varphi(z)\)的洛朗展开系数也是非负实系数，所以当\(|z| \leq 1\)时有\(|\varphi(z)|\leq \varphi(1)=1\)，因此\(|1-E_p(z)| \leq |z|^{p+1}\).
+    第二步即证明该命题. 因为\(\lim \limits_{n \to \infty} |z_n| = +\infty\)，所以除开有限的元素外，\(\{|z_n|\}\)中其他无限个元素都大于\(r\). 将\(r\)固定，若\(|z|\leq r\)且\(|z_n|>r\)，则
+    \[\left|1-E_{p_n}\left(\frac{z}{z_n}\right)\right| \leq \left|\frac{z}{z_n}\right|^{1+p_n} \leq \left(\frac{r}{|z_n|}\right)^{1+p_n}\]
+    由比较判别法可知级数\(\displaystyle{\sum_{n=1}^{\infty}|1-E_p(z)|}\)在复平面内一致收敛，因此无穷乘积所确定的函数为整函数.
+}
+
+数列\(\{p_n\}\)的选取有很大的任意性，就令\(p_n=n\)，得到的数列也符合要求.
+
+\subsubsection{魏尔斯特拉斯分解定理}
+
+已知\(h(z)\)是以上由零点确定的整函数，再乘以\(e^{g(z)}\)这类没有零点的函数，就可以得到任意的整函数的分解定理.
+
+\begin{theorem}{魏尔斯特拉斯分解定理(Weierstrass factorization theorem)}
+    设\(f(z)\)为整函数且\(f(0)\neq 0\)，复数数列\(\{z_n\}_{n=1}^{\infty}\)按照重数枚举除\(z=0\)以外的零点（\(m\)级零点按照\(m\)个零点计算），则存在一个自然数数列\(p_n\)和整函数\(g(z)\)，使得\(f(z)\)可以被分解为
+    \[f(z) = e^{g(z)}\prod_{n=1}^{\infty}E_{p_n}\left(\frac{z}{z_n}\right)\]
+    如果\(f(z)\)在\(z=0\)处有\(m\)阶零点，则
+    \[f(z) = z^me^{g(z)}\prod_{n=1}^{\infty}E_{p_n}\left(\frac{z}{z_n}\right)\]
+\end{theorem}
+
+我们希望不确定的对象尽可能减少，现在已经得出了\(\{p_n\}\)的范例，就差\(g(z)\)了，接下来用米塔格-累夫勒定理来导出更精确的表达式.
+
+\textit{
+    令\(g(z)=f'(z)/f(z)\)满足简化版本米塔格-累夫勒定理的使用条件，那么
+    \[\frac{f'(z)}{f(z)} = \frac{f'(0)}{f(0)} + \sum_{n=0}^{\infty}k_n\left(\frac{1}{z-p_n}+\frac{1}{p_n}\right)\]
+    根据对数留数定理
+    \[k_n = \frac{1}{2 \pi i}\oint_{(p_n)}\frac{f'(\xi)}{f(\xi)}\trm{d}\xi = 1\]
+    两边求积分得
+    \begin{align*}
+        & \int_{0}^{2\pi}\frac{f'(z)}{f(z)} = \int_{0}^{2\pi}\frac{f'(0)}{f(0)}\trm{d}z + \int_{0}^{2\pi}\sum_{n=0}^{\infty}k_n\left(\frac{1}{z-p_n}+\frac{1}{p_n}\right)\trm{d}z \\
+        \Longleftrightarrow & \ln\frac{f(z)}{f(0)} = \frac{f'(0)}{f(0)}z + \sum_{n=0}^{\infty}\left(\frac{1}{z-p_n}+\frac{1}{p_n}\right)\trm{d}z
+    \end{align*}
+    两边求指数得
+    \[\frac{f(z)}{f(0)}=e^{\frac{f'(0)}{f(0)}z}+\prod_{n=1}^{\infty}\left(1-\frac{z}{z_n}\right)e^{\frac{z}{z_n}}\]
+    稍微整理一下就是
+}
+
+\begin{corollary}{零点分解}
+    设\(f(z)\)为整函数，具有不为零的零点\(\{z_n\}_{n=1}^{\infty}\)，且存在围线序列\(\{C_m\}_{n=1}^{\infty}\)，函数\(\displaystyle{\left|\left.\frac{f'(z)}{f(z)}\right|_{z \in C_m}\right| < M}\)，且\(M\)与\(m\)无关，则
+    \[\boxed{f(z) = f(0)e^{\frac{f'(0)}{f(0)}z}\prod_{n=1}^{\infty}\left(1-\frac{z}{z_n}\right)e^{\frac{z}{z_n}}}\]
+\end{corollary}
+
+\subsubsection{哈达玛分解定理}
+
+哈达玛在魏尔斯特拉斯的基础上更进了一步，指出\(g(z)\)是一个增长“慢于”某个上限的多项式，为严格定义“增长速度”，引进“阶数”的概念.
+
+\begin{definition}{阶数}
+    对于函数\(f(z)\)，若存在\(\rho,R>0\)，使得\(|z|>R\)时，有\(|f(z)|<e^{|z|^{\rho}}\)，则\(\rho\)的最小可能值称为\(f(z)\)的阶数.
+\end{definition}
+
+举几个例子，\(e^z\)的阶数为\(1\)，\(\sin(z)\)的阶数为\(1\)，\(\cos\sqrt z\)的阶数为\(1/2\)，\(e^{z^2}\)的阶数为\(2\)，\(e^{e^z}\)的阶数为\(+\infty\).
+
+\begin{theorem}{哈达玛分解定理(Hadamard factorization theorem)}
+    设\(f(z)\)为阶数为\(\rho<+\infty\)整函数且\(f(0)\neq 0\)，复数数列\(\{z_n\}_{n=1}^{\infty}\)按照重数枚举除\(z=0\)以外的零点（\(m\)级零点按照\(m\)个零点计算），则\(f(z)\)可以被分解为
+    \[f(z) = e^{g(z)}\prod_{n=1}^{\infty}E_{p}\left(\frac{z}{z_n}\right)\]
+    如果\(f(z)\)在\(z=0\)处有\(m\)阶零点，则
+    \[f(z) = z^me^{g(z)}\prod_{n=1}^{\infty}E_{p}\left(\frac{z}{z_n}\right)\]
+    其中\(g(z)\)为阶数不大于\(\rho\)的多项式，\(p=\lfloor \rho \rfloor\).
+\end{theorem}
+
+\begin{align*}
+    \sin(z) \quad&=\quad z\prod_{n \in \mathbb{Z}^*}\left(1-\frac{z}{\pi n}\right)e^{\frac{z}{\pi n}} &=&\quad z \left(1-\frac{z}{\pi}\right)\left(1+\frac{z}{\pi}\right)\left(1-\frac{z}{2\pi}\right)\left(1+\frac{z}{2\pi}\right)\cdots & \\
+    \cos(z) \quad&=\quad \sum_{n \trm{odd} \in \mathbb{Z}}\left(1-\frac{2z}{\pi n}\right)e^{\frac{2z}{\pi n}} &=&\quad \left(1-\frac{2z}{\pi}\right)\left(1+\frac{2z}{\pi}\right)\left(1-\frac{2z}{3\pi}\right)\left(1+\frac{2z}{3\pi}\right)\cdots & \\
+\end{align*}
+
+\subsection{皮瑟级数}
+
+已知函数\(f(z^k)\)的洛朗级数为
+\[f(z) = \sum_{n=-\infty}^{\infty} c_nz^{n}\]
+令\(w=z^k\)，得到
+\[f(w) = \sum_{n=-\infty}^{\infty} c_nw^{n/k}\]
+像这种次数带有分数的幂级数，称为\uline{皮瑟级数}(Puiseux series).
+
+例如\(f(z)=\sqrt{z^2-1}\)，在\(z=0\)点它的洛朗级数可以通过配凑的过程来求得：
+\begin{align*}
+    \sqrt{z^2-1} & =i\sqrt{1-z^2}=i\left(1+(iz)^2\right)^{1/2} \\
+    &= i\left(1-\frac{z^2}{2}-\frac{z^4}{8}-\frac{z^6}{16}-\cdots\right)\\ 
+    &= 1-\frac{iz^2}{2}-\frac{iz^4}{8}-\frac{iz^6}{16}-\cdots
+\end{align*}
+但是在\(z=1\)点就没法配凑展开了，只能套定义式算\(c_n\)，而皮瑟级数仍然可以配凑出来.
+\[\sqrt{z^2-1}=\sqrt{(z+1)(z-1)}=\sqrt{2(z-1)}\sqrt{1+\frac{z-1}{2}}\]
+令\(w=z-1\)，则
+\begin{align*}
+    \sqrt{z^2-1} &= \sqrt{2w}\sqrt{1+\frac{w}{2}} \\
+    & = \sqrt{2w} \left( 1+\frac{w}{4}-\frac{w^2}{32}+\cdots \right)\\
+    &= \sqrt{2w}+\frac{\sqrt{2}}{4}w^{3/2}-\frac{\sqrt{2}}{32}w^{5/2}+\cdots
+\end{align*}
+
+\end{document}

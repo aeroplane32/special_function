@@ -1,0 +1,32 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{欧拉数}
+
+欧拉有很多的数学成果，和“欧拉数”这三个字有关的东西就有Euler numbers, Euler's number, Eulerian number, Euler's constant, Eulerian integers等，这里的欧拉数指的是第一个，和上面的伯努利数一样是一个数列\(\{E_n\}_{n=0}^{\infty}\).
+
+欧拉数由生成函数导出：
+\[ \frac{1}{\cosh(x)} = \frac{2}{e^{x}+e^{-x}} = \sum_{k=0}^{\infty}\frac{E_k}{k!}x^k\]
+同伯努利数一样，欧拉数有正有负，绝对值总体趋势是增加的，但都是整数，奇数项都为0.\\
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+    \hline
+    \(E_{0}\) & \(E_{2}\) & \(E_{4}\) & \(E_{6}\) & \(E_{8}\) & \(E_{10}\) & \(E_{12}\) & \(E_{14}\) & \(E_{16}\) & \(E_{18}\) \\
+    \hline
+    \(1\) & \(-1\) & \(5\) & \(-61\) & \(1385\) & \(-50521\) & \(2702765\) & \(-199360981\) & \(19391512145\) & \(−2404879675441\) \\
+    \hline
+\end{tabular}
+
+有了欧拉数，我们可以给更多的函数找到通用的展开式了。
+\[ \sec(x) = 1+\frac{1}{2}x^2+\frac{5}{24}x^4+\frac{61}{720}x^6+\frac{277}{8064}x^8+\frac{50521}{3628800}x^{10}+\cdots\]
+首先注意到\(\displaystyle{\sec(x) = \frac{1}{\cos(x)} = \frac{2}{e^{ix}+e^{-ix}}}\)
+立即代入欧拉数的导出函数中，并略去奇数项，得到
+\[ \sec(x) = \sum_{k=0}^{\infty} \frac{E_k}{k!}(ix)^k = \sum_{k=0}^{\infty}\frac{(-1)^kE_{2k}}{(2k)!}x^{2k}, \quad |x|<\frac{\pi}{2}\]
+
+与伯努利数相似，偶数项欧拉数的绝对值呈指数式增长
+\[ |E_{2 n}| \approx 8 \sqrt { \frac{n}{\pi} } \left(\frac{4 n}{ \pi e}\right)^{2 n}\]
+增长快慢来说，若记\(A \prec B\)表示\(A\)是\(B\)的高阶无穷大，那么对于正整数\(n\)，当\(n \to +\infty\)时，有\(\psi(2n) \prec 2n \prec e^{2n} \prec |B_{2n}| \prec |E_{2n}| \prec \Gamma(2n) \prec n^{2n}\)
+
+
+\end{document}

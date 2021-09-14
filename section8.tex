@@ -1,0 +1,108 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{勒奇超越函数系}
+
+之所以称为勒奇超越函数系，是因为除了本身之外，这一系列的函数都是勒奇超越函数的一种特殊情况. 然而勒奇超越函数仅仅是它们非常保守的推广，之后还可以再推广至超几何函数. 然而超几何函数的推广程度太大以至于值得单独开一节来讨论，所以本节讨论的函数局限在勒奇超越函数下.
+
+\subsection{黎曼zeta函数}
+黎曼zeta函数很有来头，它有好几种适用范围不同的定义：\\
+(1) 欧拉原始的定义
+\[\zeta(s) := \sum_{i=1}^{\infty} i^{-s} = 1+\frac{1}{2^s}+\frac{1}{3^s}+\cdots, \quad \trm{Re}(s) > 1\]
+(2) 黎曼的积分定义
+\[ \zeta(s) := \frac{1}{\Gamma(s)} \int_{0}^{+\infty} \frac{x^{s-1}}{e^x-1} \trm{d} x, \quad \trm{Re}(s) > 1\]
+(3) 解析延拓
+\[\zeta(s):={\Gamma(1-s)\over2\pi i}\oint_\gamma{t^{s-1}\over e^{-t}-1}\mathrm{d}t, \quad s \neq 1\]
+
+\textit{
+上面的前两种定义其实很容易相互推导，注意到第二种定义中前面除了一个\(\Gamma(s)\)，所以尝试把它乘到第一种定义中：
+\[ \zeta(s)\Gamma(s) = \sum_{k=1}^{\infty} \frac{1}{k^s} \int_{0}^{+\infty} t^{s-1}e^{-t} \trm{d}t = \sum_{k=1}^{\infty} \int_{0}^{+\infty} \left(\frac{t}{k}\right)^{s-1}e^{-t} \frac{\trm{d}t}k\]
+换元：\(u=t/k\)，则\(t=ku\)，然后
+\[\mbox{原式} = \sum_{k=1}^{\infty}\int_0^{+\infty} u^{s-1}e^{-ku} \trm{d}u = \int_{0}^{+\infty} u^{s-1} \sum_{k=1}^{\infty}e^{-ku} \trm{d}u\]
+由等比数列求和公式，\(\displaystyle{\sum_{k=1}^{\infty}e^{-ku} = \lim_{k \to \infty}\frac{e^{-u}(1-e^{-u})^k}{1-e^{-u}} = \frac{e^{-u}}{1-e^{-u}} = \frac{1}{e^u-1}}\)，代入即得到
+\[ \mbox{原式} = \int_{0}^{+\infty} \frac{u^{s-1}}{e^u-1} \trm{d}u \Rightarrow \zeta(s) = \frac{1}{\Gamma(s)} \int_{0}^{+\infty} \frac{u^{s-1}}{e^u-1} \trm{d}u\]
+}
+
+\par 黎曼进行了进一步的解析延拓，得到这样一个函数方程：
+\[ \zeta(s) = 2^s \pi^{s-1} \sin\left(\frac{\pi s}{2}\right)\Gamma(1-s)\zeta(1-s) \]
+
+\(\zeta\)函数的某些取值可以得到很奇妙的结果：
+
+\[\zeta(2) = 1+\frac{1}{2^2}+\frac{1}{3^2}+\cdots = \sum_{i=1}^{\infty} \frac{1}{i^2} = \frac{\pi^2}{6}\]
+这个等式称为巴塞尔问题，最先由欧拉解决。\\
+
+\textit{
+欧拉首先注意到\(\sin(x)\)的麦克劳林展开：
+\[ \sin(x) = x-\frac{x^3}{3!}+\frac{x^5}{5!} - \cdots \Rightarrow \frac{\sin(x)}{x} = x-\frac{x^2}{3!}+\frac{x^2}{5!} - \cdots\]
+由于\(\displaystyle{\frac{\sin(x)}{x}}=0\)的根是\(x=\pm k\pi, \quad k\in \mathbb{Z}^*\)，在零点处必有\(\displaystyle{1-\frac{x}{k\pi}=0}\)，所以可以把这个函数写成无穷乘积的形式\footnote{这种分解是否成立需要用到魏尔斯特拉斯分解定理来证明，但欧拉当时认为它是成立的}，再使用平方差公式：
+\begin{align*}
+    \frac{\sin(x)}{x} &= \left(1-\frac{x}{\pi}\right)\left(1+\frac{x}{\pi}\right)\left(1-\frac{x}{2\pi}\right) \left(1+\frac{x}{2\pi}\right)\left(1-\frac{x}{3\pi}\right)\left(1+\frac{x}{3\pi}\right)\cdots \\
+    & = \left(1-\frac{x^2}{\pi^2}\right) \left(1-\frac{x^2}{(2\pi)^2}\right) \left(1-\frac{x^2}{(3\pi)^2}\right)\cdots
+\end{align*}
+把\(x^2\)项提出来，并和麦克劳林展开式的\(x^2\)项的系数比较：
+\[ -\frac{1}{\pi^2}-\frac{1}{(2\pi)^2}-\frac{1}{(3\pi)^2} -\cdots = \frac{1}{3!} \]
+整理一下，就可以得到最终结果：
+\[ -\frac{1}{\pi^2}(1+\frac{1}{2^2}+\frac{1}{3^2}+\cdots) = -\frac{1}{3!} \Rightarrow {\color{red} 1+\frac{1}{2^2}+\frac{1}{3^2}+\cdots = \frac{\pi^2}{6}}\]
+}
+
+\[\zeta(3) = 1+\frac{1}{2^3}+\frac{1}{3^3}+\cdots = \sum_{i=1}^{\infty} \frac{1}{i^3} = 1.20205\cdots\]
+等式最右侧称为阿培里常数(Apery constant)，是一个无理数，在量子电动力学中可以见到它。
+
+\[\zeta(4) = 1+\frac{1}{2^4}+\frac{1}{3^4}+\cdots = \sum_{i=1}^{\infty} \frac{1}{i^4} = \frac{\pi^4}{90}\]
+这个数出现在黑体辐射中的斯特藩-玻尔兹曼定律(Stefan-Boltzmann law)中。
+
+\[\zeta(1) = 1+\frac{1}{2}+\frac{1}{3}+\cdots = \sum_{i=1}^{\infty} \frac{1}{i}\]
+得到调和级数，这个级数不收敛。
+
+根据黎曼的函数方程，可以发现
+\[ \zeta(-1) = 2^{-1} \pi^{-2} \sin\left(\frac{-\pi}{2}\right)\Gamma(2)\zeta(2) = -\frac{1}{12} \]
+同时注意到\(\zeta(-1)\)表示的算式即为\(1+2+3+4+\cdots\)，于是就得到了暴论：全体自然数的和为\(-\frac{1}{12}\). 错就错在欧拉对\(\zeta\)函数的定义不允许以-1作为自变量，所以\(\zeta(-1)\)并不表示全体自然数的和。不过需要注意的是，全体自然数的拉马努金和确实是\(-\frac{1}{12}\).
+
+根据黎曼的函数方程，还可以发现，当\(s=-2k, k\in\mathbb{N}_+\)时，\(\zeta(s)=0\)，这些零点很好找到，称为平凡零点。zeta函数还有另外一些零点，需要更多的研究才能找到，这样的零点称为非平凡零点。黎曼找到了很多，并发现它们的实部都是\(\frac{1}{2}\)，于是他提出了一个著名的猜想：
+\begin{proposition}{黎曼猜想(Riemann hypothesis)}
+    \(\zeta(s)\)的非平凡零点都满足\(\trm{Re}(s)=\frac{1}{2}\).
+\end{proposition}
+
+黎曼猜想既是希尔伯特的23个难题之一，也是当今世界七大数学难题之一.
+
+\subsection{赫尔维茨zeta函数}
+
+赫尔维茨(Hurwitz)的\(\zeta\)函数是黎曼\(\zeta\)函数的一种推广，定义为
+\[ \zeta(s,q) = \sum_{n=0}^{\infty}\frac{1}{(n+q)^s} \]
+
+\subsection{狄利克雷beta函数}
+
+\[ \beta(s) = \sum_{n=0}^{\infty} \frac{(-1)^n}{(2n+1)^s}\]
+
+\subsection{狄利克雷eta函数}
+
+狄利克雷的\(\eta\)是黎曼\(\zeta\)函数的交错级数，即
+\[ \eta(s) = \sum_{n=0}^{\infty} \frac{(-1)^{n-1}}{n^s}\]
+
+\subsection{勒让德chi函数}
+
+勒让德\(\chi\)函数的特殊之处就在于它的泰勒级数恰好也是它的狄利克雷级数，定义为
+\[ \chi_{\nu}(z) = \sum_{n=0}^{\infty}\frac{z^{2n+1}}{(2n+1)^{\nu}} \]
+
+\subsection{多对数函数（容基耶尔函数）}
+
+多重对数是自然对数泰勒展开式的推广，定义为
+\[ \trm{Li}_{s}(z) = \sum_{n=0}^{\infty}\frac{z^n}{n^s}\]
+
+\subsection{勒奇超越函数}
+
+勒奇超越函数(Lerch transcendent)是以上几种特殊函数的推广，定义为
+\[ \Phi(z,s,\alpha) = \sum_{n=0}^{\infty} \frac{z^n}{(n+\alpha)^s} \]
+它与以上几种函数有以下关系
+\begin{align*}
+    \zeta(s) &= \Phi(1,s,1) \\
+    \zeta(s,q) &= \Phi(1,s,q) \\
+    \beta(s) &= 2^{-s}\Phi\left(-1,s,\frac{1}{2}\right) \\
+    \eta(s) &= \Phi(-1,s,1) \\
+    \chi_n(z) &= 2^{-n}z\Phi\left(z^2,2,\frac{1}{2}\right) \\
+    \trm{Li}_s(z) &= z\Phi(z,s,1)
+\end{align*}
+
+\end{document}

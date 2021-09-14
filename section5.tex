@@ -1,0 +1,377 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{伯努利数和伯努利多项式}
+
+\subsection{伯努利数引入}
+
+伯努利数不是一个数，是一个数列\(\{B_n\}_{n=0}^{\infty}\)，也算是函数。这个数列有很多种导出的方法，但还是伯努利自己的定义最好理解：“数列的第\(k\)项是自然数前\(n\)项\(k\)次方和公式的一次项系数”，请观察：
+\begin{align*}
+    1^0+2^0+3^0+ \cdots +n^0 &= {\color{red} 1}n \\
+    1^1+2^1+3^1+ \cdots +n^1 &= \frac{1}{2}n^2+{\color{red} \frac{1}{2}}n \\
+    1^2+2^2+3^2+ \cdots +n^2 &= \frac{1}{3}n^3+\frac{1}{2}n^2+{\color{red} \frac{1}{6}}n \\
+    1^3+2^3+3^3+ \cdots +n^3 &= \frac{1}{4}n^4+\frac{1}{2}n^3+\frac{1}{4}n^2+{\color{red} 0}n \\
+    1^4+2^4+3^4+ \cdots +n^4 &= \frac{1}{5}n^5+\frac{1}{2}n^4+\frac{1}{3}n^3+0n^2{\color{red} -\frac{1}{30}}n \\
+    1^5+2^5+3^5+ \cdots +n^5 &= \frac{1}{6}n^6+\frac{1}{2}n^5+\frac{5}{12}n^4+0n^3-\frac{1}{12}n^2+{\color{red} 0}n
+\end{align*}
+图中标红的就是这个数列的前几项：\(\displaystyle{B_0=1, B_1=\frac{1}{2}, B_2=\frac{1}{6}, B_3=0, B_4=-\frac{1}{30}, B_5=0}\). 上面这些标红的数对于求出其他的数字很有帮助，从上往下看：
+\begin{itemize}
+    \item [] 第一列的系数\(\displaystyle{1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \frac{1}{5}, \frac 1 6, \cdots}\)为调和级数；
+    \item [] 第二列的系数\(\displaystyle{\frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \frac{1}{2}, \frac 1 2 \cdots}\)全都是\(\displaystyle{\frac{1}{2}}\)；
+    \item [] 第三列的系数\(\displaystyle{\frac 1 6, \frac 1 4, \frac 1 3, \frac{5}{12}, \cdots}\)为\(\displaystyle{\frac{1}{12}}\)乘以幂的次数；
+    \item [] 第四列的系数全为\(0\).
+\end{itemize}
+但是伯努利发现一个更神奇的地方，当引入杨辉三角以后，这些系数都可以用伯努利数表示：
+\begin{align*}
+    1^0+2^0+3^0+ \cdots +n^0 &= \frac{1}{1}({\color{blue}1}B_0n) \\
+    1^1+2^1+3^1+ \cdots +n^1 &= \frac{1}{2}({\color{blue}1}B_0n^2+{\color{blue}2}B_1n) \\
+    1^2+2^2+3^2+ \cdots +n^2 &= \frac{1}{3}({\color{blue}1}B_0n^3+{\color{blue}3}B_1n^2+{\color{blue}3}B_2n) \\
+    1^3+2^3+3^3+ \cdots +n^3 &= \frac{1}{4}({\color{blue}1}B_0n^4+{\color{blue}4}B_1n^3+{\color{blue}6}B_2n^2+{\color{blue}4}B_3n) \\
+    1^4+2^4+3^4+ \cdots +n^4 &= \frac{1}{5}({\color{blue}1}B_0n^5+{\color{blue}5}B_1n^4+{\color{blue}10}B_2n^3+{\color{blue}10}B_3n^2+{\color{blue}5}B_4n) \\
+    1^5+2^5+3^5+ \cdots +n^5 &= \frac{1}{6}({\color{blue}1}B_0n^6+{\color{blue}6}B_1n^5+{\color{blue}15}B_2n^4+{\color{blue}20}B_3n^3+{\color{blue}15}B_4n^2+{\color{blue}6}B_5n)
+\end{align*}
+于是我们可以猜想
+\[1^p+2^p+3^p+ \cdots +n^p = \frac{1}{p+1}\sum_{k=0}^{p}C_{p+1}^{n}B_kn^{p+1-k}\]
+这个关系式确实成立，后面将会证明.
+
+需要说明这里得到的伯努利数第二类伯努利数，一般记作\(\{B_{n}^+\}_{n=0}^{\infty}\)，而第一类伯努利数\(\{B_n^-\}_{n=0}^{\infty}\)由自然数幂的前\(n-1\)项和得到，两者唯一的不同就是\(\displaystyle{B_1^+ = \frac{1}{2}, B_1^- = -\frac{1}{2}}\)，接下来若没有特别标明，则\(\{B_n\}\)指的是\(\{B_n^-\}\).
+
+\subsection{使用生成函数导出}
+
+回顾复变函数解析的定义：如果函数\(f(z)\)在开区域\(D\)内的任意一点均能展成幂级数，则称\(f(z)\)在\(D\)内解析. 而不同的幂级数的区别仅在于\(z^n\)的系数\(\{a_n\}\)以及\(n\)的范围，这就意味着数列\(\{a_n\}\)可以唯一地确定一个解析函数，换句话说，它包含了函数\(f(z)\)的所有信息. 如果\(f(z)\)被一个形式幂级数（具有幂结构的级数）所确定，数列\(\{a_n\}\)的每一项决定该级数的系数，则称\(f(z)\)是数列\(\{a_n\}\)的生成函数(generating function). 常用的生成函数有好几种：
+\begin{itemize}
+    \item[(1)] 普通型：\(\displaystyle{\trm{G}(a_n;x) = \sum_{n=0}^{\infty}a_nx^n}\)
+    \item[(2)] 指数型：\(\displaystyle{\trm{EG}(a_n;x) = \sum_{n=0}^{\infty}\frac{a_n}{n!}x^n}\)
+    \item[(3)] 泊松型：\(\displaystyle{\trm{PG}(a_n;x) = \sum_{n=0}^{\infty} a_ne^{-x}\frac{1}{x^n}}\) 
+    \item[(4)] 贝尔型：\(\displaystyle{\trm{BG_p}(a_n;x) = \sum_{n=0}^{\infty} a_{p^n}x^n}\) 
+    \item[(5)] 朗博型：\(\displaystyle{\trm{LG}(a_n;x) = \sum_{n=1}^{\infty}a_n\frac{x^n}{1-x^n}}\)
+\end{itemize}
+
+有了生成函数，就可以给出伯努利数和伯努利多项式比较正式的定义了.
+\begin{definition}{伯努利数和伯努利多项式}
+    伯努利多项式由指数型生成函数隐式地定义：
+    \[ \frac{xe^{tx}}{e^{x}-1} := \sum_{n=0}^{\infty}\frac{B_n^-(t)}{n!}x^n \]
+    第一类和第二类伯努利数分别定义为
+    \[B_n^-:= B_n(0) \qquad B_n^+ := B_n(1)\]
+    当省略正负号时，默认为第一类伯努利数.
+\end{definition}
+
+伯努利数大概是这个风格，奇数项除了第一项以外都是0，偶数项除了第零项以外是越来越复杂的有正有负的分数:
+\newline
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+    \hline
+    \(B_{0}\) & \(B_{1}^{\pm}\) & \(B_{2}\) & \(B_{4}\) & \(B_{6}\) & \(B_{8}\) & \(B_{10}\) & \(B_{12}\) & \(B_{14}\) & \(B_{16}\) & \(B_{18}\) & \(B_{20}\) & \(B_{22}\)  & \(B_{24}\) \\
+    \hline
+    \(1\) & \(\pm\frac{1}{2}\) & \(\frac{1}{6}\) & \(-\frac{1}{30}\) & \(\frac{1}{42}\) & \(-\frac{1}{30}\) & \(\frac{5}{66}\) & \(-\frac{691}{2730}\) & \(\frac{7}{6}\) & \(-\frac{3617}{510}\) & \(\frac{43867}{798}\) & \(-\frac{174611}{330}\) & \(\frac{854513}{138}\) & \(-\frac{236364091}{2730}\)\\
+    \hline
+\end{tabular}
+\newline
+\vspace{0.5cm}
+伯努利多项式列举如下
+\begin{align*}
+    B_0(x) &= 1 \\
+    B_1(x) &= x - \frac{1}{2} \\
+    B_2(x) &= x^2 - x + \frac{1}{6} \\
+    B_3(x) &= x^3 - \frac{3}{2}x^2 + \frac{1}{2}x  \\
+    B_4(x) &= x^4 - 2x^3 + x^2  - \frac{1}{30} \\
+    B_5(x) &= x^5 - \frac{5}{2}x^4 + \frac{5}{3}x^3 - \frac{1}{6}x \\
+    B_6(x) &= x^6 - 3x^5 + \frac{5}{2}x^4 - \frac{1}{2}x^2 + \frac{1}{42}
+\end{align*}
+
+\subsection{性质}
+
+伯努利数和伯努利多项式有很多好玩的性质，其中伯努利数的性质很多都可以从伯努利多项式的性质导出.
+\begin{itemize}
+    \item [(1)] 两类伯努利数都有各自的生成函数.
+    \[ \frac{\pm x}{e^{\pm x}-1} := \sum_{n=0}^{\infty}\frac{B_n^\mp}{n!}x^n\]
+    \item [(2)] 从分析的角度，伯努利数有两种显化的方式
+    \[B_n = \lim_{x \to 0} \frac{\trm{d}}{\trm{d}x} \frac{x}{e^{x}-1} = \frac{n!}{2\pi i}\oint_{C}\frac{z}{e^z-1}\frac{\trm{d}z}{z^{n+1}}\]
+    其中\(C:|z|=r<2\pi\).
+    \newline
+    \textit{
+        证明思路：对生成函数使用泰勒定理得到第一种显化方式，再使用留数定理得到第二种显化方式，需要\(r<2\pi\)是为了避开生成函数的极点\(z=2\pi i\).
+    }
+    \item [(3)] 伯努利数的递归公式为
+    \[B_0 = 1 \qquad \sum_{n=0}^{k-1}\frac{B_n}{n!(k-n)!} = 0\]
+    伯努利多项式的递归公式为
+    \[B_0(x) = 1 \qquad B_n(x) = \sum_{k=0}^{n}C_n^kB_kx^{n-k}\]
+    \textit{
+        证明：先证明伯努利数的递归公式. 根据伯努利数的生成函数，可以巧妙地使用\(1\)：
+        \[ 1=\frac{x}{e^x-1}\cdot\frac{e^x-1}{x} = \sum_{k=0}^{\infty}\frac{x^k}{(k+1)!} \cdot \sum_{n=0}^{\infty}\frac{B_n}{n!}\]
+        然后使用柯西乘积\footnote{柯西乘积：\(\displaystyle{\left(\sum_{n=0}^{\infty}a_n\right)\left(\sum_{n=0}^{\infty}b_n\right) = \sum_{k=0}^{\infty}\sum_{n=0}^k a_n b_{k-n}}\).}得到
+        \[ \mbox{原式} = \sum_{k=0}^{\infty}\sum_{n=0}^{k}\frac{B_n x^n}{n!}\cdot\frac{x^{k-n}}{(k-n+1)!} = \sum_{k=0}^{\infty}x^k\sum_{n=0}^{k}\frac{B_n}{n!(k-n+1)!} = \sum_{k=0}^{\infty}\left(\sum_{n=0}^{k-1}\frac{B_n}{n!(k-n)!}\right)x^k \]
+        比较两边\(x^k\)项的系数，可以推知
+        \[ \left.\sum_{n=0}^{k-1}\frac{B_n}{n!(k-n)!}\right|_{k=0}=1, \quad \left.\sum_{n=0}^{k-1}\frac{B_n}{n!(k-n)!}\right|_{k>0}=0\]
+        接着证明多项式的递归公式. 方法同上，利用生成函数
+        \[\frac{xe^{tx}}{e^{x}-1} = \frac{x}{e^x-1}\cdot e^{tx} = \sum_{n=0}^{\infty}\frac{B_n}{n!}x^n \cdot \sum_{n=0}^{\infty}\frac{t^n}{n!}x^n \]
+        再使用柯西乘积
+        \[\mbox{原式} = \sum_{n=0}^{\infty}\sum_{k=0}^{n} \frac{B_kx^k}{k!}\frac{t^{n-k}x^{n-k}}{(n-k)!} = \sum_{n=0}^{\infty}\left(\sum_{k=0}^{n}\frac{B_kt^{n-k}}{k!}{(n-k)!}\right)x^n\]
+        但是根据伯努利多项式的定义，比较\(x^n\)项的系数
+        \[\frac{B_n(t)}{n!} = \sum_{k=0}^{n}\frac{B_kt^{n-k}}{k!}{(n-k)!}\]
+        整理就得到了
+        \[B_0(x) = 1, \qquad B_n(x) = \sum_{k=0}^{n}C_n^kB_kx^{n-k}\]
+    }
+    伯努利数的定义很麻烦，它的计算方法也很对得起这份麻烦. 与我们之前遇到的数列递推公式不同，第\(n\)个伯努利数需要用前\(n-1\)的伯努利数来导出，所以即使强如欧拉也只算出了前30个.
+    \item[(4)] 伯努利多项式的微积分关系
+    \[\frac{\trm{d}^m}{\trm{d}x^n}B_n(x) = A_n^mB_{n-m}(x) \qquad \int_{a}^{b}B_n(x)\trm{d}x = \frac{1}{n+1}\left[B_{n+1}(b)-B_{n+1}(a)\right]\] 
+    \item[(5)] 伯努利多项式关于\(x\)的递推公式为
+    \[B_0(x+1) = B_0(x), \qquad B_n(x+1) = B_n(x) + nx^{n-1}\,\, (n \geq 1)\] 
+    \textit{
+        证明：根据伯努利多项式的生成函数
+        \[\frac{xe^{(t+1)x}}{e^{x}-1} := \sum_{n=0}^{\infty}\frac{B_n(t+1)}{n!}x^n\]
+        但是左侧可以改写为
+        \begin{align*}
+            \frac{xe^{(t+1)x}}{e^{x}-1} 
+            &= \frac{xe^{tx}e^x -xe^{tx} + xe^{tx}}{e^{x}-1} 
+            = xe^{tx} + \frac{xe^{tx}}{e^{x}-1} \\
+            &= \sum_{n=0}^{\infty}\frac{B_n(t)}{n!}x^n + \sum_{n=0}^{\infty}\frac{t^n}{n!}x^{n+1} 
+            = B_0(t) + \sum_{n=1}^{\infty}\frac{B_n(t) + nt^{n-1}}{n!}x^n
+        \end{align*}
+        对比两边\(x^n\)的系数，得到
+        \[B_0(x+1) = B_0(x), \qquad B_n(x+1) = B_n(x) + nx^{n-1}\,\, (n \geq 1)\]
+    }
+    \item[(6)] 伯努利多项式的加法公式为
+    \[B_n(a+b) = \sum_{k=0}^{n}C_n^kB_k(a)b^{n-k}\]
+    \textit{
+        证明：利用伯努利数的生成函数
+        \[\frac{xe^{(a+b)x}}{e^{x}-1} := \sum_{n=0}^{\infty}\frac{B_n(a+b)}{n!}x^n\]
+        但同时左侧可以改写为
+        \begin{align*}
+            \frac{xe^{(a+b)x}}{e^{x}-1} 
+            &= \frac{xe^{ax}}{e^{x}-1} \cdot e^{bx}
+            = \sum_{n=0}^{\infty}\frac{B_n(a)}{n!}x^n \cdot \sum_{n=0}^{\infty}\frac{b^n}{n!}x^{n} \\
+            &= \sum_{n=0}^{\infty} \sum_{k=0}^{n} \frac{B_k(a)}{k!}x^k\frac{b^{n-k}}{(n-k)!}x^{n-k}
+            = \sum_{n=0}^{\infty} \left(\sum_{k=0}^{n} \frac{B_k(a)}{k!}\frac{b^{n-k}}{(n-k)!}\right) x^n 
+        \end{align*}
+        对比两侧\(x^n\)的系数，有
+        \[\frac{B_n(a+b)}{n!} = \sum_{k=0}^{n} \frac{B_k(a)}{k!}\frac{b^{n-k}}{(n-k)!}\]
+        整理就是
+        \[B_n(a+b) = \sum_{k=0}^{n}C_n^kB_k(a)b^{n-k}\]
+    }
+\end{itemize}
+
+尽管看起来复杂，伯努利数也有显式表达式
+\begin{proposition}{伯努利数的显式表达式(Louis Saalschütz, 1893)}
+    \[ B_n^+ = \sum_{m=0}^{n}\sum_{k=0}^{m}(-1)^kC_m^k\frac{k^n}{m+1} \qquad B_n^- = \sum_{m=0}^{n}\sum_{k=0}^{m}(-1)^kC_m^k\frac{(k+1)^n}{m+1}\]
+\end{proposition}
+
+还可以利用解析延拓的zeta函数来计算伯努利数：
+\[ B_n^+ = n\zeta(1-n) \quad \mbox{或} \quad B_{2n} = (-1)^{n+1}\frac{2(2n)!}{(2\pi)^{2n}}\zeta(2n), \quad n \geq 1\]
+
+
+
+\par 伯努利数有正有负，但其绝对值的总体趋势是增加的，当\(n\)特别大时，可以用上面的公式以及斯特林公式近似估计伯努利数的绝对值：
+\[ | B_{2n} | \approx 4\sqrt{\pi n}\left(\frac{n}{\pi e} \right)^{2n} \]
+可见这个数列的偶数项的绝对值呈指数式地增长。
+
+\subsection{自然数幂和}
+
+自然数前\(n\)项的\(2\sim5\)次方和详见上面，都是高次多项式的形式，而且可以看出，自然数前\(n\)项的\(k\)次方和公式最高次项的次数为\(k+1\).
+先设目标函数\(S(p,n) = \sum_{k=1}^n k^p\)，接下来要求的就是目标函数的表达式。首先构造它的指数型生成函数，然后把目标函数定义式代入，再交换求和顺序，然后利用\(e\)的定义和等比数列求和公式：
+\[ F(x,n) := \sum_{p=0}^{\infty} \frac{S(p,n)}{p!}x^p = \sum_{p=0}^{\infty}\sum_{k=0}^{n}\frac{(kx)^p}{p!} = \sum_{k=1}^{n} \sum_{p=0}^{\infty} \frac{(kx)^p}{p!}  = \sum_{k=1}^{n} e^{kx} = \frac{1-e^{-nx}}{e^{-x}-1} = \frac{e^{nx}-1}{x}\frac{-x}{e^{-x}-1}\]
+前者很容易展成幂级数，后者是伯努利数的生成函数的变形。到这一步，已经可以比较快捷地求出目标函数的表达式了，既然\(\displaystyle{F(x,n)=\frac{1-e^{nx}}{e^{-x}-1}}\)是目标函数的指数型生成函数，那么根据麦克劳林公式不断求导即可，例如
+\[\displaystyle{\left.\frac{\partial F}{\partial x}\right|_{x \to 0^+} = \frac{n(n+1)}{2}, \quad \left.\frac{\partial^2 F}{\partial x^2}\right|_{x \to 0^+} = \frac{n(n+1)(2n+1)}{6}} \]
+但我还是想求出\(S(p,n)\)的显式表达式，于是把它们展成级数，再利用级数的柯西乘积.
+\begin{align*}
+    F(x,n) &= \left(\sum_{k=1}^{\infty} \frac{n^k}{k!}x^{k-1}\right)\left(\sum_{k=0}^{\infty} \frac{B_k^+}{k!}x^k\right) = \left(\sum_{k=0}^{\infty} \frac{n^{k+1}}{(k+1)!}x^{k}\right)\left(\sum_{k=0}^{\infty} \frac{B_k^+}{k!}x^k\right) \\
+    & = \sum_{k=0}^{\infty}\left(\sum_{m=0}^{k} \frac{B_m^+}{m!}x^m\frac{n^{k-m+1}}{(k-m+1)!}x^{k-m}\right) = \sum_{k=0}^{\infty}\left({\color{red} \frac{1}{k+1}\sum_{m=0}^{k}C_{k+1}^m B_m^+ n^{k-m+1}}\right)\frac{x^k}{k!}
+\end{align*}
+最后就得到了著名的自然数幂和公式
+\begin{theorem}{等幂求和公式(Faulhaber's formula)}
+    对于自然数\(k\)，有
+    \begin{align*}
+        \sum_{m=1}^n m^k &= 1^k+2^k+3^k+\cdots+n^k \\
+        &= \lim_{x \to 0}\frac{\trm{d}^n}{\trm{d}x^n}\frac{1-e^{nx}}{e^{-x}-1} \\
+        &= \frac{1}{k+1}\sum_{m=0}^{k} C_{k+1}^m B_m^+ n^{k-m+1}
+    \end{align*}
+\end{theorem}
+感觉比上面的求导更加难算，怎么办？还好有伯努利多项式. 根据递推公式
+\begin{align*}
+    & B_n(x+1) = B_n(x) + nx^{n-1} \\
+    \Longrightarrow & m^k = \frac{1}{k+1}\left[B_{k+1}(m+1) - B_{k+1}(m)\right] \\
+    \Longrightarrow & \sum_{m=1}^{n} m^k = \frac{1}{m+1}\left[B_{k+1}(n+1) - B_{k+1}\right]
+\end{align*}
+
+
+\subsection{更多函数的幂级数展开}
+
+某些函数的麦克劳林展开式/洛朗展开式系数看起来毫无规律
+\begin{align*}
+    \tan(x) &= x + \frac{1}{3}x^3 + \frac{2}{15}x^5 + \frac{17}{315}x^7 + \frac{62}{2835}x^9+ \frac{1382}{155925}x^{11} + \cdots \\
+    \cot(x) &= \frac{1}{x} - \frac{1}{3}x - \frac{1}{45}x^3 - \frac{2}{945}x^5 - \frac{1}{4725}x^7 - \frac{2}{93555}x^9 - \cdots \\
+    \csc(x) &= \frac{1}{x} + \frac{1}{6}x + \frac{7}{360}x^3 + \frac{31}{15120}x^5 + \frac{127}{604800}x^7 + \frac{73}{3421773}x^9 + \cdots \\
+\end{align*}
+当然如果引入了复数，展开式就会变得非常简单（但那就不叫麦克劳林展开式了）.
+
+\vspace{0.5cm}
+\textit{
+例如\(\tan(z)\)在复数域上，借助欧拉公式得到（此为\trm{mathematica}的结果）
+\[ \tan(z) = -i\frac{e^{iz}-e^{-iz}}{e^{iz}+e^{-iz}} = i+2i\frac{e^{iz}}{e^{iz}+e^{-iz}}=i+2i\frac{1}{1+e^{-2iz}}=i+2i\sum_{n=1}^{\infty}(-1)^ne^{-2inz}\]
+}
+
+在实数域上，它们可以借助伯努利数表达出来。
+
+首先\(\displaystyle{\cos(x) = \frac{e^{ix}+e^{-ix}}2, \quad \sin(x) = \frac{e^{ix}-e^{-ix}}{2i}}\)，然后
+\[ \cot(x) = \frac{\cos(x)}{\sin(x)} = i\frac{e^{ix} + e^{-ix}}{e^{ix} - e^{-ix}} = i + \frac{2i}{e^{i2x} - 1} = i+2i\sum_{k=0}^{\infty}\frac{B_k}{k!}(i2x)^{k-1}\]
+再注意到除了\(B_1=-\frac{1}{2}\)以外，伯努利数列的奇数项都是0，另外\(i^{2k} = (-1)^k\)，于是
+\[ \mbox{原式}= i + 2i\left(\sum_{k=0}^{\infty}\frac{B_{2k}(i2x)^{2k-1}}{(2k)!}+\frac{B_1}{1!}(i2x)^0 \right) = \frac{1}{x}\sum_{k=0}^{\infty}\frac{(-1)^k B_{2k} (2x)^{2k}}{(2k)!}, \quad |x|<{\pi}\]
+同理，利用三角恒等式\(\tan(x) = \cot(x) - 2\cot(2x)\)和\(\csc(x) = \cot\left(\frac{x}{2}\right)-\cot(x)\)，即可得到
+\[ \tan(x)=\frac{1}{x}\sum_{k=0}^{\infty}\frac{(-1)^{k}(1-2^{2k})B_{2k}}{(2k)!}(2x)^{2k}, \quad |x|<\frac {\pi}{2}\]
+\[\csc(x)=\frac{1}{x}\sum_{k=0}^{\infty}\frac{(-1)^{k}(2-2^{2k})B_{2k}}{(2k)!}x^{2k}, \quad |x|<\pi \]
+
+看起来伯努利数计算起来也太麻烦了，可以返璞归真，使用多项式除法. 例如\(\tan(x)\)的展开式，即可用正余弦的展开式相除：
+\[ \tan(x) = \frac{\sin(x)}{\cos(x)} = \frac{x-\frac{1}{3!}x^3+\frac{1}{5!}x^5-\frac{1}{7!}x^7+o(x^7)} {1-\frac{1}{2!}x^2+\frac{1}{4!}x^4-\frac{1}{6!}x^6+o(x^6)}\]
+详细过程省略，直接给出答案，设
+\[ \tan(x) = a_1x+a_2x^3+a_3x^5+a_4x^7+a_5x^9+o(x^9)\]
+则
+\begin{align*}
+    a_1 &= 1\\
+    a_2 &= -\frac{1}{3!}+\frac{1}{2!}a_1 = \frac{1}{3} \\
+    a_3 &= \frac{1}{5!}-\frac{1}{4!}a_1+\frac{1}{2!}a_2 = \frac{2}{15} \\
+    a_4 &= -\frac{1}{7!}+\frac{1}{6!}a_1-\frac{1}{4!}a_2+\frac{1}{2!}a_3 = \frac{17}{315} \\
+    a_5 &= \frac{1}{9!}-\frac{1}{8!}a_1+\frac{1}{6!}a_2-\frac{1}{4!}a_3+\frac{1}{2!}a_4 = \frac{62}{2835}
+\end{align*}
+
+\subsection{欧拉-麦克劳林公式：用导数来求定积分}
+
+回顾定积分（黎曼积分）的定义，我们知道函数\(f(x)\)在区间\([x_1,x_2]\)上的积分
+\[I = \int_{x_1}^{x_2} f(x)\trm{d}x\]
+如果存在的话，可以这样求出来：记\(L=x_2-x_1\)为区间长，把区间\([x_1,x_2]\)\textbf{平均}切成\(n\)份，得到\(n\)个长度为\(L/n\)的\textbf{闭}区间：
+\[[x_1,x_1+\frac{1}{n}L],[x_1+\frac{1}{n}L,x_1+\frac{2}{n}L],\cdots,[x_1+\frac{n-1}{n}L,x_2]\]
+然后在每个区间上各取一点\(\xi_n\)，作和式来逼近积分值
+\[S(L,n) := \sum_{k=1}^{n}f(\xi_n)\frac{L}{n} \approx \int_{x_1}^{x_2} f(x)\trm{d}x\]
+当\(n\)趋于无穷时，每个区间的长度趋于0，\(S(L,n)\)的极限即为积分值：
+\[\int_{x_1}^{x_2} f(x)\trm{d}x = \lim_{n\to\infty}S(L,n) = \sum_{k=1}^{\infty}f(\xi_n)\frac{L}{n}\]
+
+如果令积分的上下界为整数\(a,b\)，然后让每个小区间长恰好为1，即\(n=L=b-a\)，再令\(\xi_n\)取在小区间的右端点上，即\(\xi_n=a+n\)
+\[S(L,L)=f(a+1)+f(a+2)+f(a+3)+\cdots+f(b) \approx I\]
+得到一个非常粗糙的积分近似值，那么\(S(L,L)\)和\(I\)之间究竟差了什么？接下来的工作就是找到它.
+
+\textit{
+    在此之前，先证明一个引理.
+}
+
+\begin{lemma}{二重求和交换次序}
+    \[\sum_{i=0}^{N}\sum_{j=0}^{i}a_{ij}=\sum_{j=0}^{N}\sum_{i=j}^{N}a_{ij}\]
+\end{lemma}
+\textit{证明；将求和式写成阶梯形}
+\[\begin{array}{ccccccccccc}
+    S & = & a_{00} &&&&&&&&\\
+    & + & a_{10} & + & a_{11} &&&&&&\\
+    & + & a_{20} & + & a_{21} & + & a_{22} &&&&\\
+    && \vdots && \vdots && \vdots &&&&\\
+    & + & a_{N0} & + & a_{N1} & + & a_{N2} & + & \cdots & + & a_{NN}
+\end{array}\]
+\textit{按行相加即为\(\displaystyle{\sum_{i=0}^{N}\sum_{j=0}^i a_{ij}}\)，按列相加即为\(\displaystyle{\sum_{j=0}^{N}\sum_{i=j}^{N}a_{ij}}\).}
+
+\textit{
+    接下来正式开始，假设函数\(f(x)\)在区间\([0,n]\)内解析，即可以作麦克劳林展开\(\displaystyle{f(x)=\sum_{r=0}^{\infty}a_rx^r}\)，则
+    \[\sum_{k=1}^{n}f(k) = \sum_{k=1}^{n}\sum_{r=0}^{\infty}a_rk^r=\sum_{r=0}^{\infty}a_r\sum_{k=0}^{n}k^r = {\color{red}\sum_{r=0}^{\infty}}\frac{a_r}{r+1}{\color{red}\sum_{m=0}^{r}} C_{r+1}^m B_m^+ n^{r-m+1}\]
+    注意组合恒等式
+    \[{\color{blue}\frac{C_{r+1}^{m}}{r+1}} = \frac{(r+1)!}{m!(r+1-m)!(r+1)}=\frac{r!}{m!(r+1-m)!} = {\color{blue}\frac{A_{r}^{m-1}}{m!}}\]
+    然后借助引理给红色部分的求和号交换次序，得到
+    \[\sum_{k=1}^{n}f(k) = {\color{red} \sum_{m=0}^{\infty}}B_m^+{\color{red}\sum_{r=m}^{\infty}}\frac{a_r}{\color{blue}r+1}{\color{blue}C_{r+1}^{m}}n^{r-m+1} = \sum_{m=0}^{\infty}\frac{B_m^+}{\color{blue}m!}\sum_{r=m}^{\infty}{\color{blue}A_{r}^{m-1}}a_rn^{r-m+1}\]
+    将\(m=0\)的情况单独拿出来
+    \[\sum_{k=0}^{n}f(k) = B_0\sum_{r=0}^{\infty}\frac{a_rn^{r+1}}{r+1} + \sum_{{\color{red} m=1}}^{\infty}\frac{B_{{\color{red}m}}^+}{m!}\sum_{{\color{red}r=m}}^{\infty}A_{r}^{{\color{red}m-1}} = B_0\sum_{r=0}^{\infty}\frac{a_rn^{r+1}}{r+1} + \sum_{{\color{red} m=0}}^{\infty}\frac{B_{{\color{red} m+1}}^+}{(m+1)!}\sum_{{\color{red}r=m+1}}^{\infty}A_r^{{\color{red}m}}a^rn^{r-m}\]
+    注意到两个一般人注意不到的地方：
+    \[\frac{n^{r+1}}{r+1} = \int_0^nx^r\trm{d}x ,\qquad A_r^mn^{r-m} = \left.\frac{\trm{d}^m}{\trm{d}x^m}x^r\right|_{x=n}\]
+    以及一个谁都能注意到的地方：\(B_0=1\)，代入上式，然后交换微积分的次序
+    \begin{align*}
+        \sum_{k=0}^{n}f(k) &= \sum_{r=0}^{\infty}a_r\int_0^nx^r\trm{d}x + \sum_{m=0}^{\infty}\frac{B_{m+1}^+}{(m+1)!}\sum_{r=m+1}^{\infty}a_r\left.\frac{\trm{d}^m}{\trm{d}x^m}x^r\right|_{x=n} \\
+        &= \int_0^n\left[\sum_{r=0}^{\infty}a_rx^r\right]\trm{d}x + \sum_{m=0}^{\infty}\frac{B_{m+1}^+}{(m+1)!}\frac{\trm{d}^m}{\trm{d}x^m}\left[\sum_{r=m+1}^{\infty}a_rx^r\right]_{x=n} \\
+        &= \int_0^nf(x)\trm{d}x + \sum_{m=0}^{\infty}\frac{B_{m+1}^+}{(m+1)!}\frac{\trm{d}^m}{\trm{d}x^m}\left[f(x) - \sum_{r=0}^{m}a_rx^r\right]_{x=n}
+    \end{align*}
+    这里又有一个一般人注意不到的地方，多项式求了\(m\)次导数之后，常数项为原来的\(x^m\)项的系数乘上\(m!\)，这时再代入\(x=0\)，就只剩下了常数项，体现在原式中，即
+    \[\frac{\trm{d}^m}{\trm{d}x^m}\sum_{r=0}^{m}a_rx^r = \frac{\trm{d}^m}{\trm{d}x^m}a_mx^m = m!a_m = \left.\frac{\trm{d}^m}{\trm{d}x^m}f(x)\right|_{x=0}\]
+    因此
+    \[\sum_{k=0}^{n}f(k) = \int_0^nf(x)\trm{d}x + \sum_{m=0}^{\infty}\frac{B_{m+1}^+}{(m+1)!}\left(\left.\frac{\trm{d}^m}{\trm{d}x^m}f(x)\right|_{x=n} - \left.\frac{\trm{d}^m}{\trm{d}x^m}f(x)\right|_{x=0}\right)\]
+    整理一下，将\(m=0\)的特殊情况拿出来，即
+    \[\sum_{k=0}^{n}f(k) = \int_0^nf(x)\trm{d}x + \frac{f(n)-f(0)}{2} + \sum_{m=0}^{\infty}\frac{B_{2m}^+}{(2m)!}\left[f^{(2m-1)}(n) - f^{(2m-1)}(0)\right]\]
+    这就解答了最初的问题，\(S(L,L)\)和\(I\)之间相差的东西就是
+    \[S(L,L) - I = \frac{f(n)-f(0)}{2} + \sum_{m=0}^{\infty}\frac{B_{2m}^+}{(2m)!}\left[f^{(2m-1)}(n) - f^{(2m-1)}(0)\right]\]
+}
+如果将\([0,n]\)推广至一般的区间
+\begin{theorem}{欧拉-麦克劳林公式(Euler-Maclaurin formula)}
+    对于任意在\(R_+\)内解析的函数\(f(x)\)，有
+    \[\sum_{k=0}^{n}f(k) = \int_0^nf(x)\trm{d}x + \frac{f(n)+f(0)}{2} + \sum_{m=1}^{\infty}\frac{B_{2m}^+}{(2m)!}\left[f^{(2m-1)}(n) - f^{(2m-1)}(0)\right]\]
+\end{theorem}
+
+\subsection{拉马努金和}
+
+我们知道无穷级数的定义
+\[ \sum_{n=1}^{\infty}a_n := \lim_{N \to \infty}\sum_{n=1}^{N}a_n = \lim_{n \to \infty}S_n\]
+这是一种非常自然的定义，称为\uline{柯西求和}(Cauchy summation)，若这个极限存在，则称该级数在柯西求和意义下收敛。有些级数在柯西求和意义下发散，但把级数的定义改一改，却可以得到收敛的结果。除了柯西求和外，级数求和还有以下几种定义：
+\begin{itemize}
+    \item[(1)] 切萨罗求和(Cesaro summation)：
+    \[ \sum_{n=0}^{\infty}a_n := \lim_{n \to \infty} \frac{1}{n}\sum_{k=1}^{n}S_k\]
+    \textit{
+        可以看出切萨罗求和就是把原数列前\(n\)项取算术平均之后当做\(b_n\)，然后用新的数列\(\{b_n\}\)代替\(\{a_n\}\)进行柯西求和. 所以该求和定义有时称为\uline{切萨罗平均}(Cesaro mean)，用切萨罗求和代替柯西求和可以防止傅里叶级数中的吉布斯现象.
+    }
+    \item[(2)] 广义切萨罗求和/(C,m)求和:
+    \[ (C,m) - \sum_{n=0}^{\infty}a_n = \lim_{n \to \infty}\sum_{k=0}^{n}\frac{C_n^k}{C_{n+m}^k}a_k\]
+    \textit{
+        可见\((C,0)\)求和就是柯西求和，\((C,1)\)求和就是切萨罗求和. 只要\((C,m)\)求和收敛，则对于任意\(n>m\)，\((C,n)\)求和也收敛. 因此只要广义切萨罗求和收敛，则切萨罗和收敛，接着柯西求和也会收敛.
+    }
+    \item[(3)] 侯德尔求和(Hölder summation)：令
+    \[S_n^1 = \frac{1}{n}\sum_{k=0}^{n}a_k, \qquad S_n^{m+1} = \frac{1}{n}\sum_{k=0}^{n}S_{k}^{m}\] 
+    则级数的侯德尔求和为
+    \[\sum_{n=0}^{\infty}a_n = \lim_{\substack{n \to \infty \\ m \to \infty}}S_{n}^{m}\]
+    \textit{
+        侯德尔求和则是切萨罗求和的另一种推广，\(b_n\)为\(\{a_n\}\)的前\(n\)项和的算术平均，然后用\(\{b_n\}\)代替\(\{a_n\}\)求和. 如果还不收敛，则再令\(c_n\)为\(\{b_n\}\)的前\(n\)项和的算术平均，让\(\{c_n\}\)代替\(\{b_n\}\)求和. 将上述过程重复至收敛为止，所得的结果即为\(\{a_n\}\)的侯德尔求和. 只要级数的侯德尔求和收敛，切萨罗求和就会收敛，接着柯西求和也会收敛.
+    }
+    \item[(4)] 阿贝尔和(Abel summation)
+    \[ \sum_{n=0}^{\infty}a_n := \lim_{x \to 1^-}\lim_{n \to \infty}\sum_{k=0}^{n}a_nx^n\]
+    \textit{
+        阿贝尔求和比\((C,m)\)求和与侯德尔求和更强，级数只要在\((C,m)\)求或与侯德尔求和意义下收敛，就会在阿贝尔求和下收敛，但反之不成立，详见例子.
+    }
+\end{itemize}
+
+这几种不同意义的求和可以处理一些发散级数：
+\begin{itemize}
+    \item [\(\bullet\)] 格兰迪级数(Grandi series)：\(\{a_n\} = \{1,-1,1,-1,\cdots\} = \{(-1)^n\}\)
+    \textit{在切萨罗求和意义下，}
+    \begin{align*}
+        \{S_n\} &= \{1,0,1,0,\cdots\} = \frac{(-1)^n}{2} \\
+        \{\frac{1}{n}\sum_{k=1}^nS_n\} &= \{1, \frac{1}{2}, \frac{2}{3}, \frac{2}{4}, \frac{3}{5}, \frac{3}{6}\} = \{\frac{1}{n}\lceil \frac{n}{2} \rceil\} \leq \{\frac{1}{n}\frac{n+1}{2}\} = \frac{1}{2}\{\frac{n+1}{n}\}
+    \end{align*}
+    \textit{因此该数列的切萨罗求和为}
+    \[(C,1)-\sum_{n=1}^{\infty}a_n = \lim_{n \to \infty} \frac{1}{n}\sum_{k=1}^nS_n = \frac{1}{2}\]
+    \textit{而阿贝尔求和为}
+    \[\sum_{n=1}^{\infty}a_n = \lim_{x \to 1^-}\sum_{n=0}^{\infty}(-1)^nx^n = \lim_{x \to 1^-} \frac{1}{1+x} = \frac{1}{2}\]
+    \item [\(\bullet\)] \(\displaystyle{\{a_n\} = \{1,0,1,0,\cdots\} = \{\frac{1+(-1)^n}{2}\}}\)
+    \item [\(\bullet\)] 令\(\displaystyle{\exp\frac{1}{1-x} = \sum_{n=0}^{\infty} a_nx^n}\)，则\(\{a_n\}\)在阿贝尔求和意义下收敛，而在切萨罗求和意义下不收敛.
+\end{itemize}
+
+现在可以根据欧拉-麦克劳林公式引入拉马努金和.
+\newline
+\textit{
+    令欧拉-麦克劳林公式左端的求和范围改为\(1\)到\(n\)，与此同时右侧的积分上下界也变成了\(1\)到\(n\)，将其分为\(1\)到\(0\)和\(0\)到\(n\)两段
+}
+\[\sum_{k={\color{red}1}}^{n}f(k) = \int_1^0f(x)\trm{d}x + \int_0^nf(x)\trm{d}x + \frac{f(n)+f({\color{red}1})}{2} + \sum_{m=1}^{\infty}\frac{B_{2m}^+}{(2m)!}\left[f^{(2m-1)}(n) - f^{(2m-1)}({\color{red}1})\right]\]
+\textit{
+    将所有含有\(n\)的部分移到等式左边，得到
+}
+\[\sum_{k=1}^{n}f(k) - \int_{0}^nf(x)\trm{d}x  - \frac{f(n)}{2}  - \sum_{m=1}^{\infty}\frac{B_{2m}^+}{(2m)!}f^{(2m-1)}(n) = {\color{blue}\int_1^0f(x)\trm{d}x + \frac{f(1)}{2} - \sum_{m=1}^{\infty}\frac{B_{2m}^+}{(2m)!}f^{(2m-1)}(1)}\]
+\textit{如果当\(n\to\infty\)时左端极限不存在，等式右侧即为拉马努金求和.}
+\begin{definition}{拉马努金求和}
+    对于在区间\([0,+\infty)\)上可积的函数，定义
+    \[\sum_{n=1}^{[\mathcal{R}]}f(n) = \int_1^0f(x)\trm{d}x + \frac{f(1)}{2} - \sum_{m=1}^{\infty}\frac{B_{2m}^+}{(2m)!}f^{(2m-1)}(1)\]
+    为级数\(\displaystyle{\sum_{n=1}^{\infty}f(n)}\)的\uline{拉马努金求和}(Ramanujan summation).
+\end{definition}
+
+不过既然是对发散级数的求和，结果就不那么符合直觉了，最著名的结果莫过于
+\begin{proposition}{全体自然数的和为\(-1/12\)}
+    \[\sum_{n=1}^{[\mathcal{R}]}n=-\frac{1}{12}\]
+\end{proposition}
+\textit{证明：令\(f(x)=x\)，}
+\[\sum_{n=1}^{[\mathcal{R}]}n = \sum_{n=1}^{[\mathcal{R}]}f(n) = \int_{1}^{0}f(x)\trm{d}x+\frac{f(1)}{2}-\frac{B_2}{2} = -\frac{1}{2}+\frac{1}{2}-\frac{1}{12} = -\frac{1}{12}\]
+
+\textit{
+    拉马努金求和的思想是把发散级数\(\displaystyle{\sum_{n=1}^{\infty}a_n}\)的部分和\(S_n\)分成发散和收敛两部分，发散的部分作为\(S_n\)的渐进表达式（即之前的推导中被移到等式左边的与\(n\)有关的部分），收敛的部分就是所谓的拉马努金和，与\(n\)无关，例如我们知道调和级数
+    \[\sum_{n=0}^{n}\frac{1}{k} \approx \ln(n)+\gamma\]
+    是发散的级数，但是其部分和表达式可以近似写为\(\ln(n)\)（与\(n\)有关）与欧拉-马歇罗尼常数\(\gamma\)（与\(n\)无关）之和，所以调和级数的拉马努金和为\(\gamma\).
+}
+
+\end{document}

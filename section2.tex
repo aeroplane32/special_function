@@ -1,0 +1,264 @@
+
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\section{基本初等函数}
+
+函数的初等与否是人为划分的概念，最初由刘维尔引入. \uline{基本初等函数}(basic elementary function)包括常数函数、幂函数、指数函数、三角函数、双曲函数以及它们的反函数，而基本初等函数经过有限次四则运算和复合得到的函数称为\uline{初等函数}(elementary function). 分出初等函数是为了固定这些函数的记号以便于交流，同时初等函数也是生活中最常见的函数. 
+
+\subsection{指数函数}
+
+在复数域中，最重要最基础的函数是指数函数，特指以下这个函数
+\begin{definition}{指数函数}
+    \[\exp(z) := \sum_{n=0}^{\infty}\frac{z^n}{n!}\]
+\end{definition}
+你一定知道这个函数在实数域中就是\(f(x)=e^x\)，但是不要心急，在复数域中姑且写成\(\exp\)的形式，以强调它有一些性质有别于实数域的情况，接下来看看这个函数是怎样在复数域中保持大部分实数幂运算的良好性质的：
+\begin{itemize}
+    \item [(1)] 该函数在整个复平面上都有定义. 
+    \newline
+    \textit{
+        证明：利用系数模比值法，由于\(\displaystyle{\lim \limits_{\substack{n \to \infty}} \frac{n!}{(n+1)!} = \lim \limits_{\substack{n \to \infty}} \frac{1}{n+1} = 0}\)，所以收敛半径为无穷大，即该函数项幂级数在整个复平面上一致收敛.
+    }
+    \item [(2)] \(\exp(z)\)满足“外相乘内相加”的特性，即\(\exp(a)\exp(b)=\exp(a+b)\).
+    \newline
+    \textit{
+        证明：利用柯西乘积
+    }
+    \begin{align*}
+        \exp(a)\exp(b) &= \left(\sum_{n=0}\frac{a^n}{n!}\right)\left(\sum_{n=0}^{\infty}\frac{b^n}{n!}\right) = \sum_{n=0}^{\infty}\sum_{k=0}^{n}\frac{a^k}{k!}\frac{b^{n-k}}{(n-k)!} \\
+        &= \sum_{n=0}^{\infty}\frac{1}{n!}\sum_{k=0}^{n}C_n^ka^kb^{n-k} = \sum_{n=0}^{\infty}\frac{(a+b)^n}{n!} \\
+        &= \exp(a+b)
+    \end{align*}
+
+    \item [(3)] 不存在\(z\)，使得\(\exp(z)=0\).
+    \newline
+    \textit{
+        证明：对于任意\(z\)，均有\(\exp(z)\exp(-z)=\exp(0)=1\)，若\(\exp(z)\)能等于\(0\)，则两者乘积为\(0\)，矛盾.
+    }
+    \item [(4)] \(\exp(z)\)的导数是自己，即\(\exp'(z)=\exp(z)\).
+    \newline
+    \textit{
+        证明：直接套定义，并且利用外乘内加的性质
+        \[\exp'(z) := \lim_{h \to 0}\frac{\exp(z+h)-\exp(z)}{h} = \exp(z)\lim_{h \to 0}\frac{\exp(h)-1}{h} = \exp(z)\]
+    }
+    %\item [(4)] 
+\end{itemize}
+
+然而\(\exp(z)\)也具有\(e^x\)不具有的新奇的性质
+\begin{itemize}
+    \item [(1)] \begin{theorem}{欧拉公式(Euler's formula)}
+        对于任意实数\(x\)，均有\(\exp(ix) = \sin(x)+i\cos(x)\)
+    \end{theorem}
+    \textit{
+        证明：直接带入定义就好了
+    }
+    \begin{align*}
+        \exp(ix) = \sum_{n=0}^{\infty} \frac{(ix)^n}{n!} &= 1+\frac{ix}{1!}-\frac{x^2}{2!}-\frac{ix^3}{3!}+\frac{x^4}{4!}+\frac{ix^5}{5!}-\frac{x^6}{6!}-\frac{ix^7}{7!}+\cdots \\
+        &= \left(1-\frac{x^2}{2!}+\frac{x^4}{4!}-\frac{x^6}{6!}+\cdots\right)+i\left(\frac{x}{1!}-\frac{x^3}{3!}+\frac{x^5}{5!}-\frac{x^7}{7!}+\cdots\right) \\
+        &= \cos(x)+i\sin(x)
+    \end{align*}
+    \item [(2)] \(\exp(z)\)具有周期\(2\pi i\)，即\(\exp(z+2\pi i) = \exp(z)\).
+    \newline
+    \textit{
+        证明：\(\exp(z+2\pi i) = \exp(z)\exp(2\pi i) = \exp(z)(\cos(2\pi)+i\sin(2\pi)) = \exp(z)\)
+    }
+    \item [(3)] 映射\(f(x) = \exp(ix)\)将实轴上的点映射到复平面上的单位圆内，并且复平面单位圆上的每一点都会被映射到.
+    \newline
+    \textit{
+        这是一条非常重要的性质，它把复数与复平面上的旋转向量结合到了一起.
+        \newline
+        证明：首先来证明\(\exp(ix)\)的值必然在复平面的单位圆上. 证明模长为\(1\)即可.
+        \[|\exp(ix)| = \exp(ix)\overline{\exp(ix)} = [\cos(x)+i\sin(x)][\cos(x)-i\sin(x)] = \left[\sin^2(x)+\cos^2(x)\right] = 1\]
+        接下来证明复平面单位圆上的每一点都会被映射到. 换种说法，随意选定任意一个模长为\(1\)的复数\(z\)，都存在\(x\)使得\(\exp(ix)=z\). 这好办，可设\(z=a+ib\)，并首先讨论\(a \geq 0, b \geq 0\)的情况. 由于\(a\leq 1\)，所以存在\(0\leq x \leq \pi/2\)使得\(\cos(x)=a\)，同时根据模的计算有\(b=\sqrt{1-a^2}=\sqrt{1-\cos^2(x)}=\sin(x)\)，这种情况是成立的. 如果\(a<0, b \geq 0\)呢？那么\(-iz=-a+ib\)就回到了前一种情况，并且易得此时\(\exp(i(x+\pi/2))=z\). 如果\(b<0\)呢？那么\(-z=a-ib\)就回到了前一种情况，并且此时\(\exp(i(x+\pi))=z\).
+    }
+    \item [(4)] (复数的指数形式)对于任意实数\(a,b\)，其中\(a\neq 0\)，都有\(\displaystyle{a+ib = \sqrt{a^2+b^2}\exp\left(i\arctan\frac{b}{a}\right)}\)
+    \newline
+    \textit{
+        证明：代入欧拉公式即可，需要用到如下两个三角恒等式：
+        \[\sin(\arctan(x))=\frac{x}{\sqrt{1+x^2}},\qquad \cos(\arctan(x))=\frac{1}{\sqrt{1+x^2}}\]
+    }
+    \begin{align*}
+        \sqrt{a^2+b^2}\exp\left(i\arctan\frac{b}{a}\right) &= 
+        \sqrt{a^2+b^2}\left[\cos\left(\arctan\frac{b}{a}\right)+i\sin\left(\arctan\frac{b}{a}\right)\right] \\
+        &=\sqrt{a^2+b^2}\left[\frac{a}{\sqrt{a^2+b^2}}+\frac{ib}{\sqrt{a^2+b^2}}\right] = a+ib
+    \end{align*}
+    \textit{
+        由于\(|\exp(ix)|\equiv 1\)，所以只要限定\(a^2+b^2\)为常数，那么复数\(a+ib\)取值的集合就是一个圆心在原点、半径为\(\rho=|a+ib|\)的圆，此时可以将复平面转化为极坐标系，复数（相当于向量）就可以由极径和极角来确定，因此可以做出以下定义。
+    }
+    \begin{definition}{复数的指数形式}
+        令\(z=a+ib\)，则\(z=\rho\exp(i{\rm Arg}(z))\)，其中\(\rho=\sqrt{a^2+b^2}\)是复数的\uline{模}(modulo)；\({\rm Arg}(z)\)称为复数的\uline{辐角}(argument)，其定义为 
+        \[{\rm Arg}(z) = \left\{
+        \begin{aligned}  
+            & \frac{\pi}{2} + 2k\pi, & a =0, b > 0 \\ 
+            & -\frac{\pi}{2} + 2k\pi, & a = 0, b < 0  \\ 
+            & \arctan\frac{b}{a}+2k\pi, & a \neq 0
+        \end{aligned}
+        \right. \qquad \mbox{其中} k \in \mathbb{Z} 
+        \]
+        \({\rm Arg}(z)\)在\([-\pi,\pi)\)上的值称为辐角主值，写作\({\rm arg}(z)\).
+    \end{definition}
+    尽管\({\rm Arg}(z)\)是分段定义的，但它其实是连续函数.
+    \item[(5)]
+    \begin{theorem}{棣莫弗公式(de Moivre's formula)}
+        设
+        \[z_1=\rho_1\exp(i{\rm Arg}(z_1)), \qquad z_2=\rho_2\exp(i{\rm Arg}(z_2))\]
+        则
+        \[z_1z_2=\rho_1\rho_2\exp[i({\rm Arg}(z_1)+{\rm Arg}(z_2))]\]
+    \end{theorem}
+    此即为：复数相乘模相乘角相加
+\end{itemize}
+
+以上给出了\(\exp(z)\)的各种性质，并发现它是实数域上\(f(x)=e^x\)的良好拓展，所以再也没有什么理由可以阻止我们把\(\exp(z)\)写成\(e^z\)了.
+
+\vspace{1cm}
+
+在某些限定的条件下给出某样东西的定义之后，数学家们就是喜欢打破这些条件，同时让定义强行成立看看会发生什么. 定义出了复数的指数函数\(\exp(z)\)之后，数学家们便尝试把\textbf{矩阵}塞入这个定义中：
+\begin{definition}{矩阵的指数函数}
+    \[\exp({\bm A}) = \sum_{n=0}^{\infty}\frac{{\bm A}^n}{n!}\]
+\end{definition}
+
+\subsection{对数函数}
+
+对数函数是指数函数的反函数，考虑到\(\exp(z)\)是个周期函数，而不是单射，所以它的反函数必然是个多值函数. 设\(\exp(z+2k\pi i)=w\)，则有\(\exp^{-1}(w)=z+2k\pi i\). 但是我们可以发现，辐角函数\(\trm{Arg}(z)\)恰好具有\(\trm{Arg}(z+2k\pi i)=\trm{Arg}(z)\)的性质，设\(y=|y|e^{i{\rm Arg}(y)}\)，则\({\rm Ln}(y)=\ln|y|+i{\rm Arg}(y)\)，这就是对数函数.
+\begin{definition}{定义(复变对数函数)}
+    \[{\rm Ln}(z):=\ln|z|+i{\rm Arg}(z)\]
+    \[\ln(z):=\ln|z|+i{\rm arg(z)}\]
+    其中等式右端的\(ln(x)\)定义在实数域上.
+\end{definition}
+考虑到指数函数的周期性，复数域上的\({\rm Ln}\)是多值函数，即\({\rm Ln}(z+2k\pi i)={\rm Ln}(z)\)，而\(\ln\)是单值函数，取前者的主值.
+
+定义好了指数和对数函数，复数的幂也可以定义了. 
+\begin{definition}{定义(复数的幂)}
+    对于任意\(z,w \in \mathbb{C}\)，
+    \[z^w := e^{w{\rm Ln}(z)}\]
+\end{definition}
+
+复数的幂也保留了实数幂的绝大多数性质，但考虑到它是多值函数，所以会出现一些在实数域不可能出现的现象. 比如，在实数域中，\(1\)的任意次方都是\(1\)，但是在复数域中，\(1^z = e^{z{\rm Ln}(1)} = e^{i2k\pi z}, k \in \mathbb{Z}\)，只要\(k \neq  0\)，即可得到非\(1\)的数，再调整\(z\)的值，可以得到\(0\)以外的任意复数.
+
+当把幂结构从实数推广到复数之后，“根号”的定义需要特别留意，毕竟在实数域内，根号也不等价于\(1/2\)次方，而是一个特别定义的符号. 所以现在就在给复数域的根号下定义，并使它兼容实数域内根号的定义. 为避免不必要的麻烦，这里仅为平方根的根号下定义，任意次方根的根号暂不推广至复数域.
+
+\begin{definition}{复根号}
+    暂定符号“\(\sqrt[\mathbb{R}]{\quad}\)”表示实数域内的根号（已有良好定义），“\(\sqrt[\mathbb{C}]{\quad}\)”表示复数域内的根号，对于任意复数\(z\)，定义
+    \[\sqrt[\mathbb{C}]{z} := \sqrt[\mathbb{R}]{|z|}\exp\left(\frac{i}{2}\mathrm{arg}(z)\right)\]
+\end{definition}
+可见复根号是单值函数，当不引起混淆时，使用“\(\sqrt{\quad}\)”来代表“\(\sqrt[\mathbb{C}]{\quad}\)”.
+
+\subsection{三角函数和双曲函数}
+
+同指数函数，复数域内的正弦函数和余弦函数也利用无穷级数来定义.
+
+\begin{definition}{正弦函数和余弦函数}
+    \[\sin(z) := \sum_{n=0}^{\infty}\frac{z^{2n+1}}{(2n+1)!} \qquad \cos(z) := \sum_{n=0}^{\infty}\frac{z^{2n}}{(2n)!} \]
+\end{definition}
+
+之所以让\(\sin(z),\cos(z)\)如此定义，是为了使得欧拉公式在复数域内依然成立.
+
+\begin{theorem}{欧拉公式(Euler's formula)}
+    对于任意复数\(z\)，都有
+    \[\exp(iz)=\cos(z)+i\sin(z)\]
+    将其显化，得到
+    \[\sin(z) = \frac{e^{iz}-e^{-iz}}{2i}, \qquad \cos(z) = \frac{e^{iz}+e^{-iz}}{2}\]
+\end{theorem}
+证明同实数域. 实际上，也可以通过复数域的欧拉公式隐式地定义正弦函数和余弦函数，换句话说，欧拉公式和以上的级数表示是等价的. 但之所以用级数来定义，是为了强调它的解析性（能展成幂级数即为解析）. 也许你会觉得欧拉公式比级数更加“自然”，那接下来就用这种“自然”的方法来定义双曲函数.
+
+\begin{definition}{双曲正弦函数和双曲余弦函数}
+    \[\sinh(z) := \frac{e^z-e^{-z}}{2}, \qquad \cosh(z) := \frac{e^z+e^{-z}}{2}\]
+\end{definition}
+
+当定义好了正弦和余弦函数之后，其他的三角函数和双曲函数也可以将定义域延伸至复数域了，而且它们在极点之外处处解析：
+\begin{definition}{其他三角函数和双曲函数}
+    \[
+    \begin{aligned}
+        \tan(z) &:= \frac{\sin(z)}{\cos(z)} &  \tanh(z) &:= \frac{\sinh(z)}{\cosh(z)}\\
+        \cot(z) &:= \frac{\cos(z)}{\sin(z)} & \coth(z) &:= \frac{\cosh(z)}{\sinh(z)} \\
+        \sec(z) &:= \frac{1}{\cos(z)} & {\rm sech}(z) &:= \frac{1}{\cosh(z)} \\
+        \csc(z) &:= \frac{1}{\sin(z)} & {\rm csch}(z) &:= \frac{1}{\sinh(z)}
+    \end{aligned}
+    \]  
+\end{definition}
+
+虽然一下子定义了12个函数，但它们都是只是指数函数\(\exp(z)\)的某种简单的四则运算结果而已，因此它们和\(\exp(z)\)也许会共享某些性质，最重要的一点是它们都保持了实数域内的很多良好性质，以下列举一二.
+
+\begin{itemize}
+    \item [(1)] (两角平方关系)对于任意\(z\)，均有
+    \begin{align*}
+        \sin^2(z) + \cos^2(z) &= 1 \\
+        \sinh^2(z) - \cosh^2(z) &= 1
+    \end{align*}
+    \textit{
+        证明：利用欧拉公式，再用平方差公式即可
+    }
+    \begin{align*}
+        \sin^2(z)+\cos^2(z) &= \left(\frac{e^{iz}-e^{-iz}}{2i}\right)^2+\left(\frac{e^{iz}+e^{-iz}}{2}\right)^2 = \frac{1}{4}\left[(e^{iz}+e^{-iz})^2-(e^{iz}-e^{-iz})^2\right] \\
+        &= \frac{1}{4}(e^{iz}+e^{-iz}+e^{iz}-e^{-iz})(e^{iz}+e^{-iz}-e^{iz}+e^{-iz}) \\
+        &= e^{iz-iz}=1
+    \end{align*}
+    \item [(2)] (余弦两角和公式)对于任意\(z\)，均有
+    \begin{align*}
+        \cos(z_1+z_2) &= \cos(z_1)\cos(z_2)-\sin(z_1)\sin(z_2) \\
+        \cosh(z_1+z_2) &= \cosh(z_1)\cosh(z_2)+\sinh(z_1)\sinh(z_2)
+    \end{align*}
+    \textit{
+        证明：还是套用欧拉公式，但从右边出发推出左边
+    }
+    \begin{align*}
+        \textrm{RHS} &= \frac{e^{iz_1}+e^{-iz_1}}{2}\frac{e^{iz_2}+e^{-iz_2}}{2} - \frac{e^{iz_1}-e^{-iz_1}}{2i}\frac{e^{iz_2}-e^{-iz_2}}{2i} \\
+        &= \frac{1}{4}\left[e^{i(z_1+z_2)}+e^{i(z_1-z_2)}+e^{i(-z_1+z_2)}+e^{i(-z_1-z_2)}+e^{i(z_1+z_2)}-e^{i(z_1-z_2)}-e^{i(-z_1+z_2)}+e^{i(-z_1-z_2)}\right] \\
+        &= \frac{e^{i(z_1+z_2)}+e^{-i(z_1+z_2)}}{2} = \cos(z_1+z_2) = \trm{LHS}
+    \end{align*}
+    \textit{
+        众所周知，我们常接触的三角恒等变换公式，如诱导公式、倍角公式、升降幂公式、和差化积以及积化和差等，都是由\(\sin^2(x)+\cos^2(x)=1\)和余弦函数的两角和差公式推出来的，因此绝大多数三角恒等变换公式在复数域内也成立. 同理，双曲恒等变换公式在复数域内仍然适用.
+    }
+\end{itemize}
+但它们也失去了另一些良好的性质：
+\begin{itemize}
+    \item [(1)] \(\sin(z),\cos(z)\)是无界的，它们的值域为整个复数域.
+    \newline
+    \textit{
+        证明：以\(\sin\)为例，任取复数\(w\)，假设存在\(z\)使得\(\sin(z)=w\)，现在来解出这个\(z\). 代入欧拉公式
+        \[w=\sin(z)=\frac{e^{iz}-e^{-iz}}{2i}\]
+        令\(t=e^{iz}\)，则
+        \[2iw=t-\frac{1}{t}\]
+        由于\(t\neq 0\)，因此可随意乘除. 整理一下即得到
+        \[t^2-2iwt+1=0\]
+        这是一个一元二次方程，不必再考虑根号带来的无意义问题. 解开即得到
+        \[t=iw \pm \sqrt{1-w^2}, \qquad z=-i{\rm Ln}\left(iw \pm \sqrt{1-w^2}\right)\]
+    }
+\end{itemize}
+
+以上的例子告诉我们，只要在给定\(w\)的情况下令\(w=\sin(z)\)，就可以显式地解出\(z\)关于\(w\)的表达式. 尽管\(z\)有无数种取值，但这足以定义正弦函数的反函数了，即令
+\[{\rm Arcsin}(z):=-i{\rm Ln}\left(iw \pm \sqrt{1-w^2}\right)\]
+注意这是首字母大写的反正弦函数，就像首字母大写的对数函数一样是个多值函数，我们还得给它找个主值，以确定\(\arcsin(z)\)的表达式. 首先\({\rm Ln}\)需要改写成\(\ln\)是肯定的了，但正负号应如何选取呢？我们希望复数域中的\(\arcsin\)函数能兼容实数域中的性质，导数就是一个切入点. 在实数域中，有\(\displaystyle{\frac{\rm d}{{\rm d}x}\arcsin(x) = \frac{1}{\sqrt{1-x^2}}}\)，我们也希望在复数域也是如此.
+\begin{align*}
+    \frac{\rm d}{{\rm d}z}{\rm Arcsin}(z) &= \frac{1 \pm iz/\sqrt{1-z^2}}{iz \pm \sqrt{1-z^2}} = \frac{\left(1\pm iz/\sqrt{1-z^2}\right)\left(\sqrt{1-z^2}\mp iz\right)}{\left(\sqrt{1-z^2}\pm iz\right)\left(\sqrt{1-z^2}\mp iz\right)} \\
+    &= \frac{1-z^2 \mp z^2}{\sqrt{1-z^2}}
+\end{align*}
+答案很明显，应该取加号，这样就得到了复数域中\(\displaystyle{\arcsin(z)=-i\ln\left(iz+\sqrt{1-z^2}\right)}\).还没完，还可以进一步化简，代入对数函数\(\ln(z)\)的表达式中，得到
+\begin{align*}
+    \arcsin(z) & =-i\ln\left(iz+\sqrt{1-z^2}\right) = -i\left(\ln\sqrt{z^2+1-z^2}+i\arg\left(iz+\sqrt{1-z^2}\right)\right) \\
+    &= \arg\left(iz+\sqrt{1-z^2}\right)
+\end{align*}
+由于\(\trm{arg}\)函数已经是关于复数的基本函数了，不必再解构成更基本的实反正切函数，所以复反正弦函数定义的探索到此为止，以下给出6个反三角函数在复数域内的定义.
+\begin{definition}{反三角函数}
+    \[
+        \begin{aligned}
+            \arcsin(z) &:= -i\ln\left(\sqrt{1-z^2}+iz\right) & \arcsin(z) &:= -i\ln\left(i\sqrt{1-z^2}+z\right) \\
+            \arctan(z) &:= \frac{1}{2i}\ln\left(\frac{i-z}{i+z}\right) & {\rm arccot}(z) &:= \frac{1}{2i}\ln\left(\frac{z+i}{z-i}\right) \\
+            {\rm arcsec}(z) &:= \arccos\left(\frac{1}{z}\right) & {\rm arccsc}(z) &:= \arcsin\left(\frac{1}{z}\right)
+        \end{aligned}
+    \]
+\end{definition}
+
+与反三角函数相似，6个反双曲函数\footnote{双曲函数及其反函数在不同的地方记法可能不同，例如有的地方把双曲正弦函数记作\({\rm sh}(z)\)，反双曲正弦函数记作\({\rm arcsinh}(z)\)或\({\rm arsh}(z)\)，这里按照国际标准ISO 80000-2中的记号，上文反三角函数的前缀"arc"表示“弧”，反双曲函数的前缀"ar"表示“面积”(area).}的定义也可用相同方法求出，根据定义可以看出，它们的定义域比仅在实数域上讨论时要广阔得多.
+\begin{definition}{反双曲函数}
+    \[
+        \begin{aligned}
+            {\rm arsinh}(z) &:= \ln\left(\sqrt{z^2+1}+z\right) & {\rm arcosh}(z) &:= \ln\left(\sqrt{z^2-1}+z\right) \\
+            {\rm artanh}(z) &:= \frac{1}{2}\ln\left(\frac{1+z}{1-z}\right) & {\rm arcoth}(z) &:= \frac{1}{2}\ln\left(\frac{z+1}{z-1}\right) \\
+            {\rm arsech}(z) &:= {\rm arcosh}\left(\frac{1}{z}\right) & {\rm arcsch}(z) &:= {\rm arsinh}\left(\frac{1}{z}\right)
+        \end{aligned}
+    \]
+\end{definition}
+
+\end{document}
