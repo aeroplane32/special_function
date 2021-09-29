@@ -289,35 +289,39 @@
 来套一层娃，之前在定义卷绕数时，自变量是时间\(t\)，随着\(t\)的变化笔尖在纸上画出一个闭曲线\(C\)；现在假设自变量是简单闭曲线\(C\)，围绕的点是原点，\(C\)上的点经过半纯函数\(f(z)\)映射为另一个简单闭曲线，那么\(f(z)\)对于\(C\)的卷绕数为
 \[\trm{Ind} = \frac{1}{2\pi}\Delta\trm{arg} [f(z)] = \frac{1}{2\pi i}\oint_{C}\frac{\trm{d}f(z)}{f(z)} = \frac{1}{2\pi i}\oint_{C}\frac{f'(z)}{f(z)}\trm{d}z\]
 
-设\(f(z)\)在\(C\)上和\(C\)内解析
-\subsubsection{对数留数定理}
+设\(f(z)\)在简单闭区域\(D\)内为半纯函数，零点为\(z_1,z_2,\cdots,z_m\)，重数分别为\(m_i\)；极点为\(p_1, p_2, \cdots, p_n\)，重数分别为\(n_i\)，且都不是本性奇点. 则存在\(D\)内的全纯函数，使得
+\[f(z) = g(z)\prod_{i=1}^{m}(z-z_i)^{m_i}\prod_{i=1}^{n}(z-p_i)^{-n_i}\]
+所以
+\[\frac{f'(z)}{f(z)}\trm{d}z = \trm{d}\ln f(z) = \frac{g'(z)}{g(z)}\trm{d}z + \sum_{i=1}^{m}\frac{m_i}{z-z_i}\trm{d}z - \sum_{i=1}^{n} \frac{n_i}{z-p_i} \trm{d}z\]
+注意等号右边这三项，根据柯西-古萨定理，\(g'(z)/g(z)\)全纯所以积分为\(0\)；而根据柯西积分公式，\(m_i/(z-z_i)\)积分为\(m_i\)，因此
+\[\trm{Ind} = \frac{1}{2\pi}\Delta\trm{arg} [f(z)] = \frac{1}{2\pi i}\oint_{C}\frac{\trm{d}f(z)}{f(z)} = \sum_{i=1}^{m}m_i - \sum_{i=1}^{n}n_i\]
+这就推出了\uline{辐角原理}(argument principle).
 
-首先来证明函数的对数留数定理，这个定理可以让我们了解某个闭区域内函数的零极点数量.
+\begin{theorem}{辐角原理}
+    若\(f(z)\)在简单闭区域\(D\)内除了有限个极点以外解析，并有至多可数无穷多个零点，则该函数在\(D\)的边界曲线\(\partial D\)上的卷绕数等于零点个数减去极点个数（零点和极点按照重数和阶数来算），即
+    \[\trm{Ind} = \frac{1}{2\pi i}\oint_{\partial D}\trm{d}\ln f(z) = N-P\]
+    其中\(N\)表示\(D\)内零点的个数，\(P\)表示\(D\)内极点的个数，注意这里的零点和极点要按照阶数来算，例如\(n\)级零点要看做\(n\)个零点.
+\end{theorem}
 
-\textit{
-给定一个函数\(\psi(z)\)，然后在复平面上画一个圆周\(C\)，在\(C\)内它只有\(m\)个极点\(p_1, p_2, \cdots, p_m\)，而零点\(z_1, z_2, z_3, \cdots\)可以任意多. 接着考虑函数\(\ln\psi(z)\)，此时\(\psi(z)\)的零点和极点都变成了\(\ln\psi(z)\)的极点. 然后再取一个在\(C\)内和\(C\)上都解析的函数\(\varphi(z)\)，那么根据复连通域的柯西积分公式，可以在\(\ln\psi(z)\)的每个极点周围作小圆周，使得每个圆周只包含一个极点，并把包含\(p_i\)的圆周记为\((p_i)\)，\(z_i\)类似，这样就可以把沿着\(C\)的积分转到\((p_i)\)和\((z_i)\)上.
-\[\frac{1}{2\pi i}\oint_{C}\varphi(z)\trm{d}\ln\psi(z) = \frac{1}{2\pi i}\left[\sum_{i}\oint_{(p_i)}\varphi(z)\trm{d}\ln\psi(z)+\oint_{(z_i)}\varphi(z)\trm{d}\ln\psi(z)\right]\]
-其中对于每一个零点\(z_i\)，假设其为\(n_i\)阶零点，那么存在一个解析函数\(\psi_i(z)\)，使得\(\psi(z_i) = (z-z_i)^{n_i}\psi_i(z_i)\)，其中\(\psi_i(z_i)\neq 0\). 对\(\ln\psi(z)\)求导，得
-\[\frac{\trm{d}}{\trm{d}z}\ln\psi(z) = \frac{\psi'(z)}{\psi(z)} = \frac{n_i}{z-z_i}+\frac{\psi_k'(z)}{\psi_k(z)}\]
-由于\(\psi_i(z)\)解析，所以只要\((z_i)\)的半径足够小，\(\frac{\psi_k'(z)}{\psi_k(z)}\)在小圆周内也是解析的，根据柯西-古萨定理，沿着小圆周上对其积分得到\(0\)，然后由留数定理\footnote{留数定理：若简单闭曲线\(C\)包含\(f(z)\)的极点\(p_1, p_2, \cdots, p_n\)，且\(f(z)\)在\(C\)内其他地方处处解析，则有
+\subsubsection{一些定理的推广}
+
+本节来推广3个定理：辐角原理、柯西积分公式和最终的泰勒公式.
+
+首先来推广辐角原理. 接上节，\(f(z)\)在\(D\)上的若干零点和极点在\(\ln f(z)\)面前都变成了极点. 根据复连通域的柯西积分公式，可以在\(\ln\psi(z)\)的每个极点周围作小圆周，使得每个圆周只包含一个极点，并把包含\(p_i\)的圆周记为\((p_i)\)，\(z_i\)类似，这样就可以把\(\partial D\)的积分转到\((p_i)\)和\((z_i)\)上. 选取一个在\(D\)上的全纯函数\(\varphi(z)\)，然后
+\[\frac{1}{2\pi i}\oint_{\partial D}\varphi(z)\trm{d}\ln f(z) = \frac{1}{2\pi i}\left[\sum_{i}\oint_{(p_i)}\varphi(z)\trm{d}\ln f(z)+\sum_{i}\oint_{(z_i)}\varphi(z)\trm{d}\ln f(z)\right]\]
+其中对于\(m_i\)重零点\(z_i\)，存在一个解析函数\(g_i(z)\)，使得\(\psi(z_i) = (z-z_i)^{m_i}g_i(z_i)\)，其中\(g_i(z_i)\neq 0\). 对\(\ln\psi(z)\)求导，得
+\[\frac{\trm{d}}{\trm{d}z}\ln f(z) = \frac{f'(z)}{f(z)} = \frac{n_i}{z-z_i}+\frac{g_i'(z)}{g_i(z)}\]
+由于\(g_i(z)\)解析，所以只要\((z_i)\)的半径足够小，\(\frac{g_i'(z)}{g_i(z)}\)在小圆周内也是解析的，根据柯西-古萨定理，沿着小圆周上对其积分得到\(0\)，然后由留数定理\footnote{留数定理：若简单闭曲线\(C\)包含\(f(z)\)的极点\(p_1, p_2, \cdots, p_n\)，且\(f(z)\)在\(C\)内其他地方处处解析，则有
 \[\oint_C f(z)\trm{d}z = 2\pi i\sum_{k=1}^{n}\trm{Res}[f(z),z_k]\]}
-\[\frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = \frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\left(\frac{n_i}{z-z_i}+\frac{\psi_k'(z)}{\psi_k(z)}\right)\trm{d}z = \frac{n_i}{2\pi i}\oint_{(z_i)}\frac{\varphi(z)}{z-z_i}\trm{d}z = n_i\varphi(z_i)\]
+\[\frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \frac{1}{2\pi i}\oint_{(z_i)}\varphi(z)\left(\frac{n_i}{z-z_i}+\frac{g_i'(z)}{g_i(z)}\right)\trm{d}z = \frac{n_i}{2\pi i}\oint_{(z_i)}\frac{\varphi(z)}{z-z_i}\trm{d}z = n_i\varphi(z_i)\]
 对极点\(p_i\)用同样的方法讨论，可得
-\[\frac{1}{2 \pi i}\oint_{(p_i)}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = -p_i\varphi(p_i)\]
+\[\frac{1}{2 \pi i}\oint_{(p_i)}\varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = -p_i\varphi(p_i)\]
 代回，就得到了
-}
-\begin{theorem}{对数留数定理(logarithmic residue theorem)}
-    若\(\psi(z)\)在简单闭曲线\(C\)内除了\(m\)个极点\(p_1, p_2, \cdots, p_m\)以外处处解析，并有至多可数无穷多个零点\(z_1, z_2, z_3, \cdots\)，函数\(\varphi(z)\)在\(C\)内处处解析，则
-    \[\frac{1}{2\pi i}\oint_{C}\varphi(z)\frac{\psi'(z)}{\psi(z)}\trm{d}z = \sum_{i}n_i\varphi(z_i) - \sum_{j}n_j\varphi(p_j)\]
-\end{theorem}
-如果令\(\varphi(z) \equiv 1\)，则定理可以化简为
-\begin{theorem}{辐角原理(argument principle)}
-    若\(\psi(z)\)在简单闭区域\(C\)内除了有限个极点以外解析，并有至多可数无穷多个零点，则
-    \[\frac{1}{2\pi i}\oint_{C}\trm{d}\ln\psi(z) = N-P\]
-    其中\(N\)表示\(C\)内零点的个数，\(P\)表示\(C\)内极点的个数，注意这里的零点和极点要按照阶数来算，例如\(n\)级零点要看做\(n\)个零点.
-\end{theorem}
 
-\vspace{1cm}
+\begin{theorem}{对数留数定理(logarithmic residue theorem)}
+    若\(f(z)\)在简单闭曲线\(C\)内除了\(m\)个极点\(p_1, p_2, \cdots, p_m\)以外处处解析，并有至多可数无穷多个零点\(z_1, z_2, z_3, \cdots\)，函数\(\varphi(z)\)在\(C\)内处处解析，则
+    \[\frac{1}{2\pi i}\oint_{C}\varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \sum_{i}n_i\varphi(z_i) - \sum_{j}n_j\varphi(p_j)\]
+\end{theorem}
 
 \textit{
 如果在区域\(C\)内\(f(z)\)处处解析，且只有\(1\)个一级零点\(z_0\)，则可以令\(f(z)=\psi(z)-\psi(z_0)\)，易知\(\psi(z)\)在\(C\)内解析且无零点. 此时
