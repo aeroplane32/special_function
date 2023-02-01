@@ -61,4 +61,12 @@
 
 在类型论中，说明某个对象是某种类型的语句称为\uline{判断}(judgement)，是类型论中最基本的语句，谓词是冒号“：”，对应集合论中的“属于”符号. 例如\(a:{\sf nat}\)和\(a:{\sf real}\)分别表示对象\(a\)为自然数和实数类型. 而对于函数，\(\lambda x^{\sf nat}. (x^2)^{\sf real}\)意味着这个函数输入为自然数类型的对象，输出为实数类型的对象，而该函数的类型为\({\sf nat}\to{\sf real}\). 不过大多数时候，用\((\lambda x^{\sf nat}. x^2):{\sf nat} \to {\sf real}\)来表示输出为实数类型.
 
+\section*{前言：超好用的逻辑函数}
+
+\begin{itemize}
+    \item[\(\bullet\)] Kronecker \(\delta\)函数：\(\delta_{ij}=\left\{\begin{aligned} & 1, & i=j \\ & 0, &i \neq j \end{aligned}\right.\)
+    \item[\(\bullet\)] Iverson括号：\(⁅P⁆ = \left\{\begin{aligned} & 1, & P\mbox{是真命题} \\ & 0, &P\mbox{是假命题} \end{aligned}\right.\) 
+    \item[\(\bullet\)] 示性函数：\(\bm{1}_A(x) = \left\{\begin{aligned} & 1, & x \in A \\ & 0, &x \not \in A \end{aligned}\right.\) 
+\end{itemize}
+
 \end{document}

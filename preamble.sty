@@ -3,14 +3,13 @@
 \usepackage{amsmath,bm}
 \usepackage{amsfonts,amssymb}
 \usepackage{mathdots} % 各种方向的省略号
-\usepackage{CJKulem} % 兼容中文的下划线、删除线
+\usepackage{ulem,CJKulem} % 兼容中文的下划线、删除线
 \usepackage{makeidx} % 索引
 \usepackage{geometry} % 页面布局（边距、纸张大小）
 \usepackage{color} % 带颜色的字体
 \usepackage[dvipsnames, svgnames, x11names]{xcolor} % 字体颜色的增强版
 \usepackage{graphicx, subfigure, float} % 图片嵌套
 \usepackage{wrapfig} % 文字环绕的图片
-\usepackage{ulem} %下划线、删除线
 \usepackage{tikz} % 所有画图
 \usepackage{hyperref} % pdf超链接
 \usepackage{tcolorbox} % 文字框（定义、定理等）
@@ -19,36 +18,41 @@
 \usepackage{cancel} % 公式的删除线
 \usepackage{autobreak} % 公式自动换行
 \usepackage{extarrows} % 等号上下写东西
+\usepackage{enumitem}
+
 \usetikzlibrary{shapes, shadows, arrows}
 \geometry{a4paper,left=2cm,right=2cm,top=3cm,bottom=2cm}
 
 \newcommand{\trm}[1]{{\rm #1}}
 
 \newenvironment{definition}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=false, frame hidden, borderline west={1.5mm}{-2mm}{DarkGreen}]
-    {\bfseries {\color{DarkGreen} 定义}\quad #1} \newline}
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=false, frame hidden, borderline west={1.5mm}{-2mm}{DarkGreen}, segmentation style = {draw = DarkGreen, solid}, boxsep = 0pt]
+    {\bfseries {\color{DarkGreen} 定义}\quad #1} \tcblower}
     {\end{tcolorbox}}
 
 \newenvironment{theorem}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkBlue}]
-    {\bfseries {\color{DarkBlue} 定理}\quad #1} \newline}
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkBlue}, segmentation style = {draw = DarkBlue, solid}, boxsep = 0pt]
+    {\bfseries {\color{DarkBlue} 定理}\quad \ifx!#1! \relax \else #1 \fi} \ifx!#1! \relax\else \tcblower \fi}
     {\end{tcolorbox}}
 
 \newenvironment{proposition}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{Purple}]
-    {\bfseries {\color{Purple} 命题}\quad #1} \newline}
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{Purple}, segmentation style = {draw = Purple, solid}, boxsep = 0pt]
+    {\bfseries {\color{Purple} 命题}\quad \ifx!#1! \relax \else #1 \fi} \ifx!#1! \relax\else \tcblower \fi}
     {\end{tcolorbox}}
 
 \newenvironment{corollary}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{Brown}]
-    {\bfseries {\color{Brown} 推论}\quad #1} \newline}
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{Brown}, boxsep = 0pt]
+    {\bfseries {\color{Brown} 推论}\quad \ifx!#1! \relax \else #1 \fi} \ifx!#1! \relax\else \tcblower \fi}
     {\end{tcolorbox}}
 
 \newenvironment{lemma}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkRed}]
-    {\bfseries {\color{DarkRed} 引理}\quad #1} \newline}
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkRed}, boxsep = 0pt]
+    {\bfseries {\color{DarkRed} 引理}\quad \ifx!#1! \relax \else #1 \fi} \ifx!#1! \relax\else \tcblower \fi}
     {\end{tcolorbox}}
 
 \newenvironment{reference}
     {\begin{tcolorbox}[enhanced, colback=GhostWhite, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{Gray}]}
     {\end{tcolorbox}}
+
+\newenvironment{proof}{\paragraph{证明}\itshape}{\hfill$\square$}
+\newenvironment{note}{\kaishu\selectfont\small\par}{\hfill}

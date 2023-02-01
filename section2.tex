@@ -3,6 +3,9 @@
 
 \begin{document}
 
+\part{级数和初等函数}
+\setcounter{section}{0}
+
 \section{基本初等函数}
 
 函数的初等与否是人为划分的概念，最初由刘维尔引入. \uline{基本初等函数}(basic elementary function)包括常数函数、幂函数、指数函数、三角函数、双曲函数以及它们的反函数，而基本初等函数经过有限次四则运算和复合得到的函数称为\uline{初等函数}(elementary function). 分出初等函数是为了固定这些函数的记号以便于交流，同时初等函数也是生活中最常见的函数. 
@@ -86,19 +89,6 @@
     \textit{
         由于\(|\exp(ix)|\equiv 1\)，所以只要限定\(a^2+b^2\)为常数，那么复数\(a+ib\)取值的集合就是一个圆心在原点、半径为\(\rho=|a+ib|\)的圆，此时可以将复平面转化为极坐标系，复数（相当于向量）就可以由极径和极角来确定，因此可以做出以下定义。
     }
-    \begin{definition}{复数的指数形式}
-        令\(z=a+ib\)，则\(z=\rho\exp(i{\rm Arg}(z))\)，其中\(\rho=\sqrt{a^2+b^2}\)是复数的\uline{模}(modulo)；\({\rm Arg}(z)\)称为复数的\uline{辐角}(argument)，其定义为 
-        \[{\rm Arg}(z) = \left\{
-        \begin{aligned}  
-            & \frac{\pi}{2} + 2k\pi, & a =0, b > 0 \\ 
-            & -\frac{\pi}{2} + 2k\pi, & a = 0, b < 0  \\ 
-            & \arctan\frac{b}{a}+2k\pi, & a \neq 0
-        \end{aligned}
-        \right. \qquad \mbox{其中} k \in \mathbb{Z} 
-        \]
-        \({\rm Arg}(z)\)在\([-\pi,\pi)\)上的值称为辐角主值，写作\({\rm arg}(z)\).
-    \end{definition}
-    尽管\({\rm Arg}(z)\)是分段定义的，但它其实是连续函数.
     \item[(5)]
     \begin{theorem}{棣莫弗公式(de Moivre's formula)}
         设
@@ -113,9 +103,9 @@
 
 \vspace{1cm}
 
-在某些限定的条件下给出某样东西的定义之后，数学家们就是喜欢打破这些条件，同时让定义强行成立看看会发生什么. 定义出了复数的指数函数\(\exp(z)\)之后，数学家们便尝试把\textbf{矩阵}塞入这个定义中：
-\begin{definition}{矩阵的指数函数}
-    \[\exp({\bm A}) = \sum_{n=0}^{\infty}\frac{{\bm A}^n}{n!}\]
+在某些限定的条件下给出某样东西的定义之后，数学家们就是喜欢打破这些条件，同时让定义强行成立看看会发生什么. 定义出了复数的指数函数\(\exp(z)\)之后，数学家们便尝试把任意的\textbf{算子}(operator)塞入这个定义中：
+\begin{definition}{算子的指数函数}
+    \[\exp(\cdot) = \sum_{n=0}^{\infty}\frac{\cdot^n}{n!}\]
 \end{definition}
 
 \subsection{对数函数}

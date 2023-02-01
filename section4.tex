@@ -3,95 +3,132 @@
 
 \begin{document}
 
-\section{线性代数高级应用：频域分析}
+\part{傅里叶分析}
+\setcounter{section}{0}
 
-这一节的符号有些混乱，请注意区分\(f(t), f(n), \hat{f}(\omega), \hat{f}(\Omega), \hat{f}(s), \hat{f}(z), \tilde{f}(t), \mathcal{F}[f(t)](\omega), \mathcal{F}[f(t)](\Omega),\)
+这一部分的符号有些混乱，请注意区分\(f(t), f[n], \hat{f}(\omega), \hat{f}(s), \hat{f}[z], \tilde{f}(t), \mathcal{F}[f(t)](\omega),\mathcal{F}[f[n]](\omega), \mathcal{F}[f[n]][k],\)
 \newline
-\(\mathcal{L}[f(t)](s), \mathcal{Z}[f(t)](z)\)，其中
+\( \mathcal{L}[f(t)](s), \mathcal{Z}[f(t)](z)\)，接下来把这些符号梳理一遍.
 \newline
 \begin{itemize}
-    \item[\(\bullet\)]
-     \(f(t)\)表示一般的（时域上的）连续函数；
-\end{itemize}
-\begin{itemize}
-    \item[\(\bullet\)]
-    \(f(n)\)表示一般的（时域上的）离散函数（即数列）；
-\end{itemize}
-\begin{itemize}
-    \item[\(\bullet\)]
-    \(\tilde{f}(t)\)中的波浪上标可以加在任意一个域中的函数上，强调该函数是周期函数；
-\end{itemize}
-\begin{itemize}
-    \item[\(\bullet\)]
-    \(\hat{f}(\omega), \hat{f}(\Omega), \hat{f}(s), \hat{f}(z)\)中的尖角上标\(\hat{}\)表示该函数是变换域中的函数，自变量符号的选取表示该函数处在不同变换域，\(\omega\)表示处在连续频域内，\(\Omega\)表示处在离散频域内，\(s\)表示处在拉普拉斯s域或梅林s域内，\(z\)表示处在Z域内；
-\end{itemize}
-\begin{itemize}
-    \item[\(\bullet\)]
-    \(\mathcal{F}, \mathcal{L}, \mathcal{Z}\)分别是频域、s域和Z域的变换函数，例如\(\mathcal{F}[f(t)](\omega)\)表示频域上连续的、由时域连续函数\(f(t)\)经过傅里叶变换而来的、自变量取\(\omega\)的函数，等效于\(\hat{f}(\omega)\)，但强调“是\(f(t)\)对应的函数”.
+    \item[\(\bullet\)] \(f(t)\)表示一般的（时域上的）连续函数，该函数在整个\(\mathbb{R}\)上都有定义，自变量是\(t\)，并赋予其时间的物理意义；
+    \item[\(\bullet\)] \(f[n]\)表示一般的（时域上的）离散函数（即数列），该函数在整个\(\mathbb{Z}\)上都有定义，自变量使用\(n\)表示，并赋予其采样点序号的物理意义；
+    \item[\(\bullet\)] \(\tilde{f}(\cdot)\)中的波浪上标可以加在任意一个域中的任意一个函数上，强调该函数是周期函数；
+    \item[\(\bullet\)] \(\hat{f}(\cdot)\)中的尖角上标\(\hat{}\)表示该函数是变换域中的函数，自变量字母的选取表示该函数处在不同变换域；
+    \item[\(\bullet\)] \(\mathcal{F}\left[f(t)\right](\omega)\)，表示一个自变量是\(\omega\)的连续频域函数，由连续时域函数\(f(t)\)经过傅里叶变换得到，赋予\(\omega\)角频率的物理意义，赋予\(\xi=\dfrac{\omega}{2 \pi}\)频率的物理意义（字母\(f\)为函数专用，所以频率改用\(\xi\)，这是傅里叶分析的书籍上惯用的字母）. 
+    \item[\(\bullet\)] \(\mathcal{F}\left[f[n]\right](\omega)\)，表示一个自变量是\(\omega\)的连续频域函数，由离散序列\(f[n]\)经过离散时间傅里叶变换得到，赋予\(\omega\)角频率的物理意义.
+    \item[\(\bullet\)] \(\mathcal{F}\left[f[n]\right][k]\)，表示一个自变量是\(k\)的离散函数，由离散序列\(f[n]\)经过离散傅里叶变换得到，赋予\(k\)离散角频率的物理意义.
+    \item[\(\bullet\)] \(\mathcal{L}\left[f(t)\right](s)\)，表示一个自变量是\(s\)的连续函数，由连续函数\(f(t)\)经过双边拉普拉斯变换得到，赋予\(s\)复频率的物理意义.
+    \item[\(\bullet\)] \(\mathcal{Z}\left[f[n]\right][z]\)，表示一个自变量是\(z\)的离散函数，由离散序列\(f[n]\)经过双边Z变换得到，赋予\(z\)离散复频率的物理意义. 
 \end{itemize}
 
-\subsection{傅里叶级数}
+注：以上这些变换本质上是函数到另一个函数的映射，凡是性质足够好的函数都可以应用这些变换，例如Schwartz空间及其对偶空间中的函数都可以进行傅里叶变换，变换后的函数仍属于该空间. 所以在此层面上并不存在所谓“时域”、“变换域”之类的说法，但为了贴合实际应用需要，我们往往通过其自变量使用的字母来区分这些域，同时也区分\(\mathcal{F}[\cdot]\)是哪一种傅里叶变换，例如我们认为\(f(t)=e^{-2t}\)是时域函数，\(\hat{f}(\omega)=e^{-2\omega}\)是连续频域内的函数，尽管这两个函数的对应法则是相同的，在\(\lambda\)演算层面都可以表示为\(\lambda x. e^{-2x}\).
 
-傅里叶级数就是一种很经典的带权正交展开，其定下的函数空间为任意长度为\(T\)的实区间，基底为一系列角频率不同的正弦和余弦函数.
+\section{正交展开}
 
-\subsubsection{三角函数系作为函数空间的正交基底}
+正交展开不是某种特殊的展开定理，而是一种重要的展开思想，首先回顾一下线性代数的知识.
 
-历史上发现的第一个正交基底在区间\([-\pi,\pi]\)的函数空间上，其区间长为\(2\pi\)，具体为:
-\[ \mathcal{A}_{2\pi} = \{ 1, \cos(t), \sin(t), \cos(2t), \sin(2t), \cos(3t), \sin(3t), \cdots \} \]
-可以验证一下它们确实是正交的（利用积化和差，\(1\)可以看做是\(\cos(0t)\)）：
+\begin{reference}
+    \(n\)维线性向量空间中只要确定了一组完备的基底\(\mathcal{A} = \{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)，则空间中的所有向量都可以用基底的线性组合表示出来：
+    \[\bm{\alpha} = k_1\bm{e}_1+k_2\bm{e}_2+\cdots+k_n\bm{e}_n\]
+    其中\(k_i\)是数，可以是实数、复数或其他无向的量.
+    \newline
+    如果空间中还定义了\textbf{内积}，则称该向量空间为\textbf{内积空间}，内积是一种运算，其结果为一个数量（实数或复数），两个向量的内积记为\(\langle \bm{\alpha},\bm{\beta} \rangle\)，满足
+    \begin{itemize}
+        \item [(1)] \(\langle \bm{\alpha},\bm{\beta} \rangle = \overline{\langle \bm{\beta},\bm{\alpha} \rangle}\)，上划线表示取共轭，如果内积运算定义在实数域上，则有\(\langle \bm{\alpha},\bm{\beta} \rangle = \langle \bm{\beta},\bm{\alpha} \rangle\).
+        \item [(2)] \(\langle m\bm{\alpha}+n\bm{\beta},\bm{\gamma} \rangle = m\langle \bm{\alpha},\bm{\gamma} \rangle + n\langle \bm{\beta},\bm{\gamma} \rangle\)，其中\(m,n\)是数量.
+        \item [(3)] \(\langle \bm{\alpha},\bm{\alpha} \rangle \geq 0\)，当且仅当\(\bm{\alpha}=\bm{0}\)时等号成立.
+    \end{itemize}
+    定义了内积之后，向量的\textbf{模长}便可定义为\(\|\bm{\alpha}\|=\sqrt{\langle \bm{\alpha},\bm{\alpha} \rangle}\)，易知\(\|\bm{\alpha}\| \geq 0\)；
+    \newline
+    线性组合的系数可表示为\(k_i=\dfrac{\langle \bm{\alpha}, \bm{e}_i \rangle}{\langle \bm{e}_i, \bm{e_i} \rangle}\)，成为向量\(\bm{\alpha}\)在向量\(\bm{e}_i\)上的\textbf{投影}.
+    \newline
+    向量的\textbf{正交}则表示\(\langle \bm{\alpha},\bm{\beta} \rangle=0\)这种情况，可简记为\(\bm{\alpha} \perp \bm{\beta}\).
+    \newline
+    假设\(\mathcal{A}=\{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)是自然基，即两两正交且\(\|\bm{e}_i\|=1\)，则立即可以确定线性组合的系数：\(k_i = \langle\bm{\alpha},\bm{e}_i\rangle\)，而模也可以立即确定为\(\|\bm{\alpha}\| = \sqrt{k_1^2+k_2^2+\cdots+k_n^2} = \sqrt{\langle\bm{\alpha},\bm{e}_1\rangle^2+\langle\bm{\alpha},\bm{e}_2\rangle^2+\cdots+\langle\bm{\alpha},\bm{e}_n\rangle^2}\)
+\end{reference}
+
+正交展开的核心就是这些，但以上只给了抽象的框架，具体操作起来大有可为. 
+
+仔细思考线性组合的式子：\(\bm{\alpha} = k_1\bm{e}_1+k_2\bm{e}_2+\cdots+k_n\bm{e}_n\)，它想表达的是\(\bm{\alpha}\)可以由向量\(e_1, e_2, \cdots, e_n\)各自贡献一点组合而成，投影即系数\(k_i\)定量描述了向量\(\bm{e}_i\)贡献的大小. 如果为\(k_i=0\)表示向量\(\bm{e}_i\)没有贡献，此时得到的\(\bm{\alpha}\)和\(\bm{e_i}\)无关，或称正交.
+
+在函数空间中，函数就是向量，它的内积有一套独特的定义，但大多数教材并没有解释为什么要这么定义，以下是一种可能的理解.
+
+\textit{
+线性代数告诉我们，实区间\([a,b]\)上的连续实变函数构成了一个线性空间，但函数空间不像向量空间那么直观，它的内积并没有那么容易定义出来。假设函数\(f\)在实区间\([a,b]\)上等距抽样，例如间隔\(\dfrac{1}{n}\)取值，然后用一个向量\(\vec{\bm{u}}_f\)来记录这些值：
+\[\vec{\bm{u}}_f = \left[f(a), f(a+\frac{b-a}{n}), f(a+\frac{2(b-a)}{n}), f(a+\frac{3(b-a)}{n}), \cdots, f(a+\frac{(n-1)(b-a)}{n}), f(b)\right]\]
+对于另一个在区间\([a,b]\)上连续的函数\(g(x)\)，也采用相同的操作：
+\[\vec{\bm{u}}_g = \left[g(a), g(a+\frac{b-a}{n}), g(a+\frac{2(b-a)}{n}), g(a+\frac{3(b-a)}{n}), \cdots, g(a+\frac{(n-1)(b-a)}{n}), g(b)\right]\]
+此时对两个向量求内积：
+\[\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = f(a)g(a)+f(a+\frac{b-a}{n})g(a+\frac{b-a}{n})+f(a+\frac{2(b-a)}{n})g(a+\frac{2(b-a)}{n})+\cdots+f(b)g(b)\]
+现在令\(n \to \infty\)，意味着抽样间隔\(\dfrac{1}{n} \to 0\)，由于两个函数都是连续函数，不会发生跳跃，因此可以认为\(\vec{\bm{u}}_f\)和\(\vec{\bm{u}}_g\)这两个向量记录了函数的所有信息. 但是这样的内积往往会趋近于无穷大. 由于是等距抽样，每个样本的权重相等，所以在每个单项式上乘以权重\(1/n\)，然后奇迹般地凑出了积分的定义式
+\[\lim_{n \to \infty}\frac{1}{n}\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = \lim_{n \to \infty}\frac{1}{n}\sum_{k=0}^{n}f(a+\frac{k(b-a)}{n})g(a+\frac{k(b-a)}{n}) := \int_{a}^{b} f(x)g(x)\trm{d}x\]
+以上是实变函数的情况，在这种情况下，才满足\([f(x)]^2\equiv|f(x)|^2\)，根据定积分的保号性，这即可满足线性空间中\(\|f\|\geq 0\)的要求. 如果扩展到复变函数，由于两个复数的乘积还是复数，复变函数作定积分以后也是复数，不一定能与\(0\)比大小，所以为了符合模长的定义，需要将被积函数由\([f(z)]^2\)改为\(|f(z)|^2\)，而后者等价于\(f(z)\overline{f(z)}\)，这就得到了复变函数空间的内积.
+}
+\begin{definition}{函数空间的内积}
+    对于在复连通域\(D\)上定义的连续函数\(f(z),g(z)\)，规定其\uline{内积}(inner product)为
+    \[ \langle f,g \rangle := \int_{D} f(z)\overline{g(z)}\trm{d}z\]
+    若\(\langle f,g \rangle=0\)，则称这两个函数是\uline{正交的}(orthonormal). 函数的模定义为
+    \[ \|f\| := \sqrt{\int_{D}f(z)\overline{f(z)}\trm{d}z}\]
+    当复连通域定退化为区间\([a,b]\)时，复变函数退化为实变函数时，其内积便退化为
+    \[ \langle f,g \rangle := \int_{a}^{b} f(x)g(x)\trm{d}x\]
+    模长退化为
+    \[ \|f\| := \sqrt{\int_{a}^{b}[f(x)]^2\trm{d}x}\]
+\end{definition}
+
+定义好函数空间的内积之后，便可以尝试在空间中寻找一组函数作为基底\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)，然后把空间中的任意都写成它们的线性组合的形式，
+\[f(z) = c_1\varphi_1(z)+c_2\varphi_2(z)+c_3\varphi_3(z)+\cdots\]
+如果基底\(\mathcal{A}\)是正交基底，则可以进一步得到
+\[c_n=\frac{\langle f,\varphi_n \rangle}{\langle \varphi_n,\varphi_n \rangle} = \frac{\langle f,\varphi_n \rangle}{\|\varphi_n\|^2} = \frac{\displaystyle{\int_{D} f(z)\overline{\varphi_n(z)}\trm{d}z}}{\displaystyle{\int_{D}\varphi_n(z)\overline{\varphi_n(z)}\trm{d}z}}\]
+这便是正交展开的基本思路，由于这个思路最早应用在傅里叶级数上，所以又称这种展开方式为\uline{广义傅里叶展开}.
+
+\textit{
+    以上有个细节需要注意，函数空间的基底写成\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)而不是\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots,\varphi_n\}\)，是因为基向量的个数可能是无限的，甚至可能是不可数无穷多的. 如果是实数多个的基向量\(\mathcal{A}=\{\varphi_s\}_{s \in I}\)，那么每个基向量的分量\(c_s\)中的下标取值也不再可数，此时\(f(z)\)就不能简单地展开成基向量线性组合的形式，而是像上面那样间隔取样，缩小间隔，最后凑出积分的形式，即
+    \[f(z)=\int_{I}c_s\varphi_s(z)\trm{d}s\]
+    剧透一下，这实际上就是傅里叶反变换公式的意义.
+}
+
+最后简单总结一下什么是正交展开. 如果向量\(\bm{\alpha}\)属于线性空间\(S\)，那么总是可以找到一组完备的正交基\footnote{“所有线性空间，无论维数有穷还是无穷，都能找到一组完备的正交基底”这个命题依赖于选择公理}，使得\(\bm{\alpha}\)可以被这组基底线性表出，该线性表出式就是向量\(\bm{\alpha}\)的正交展开.
+
+\section{平行地导出傅里叶级数和傅里叶变换}
+
+有了正交展开的思想，我们就可以摧枯拉朽般的导出傅里叶级数和连续傅里叶变换，流畅自然的程度令带积分余项的泰勒公式也自愧不如，而不用像很多教材那样再拿三角函数的积分倒来倒去，这也是连续傅里叶变换和傅里叶级数能写在一起的原因.
+\vspace{1cm}
+\newline
+\noindent \textbf{
+\(\bullet\)导出\([t_0, t_0+T]\)上三角函数形式的傅里叶级数：基底\(\mathcal{A}=\{\sin(n\omega t), \cos(n\omega t)\}_{n=0}^{\infty}\)（\(\sin(0\omega t)\)除外）
+}
+
+需要注意，这里的\(\omega=\dfrac{2\pi}{T}\)，有角频率的物理意义，这也限定了\(\sin(n\omega t)\)和\(、cos(n\omega t)\)的周期都是\(T\)。首先验证这些基底确实是正交的，别忘了三个积化和差公式，这里贴心地把它们写出来：
 \begin{align*}
-    \forall m,n\in \mathbb{Z},\quad m \neq n: & \\
-    \int_{-\pi}^{\pi} \sin(mt)\cos(nt) \trm{d}t &= -\left[\frac{\cos((m-n)t)}{2(m-t)}+\frac{\cos((m+n)t)}{2(m+t)}\right]_{-\pi}^{\pi} = 0 \\
-    \int_{-\pi}^{\pi} \sin(mt)\sin(nt) \trm{d}t &= \left[\frac{\sin((m-n)t)}{2(m-t)}-\frac{\sin((m+n)t)}{2(m+t)}\right]_{-\pi}^{\pi} = 0 \\
-    \int_{-\pi}^{\pi} \cos(mt)\cos(nt) \trm{d}t &= \left[\frac{\sin((m-n)t)}{2(m-t)}+\frac{\sin((m+n)t)}{2(m+t)}\right]_{-\pi}^{\pi} = 0
+    \sin\alpha\cos\beta &= +\frac{1}{2}\left[\sin(\alpha+\beta)+\sin(\alpha-\beta)\right] \\
+    \sin\alpha\sin\beta &= -\frac{1}{2}\left[\cos(\alpha+\beta)-\cos(\alpha-\beta)\right] \\
+    \cos\alpha\cos\beta &= +\frac{1}{2}\left[\cos(\alpha+\beta)+\cos(\alpha-\beta)\right]
 \end{align*}
-
-根据以上验证的过程，可以发现定积分的结果为\(0\)的原因不在于上下界是\(-\pi\)和\(-\pi\)，而是上下界正好相差了三角函数的一整个周期\(2\pi\). 因此该基底适用的区间就不再仅限于\([-\pi,\pi]\)了；只要区间长为\(2\pi\)，即形如\([t_0,t_0+2\pi]\)，都是适用的.
-
-然后再算一算各个基底向量的模：
+带入计算内积：
 \begin{align*}
-    \|1\| &= \sqrt{\int_{t_0}^{t_0+2\pi} \trm{d}t} = \sqrt{2\pi} \\
-    \|\cos(kt)\| &= \sqrt{\int_{t_0}^{t_0+2\pi} \cos^2(kt) \trm{d}t} = \sqrt{\pi},\quad k \in \mathbb{Z}^* \\
-    \|\sin(kt)\| &= \sqrt{\int_{t_0}^{t_0+2\pi} \sin^2(kt) \trm{d}t} = \sqrt{\pi},\quad k \in \mathbb{Z}^*
+    \forall m,n\in \mathbb{N},\quad m \neq n: & \\
+    \langle \sin(m\omega t), \cos(n\omega t) \rangle &:= \int_{t_0}^{t_0+T} \sin(m\omega t)\cos(n\omega t) \trm{d}t = -\left[\frac{\cos((m-n)\omega t)}{2(m-n)\omega}+\frac{\cos((m+n)\omega t)}{2(m+n)\omega}\right]_{t_0}^{t_0+T} = 0 \\
+    \langle \sin(m\omega t), \sin(n\omega t) \rangle &:= \int_{t_0}^{t_0+T} \sin(m\omega t)\sin(n\omega t) \trm{d}t = \left[\frac{\sin((m-n)\omega t)}{2(m-n)\omega}-\frac{\sin((m+n)\omega t)}{2(m+n)\omega}\right]_{t_0}^{t_0+T} = 0 \\
+    \langle \cos(m\omega t), \cos(n\omega t) \rangle &:= \int_{t_0}^{t_0+T} \cos(m\omega t)\cos(n\omega t) \trm{d}t = \left[\frac{\sin((m-n)\omega t)}{2(m-n)\omega}+\frac{\sin((m+n)\omega t)}{2(m+n)\omega}\right]_{t_0}^{t_0+T} = 0
 \end{align*}
-因此它们都不是单位向量，那就单位化呗，得到自然基：
-\[ \mathcal{E}_{2\pi} = \left\{ \frac{1}{\sqrt{2\pi}}, \frac{\cos(t)}{\sqrt{\pi}}, \frac{\sin(t)}{\sqrt{\pi}}, \frac{\cos(2t)}{\sqrt{\pi}}, \frac{\sin(2t)}{\sqrt{\pi}}, \frac{\cos(3t)}{\sqrt{\pi}}, \frac{\sin(3t)}{\sqrt{\pi}}, \cdots \right\} \]
-
-新的问题又来了，如果区间长（周期）不仅限于\(2\pi\)，而是任意的\(T\)呢？方便起见，先把区间移回\([-\pi,\pi]\)，此时我们的目标是把它改造成\([-\dfrac{T}{2},\dfrac{T}{2}]\). 正交与否取决于内积是否为\(0\)，而内积与积分上下界有关，这就意味着我们要等价地改写积分，使其上下限相差\(T\)，此时应祭出第二类换元法！
-
-用新的\(t\)代替原来的\(\dfrac{2\pi}{T}t\)，然后把这个很眼熟的系数用很眼熟的记号表示：\(\omega=\dfrac{2\pi}{T}\)，就得到了新基
-\[ \mathcal{A}_{T} = \{ 1, \cos(\omega t), \sin(\omega t), \cos(2\omega t), \sin(2\omega t), \cos(3\omega t), \sin(3\omega t), \cdots \} \]
-
-再根据刚才的经验，这个基底在任何长度为\(T\)的区间\([t_0,t_0+T]\)内都是正交的. 最后还有一个小问题，使用第二类换元法的目的是保证内积为\(0\)，但没有保证模长不变，重新计算一下
+内积都是0，所以正交. 接下来求出它们的模长：
 \begin{align*}
     \|1\| &= \sqrt{\int_{t_0}^{t_0+T}\trm{d}t} = \sqrt{T} \\
-    \|\cos(k\omega t)\| &= \sqrt{\int_{t_0}^{t_0+T} \cos^2(k\omega t) \trm{d}t} = \sqrt{\frac{T}{2}},\quad k \in \mathbb{Z}^* \\
-    \|\sin(k\omega t)\| &= \sqrt{\int_{t_0}^{t_0+T} \sin^2(k\omega t) \trm{d}t} = \sqrt{\frac{T}{2}},\quad k \in \mathbb{Z}^*
+    \|\cos(n\omega t)\| &= \sqrt{\int_{t_0}^{t_0+T} \cos^2(n\omega t) \trm{d}t} = \sqrt{\frac{T}{2}},\quad n \in \mathbb{N}^* \\
+    \|\sin(n\omega t)\| &= \sqrt{\int_{t_0}^{t_0+T} \sin^2(n\omega t) \trm{d}t} = \sqrt{\frac{T}{2}},\quad n \in \mathbb{N}^*
 \end{align*}
-最后得到\([t_0,t_0+T]\)上函数空间的自然基
-\[ \mathcal{E}_{T} = \left\{ \frac{1}{\sqrt{T}}, \frac{\cos(\omega t)}{\sqrt{T/2}}, \frac{\sin(\omega t)}{\sqrt{T/2}}, \frac{\cos(2\omega t)}{\sqrt{T/2}}, \frac{\sin(2\omega t)}{\sqrt{T/2}}, \frac{\cos(3\omega t)}{\sqrt{T/2}}, \frac{\sin(3\omega t)}{\sqrt{T/2}}, \cdots \right\} \]
+这时候满足某些条件的函数就可以做正交展开：
+\[f(t) = \frac{\langle f(t), 1 \rangle}{\|1\|^2} + \sum_{n=1}^{\infty} \left[\frac{\langle f(t), \sin(n\omega t) \rangle}{\|\sin(n\omega t)\|^2}\sin(n\omega t) + \frac{\langle f(t), \cos(n\omega t) \rangle}{\|\cos(n\omega t)\|^2}\cos(n\omega t)\right]\]
+这就是周期为\(T\)的傅里叶级数，整理一下就好.
 
-
-\subsubsection{傅里叶级数的三种形式}
-
-在区间\([t_0,t_0+T]\)上的函数空间中定下了自然基\(\mathcal{E}_{T}\)之后，其中的任意一个连续函数\(f(t)\)都可以写作：
-\[ f(t) = {\color{red}m_0}\frac{1}{\sqrt{T}} + {\color{red}m_1}\frac{\cos(\omega t)}{\sqrt{T/2}} + {\color{red}n_1}\frac{\sin(\omega t)}{\sqrt{T/2}} + {\color{red}m_2}\frac{\cos(2\omega t)}{\sqrt{T/2}} + {\color{red}n_2}\frac{\sin(2\omega t)}{\sqrt{T/2}} + {\color{red}m_3}\frac{\cos(3\omega t)}{\sqrt{T/2}} + {\color{red}n_3}\frac{\sin(3\omega t)}{\sqrt{T/2}} + \cdots\]
-系数\(m_k,n_k\)都可以根据欧式空间中的方法计算出来：
-\begin{align*}
-    m_0 &= \left\langle f(t), \frac{1}{\sqrt{T}} \right\rangle = \frac{1}{\sqrt{T}}\int_{t_0}^{t_0+T} f(t)\trm{d}t \\
-    m_k &= \left\langle f(t), \frac{\cos(k\omega t)}{\sqrt{T/2}} \right\rangle = \frac{1}{\sqrt{T/2}}\int_{t_0}^{t_0+T} f(t)\cos(k\omega t)\trm{d}t \\
-    n_k &= \left\langle f(t), \frac{\sin(k\omega t)}{\sqrt{T/2}} \right\rangle = \frac{1}{\sqrt{T/2}}\int_{t_0}^{t_0+T} f(t)\sin(k\omega t)\trm{d}t
-\end{align*}
-回代，就得到了
-\[ f(t) = \frac{1}{T} \int_{t_0}^{t_0+T} f(t)\trm{d}t + \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\cos(\omega t)\trm{d}t{\color{blue}\cos(\omega t)} + \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\sin(\omega t)\trm{d}t{\color{blue}\sin(\omega t)}+\cdots\]
-把系数整理一下，就得到了最常用的一种傅里叶级数.
 \begin{definition}{三角函数形式的傅里叶级数}
     定义在区间\([t_0,t_0+T]\)上的函数\(f(t)\)，将
-    \[S_{\infty}[f](t) = \frac{a_0}{2}+\sum_{k=1}^{\infty} \left[a_k\cos(k\omega t)+b_k\sin(k\omega t)\right]\]
+    \[S_{\infty}[f](t) = \frac{a_0}{2}+\sum_{n=1}^{\infty} \left[a_n\cos(n\omega t)+b_n\sin(n\omega t)\right]\]
     称为\(f(t)\)的三角函数形式的\uline{傅里叶级数}(Fourier series)，其中
     \begin{align*}
-        a_k &= \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\cos(k\omega t)\trm{d}t \\
-        b_k &= \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\sin(k\omega t)\trm{d}t \\
+        a_n &= \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\cos(n\omega t)\trm{d}t \\
+        b_n &= \frac{2}{T}\int_{t_0}^{t_0+T} f(t)\sin(n\omega t)\trm{d}t \\
         \omega &= \frac{2\pi}{T}
     \end{align*}
 \end{definition}
@@ -99,8 +136,11 @@
 嘿！上面已经说好了\(f(t)\)等于这一大串级数，为什么这里又要搞出个\(S_{\infty}[f](t)\)出来呢？先卖个关子，等讨论到收敛性的时候就会发现\(f(t)\)需要满足一定的条件才能让\(S_{\infty}[f](t)\)收敛到\(f(t)\)上，而且收敛的方式也值得探究.
 
 \vspace{1cm}
+\noindent \textbf{
+\(\bullet\)导出\([t_0, t_0+T]\)上极坐标形式的傅里叶级数：基底\(\mathcal{A}=\{A_n\sin(n\omega t+\varphi_n)\}_{n=0}^{\infty}\)
+}
 
-利用辅助角公式
+你以为我又会验证一遍正交性，再计算模长，然后还要求出每个\(A_n\)和\(\varphi_n\)的表达式？辅助角公式它不香吗？
 \[A\sin(t)+B\cos(t)=\sqrt{A^2+B^2}\sin(t+\arctan\frac{B}{A}) = \sqrt{A^2+B^2}\cos(t+\trm{arccot}\frac{B}{A})\]
 把正弦项和余弦项合并，就得到了
 \begin{definition}{极坐标形式的傅里叶级数}
@@ -118,6 +158,9 @@
 极坐标形式的傅里叶级数用得最少，但它证实了傅里叶的大胆猜测：每一个周期函数都可以表示为多个正弦函数的叠加. 此时的参数\(A_k\)和\(\varphi_k\)就具有了物理意义，前者表示振幅，后者表示初相；而最前面的\(a_0/2\)就表示一个周期内函数的均值，用来修正上下平移.
 
 \vspace{1cm}
+\noindent \textbf{
+\(\bullet\)导出\([t_0, t_0+T]\)上复数形式的傅里叶级数：基底\(\mathcal{A}=\{e^{in\omega t}\}_{n=-\infty}^{\infty}\)
+}
 
 根据欧拉公式替换三角函数：
 \[ \cos(t) = \frac{e^{it}+e^{-it}}{2}, \qquad \sin(t) = -i\frac{e^{it}-e^{-it}}{2} \]
@@ -141,18 +184,27 @@
 
 复数项的傅里叶级数，看起来比三角函数项的傅里叶级数简洁. 由推导公式可以看出，复数项级数的系数\(c_k=\dfrac{a_k-ib_k}{2}\)，反过来有\(a_k=2\trm{Re}[c_k], \,\, b_k=-2\trm{Im}[c_k]\).
 
-以下是一些常用周期函数的傅里叶展开
-\newline
-(1) 梯形波（奇函数）
-\[f(t)\sim\frac{4A}{\pi\omega d}\sum_{n\,\trm{odd}}\sin\left(\frac{n\omega d}{n^2}\right)\sin(n\omega t)\]
-(2) 矩形脉冲（偶函数）
-\[f(t)\sim\alpha A + \frac{2A}{\pi}\sum_{n=1}^{\infty}\frac{\sin(\alpha n \pi)}{n} \cos(n\omega t)\]
-(3) 方波（奇函数）
-\[f(t) \sim \frac{4A}{\pi}\sum_{n\,\trm{odd}} \frac{\sin(n\omega t)}{n}\]
-(4) 三角波（奇函数）
-\[f(t) \sim \frac{8A}{\pi^2}\sum_{n\,\trm{odd}}\frac{i^{n-1}\sin(n\omega t)}{n^2}\]
-(5) 锯齿波（非奇非偶）
-\[f(t) \sim \frac{A}{2}-\frac{A}{\pi}\sum_{n=1}^{\infty} \frac{\sin(n\omega t)}{n}\]
+\vspace{1cm}
+\noindent \textbf{
+\(\bullet\)导出连续傅里叶级数：基底\(\mathcal{A}=\{e^{i\omega t}\}_{\omega \in \mathbb{R}}\)
+}
+
+由于基底有不可数无穷多个，所以应该把求和换成积分；由于基底是复变函数，所以作内积的时候记得取共轭，即原函数在基底\(e^{i\omega t}\)上的投影：
+\[c_\omega = \langle f(t), e^{i\omega t} \rangle = \int_{\mathbb{R}}f(t)e^{-i\omega t}\trm{d}t\]
+而原函数：
+\[f(t) = \int_{\mathbb{R}}c_\omega e^{i\omega t}\trm{d}\omega\]
+这其实就是连续傅里叶变换.
+
+\begin{definition}{傅里叶变换}
+    对于函数\(f(t)\)，
+    \[\hat{f}(\omega) = \mathcal{F}[f(t)](\omega) := \int_{-\infty}^{\infty}f(t)e^{-i\omega t}\trm{d}t\]
+    如果存在，则称为\(f(t)\)的\uline{傅里叶变换}(Fourier transform)，其反变换为
+    \[f(t) = \mathcal{F}^{-1}[\hat{f}(\omega)](t) := \frac{1}{2\pi}\int_{-\infty}^{\infty}\hat{f}(\omega)e^{i\omega t}\trm{d}\omega\]
+    \(f(t)\)的定义域一般称为\uline{时域}(time domain)，\(\hat{f}(\omega)\)的定义域一般称为\uline{频域}(frequency domain).
+\end{definition}
+
+太快啦，一下子推出了三种傅里叶级数，现在把脚步放慢，
+这里，我们需要验证一下基底的正交性，计算基底的模长.
 
 % 可以对比一下复数项的傅里叶级数和洛朗级数（\(z=0\)处展开）：
 % \[
@@ -167,7 +219,7 @@
 
 \subsubsection{傅里叶级数作为原函数的延拓}
 
-上面强调了区间是\([t_0,t_0+T]\)，在该区间以外，\(f(t)\)可能不可积甚至没有定义，然而\(S_{\infty}[f](t)\)作为一系列三角函数的和，仍然有定义. \(S_{\infty}[f](t)\)是由一系列正弦和余弦函数组成的，它们的角频率是\(\omega, 2\omega, 3\omega, \cdots\)，最小正周期是\(T, T/2, T/3, \cdots\)，因此\(T\)是它们共同的周期，也是\(S_{\infty}[f](t)\)的最小正周期. 这意味着\(S_{\infty}[f](t)\)会在整个\(\mathbb{R}\)上不断重复着\([t_0,t_0+T]\)的故事，这就把一个可能只在原区间内连续的函数\(f(t)\)伸展成了在\(\mathbb{R}\)上定义的、以\(T\)为周期的函数\(S(t)\)，即称为\uline{延拓}(continuation).
+以上导出傅里叶级数的时候，特别强调了区间是\([t_0,t_0+T]\)，尽管在本章最开始时规定了\(f(t)\)必须在整个\(\mathbb{R}\)上有定义，但回顾刚才导出的过程，\(f(t)\)即使在该区间以外没有定义也不影响该区间内傅里叶级数的存在. 与此同时，\(S_{\infty}[f](t)\)作为一系列三角函数的和，在区间外仍然有定义，并且考虑到这些三角函数的角频率是\(\omega, 2\omega, 3\omega, \cdots\)、最小正周期是\(T, T/2, T/3, \cdots\)，因此\(T\)是\(S_{\infty}[f](t)\)是的最小正周期. 这意味着\(S_{\infty}[f](t)\)会在整个\(\mathbb{R}\)上不断重复着\([t_0,t_0+T]\)的故事，这就把一个可能只在原区间内连续的函数\(f(t)\)伸展成了在\(\mathbb{R}\)上定义的、以\(T\)为周期的函数\(S(t)\)，即称为\uline{延拓}(continuation).
 
 若\(f(t)\)是奇函数或偶函数，那么其定义区间关于原点对称，此时\(\{a_n\}\)和\(\{b_n\}\)有一串全是\(0\)，此时傅里叶级数只剩下正弦（奇函数）或余弦项（偶函数），此时就称其为\uline{正弦级数}或\uline{余弦级数}. 
 
@@ -177,53 +229,32 @@
 \[g(t)=\begin{cases} f(t) \qquad t\in[0,T] \\ -f(-t) \qquad t \in [-T,0]\end{cases}\]
 然后对\(g(t)\)进行傅里叶展开，就可以得到正弦级数和余弦级数.
 
-% 一般来说，当把函数展成级数之后，要讨论级数的收敛性，最初傅里叶提出这个级数以后，没有对其收敛性进行严格讨论，这些工作是由其学生狄利克雷完成的，他的研究结果如下：
-% \begin{theorem}{傅里叶级数收敛定理}
-%     若函数\(f(x)\)的周期为\(T\)，或仅在一个长度为\(T\)的区间上有定义，同时满足以下三个条件：
-%     \begin{itemize}
-%         \item [(1)] \(f(x)\)在一个周期区间上绝对可积，即\(\displaystyle{\int_{T} |f(x)|\trm{d}x < +\infty}\).
-%         \item [(2)] 在任意有界的区间内，\(f(x)\)只能存在有限个极值点.
-%         \item [(3)] 在任意有界的区间内，\(f(x)\)只能存在有限个第一类间断点.
-%     \end{itemize}
-%     以上三者称为\uline{狄利克雷条件}(Dirichlet conditions)，此时该函数可以延拓成逐点收敛的傅里叶级数\(S(x)\)，满足：
-%     \begin{itemize}
-%         \item [(1)] \(S(x)\)的定义域是\(\mathbb{R}\).
-%         \item [(2)] 若\(x\)是\(f(x)\)的连续点，那么\(S(x)=f(x)\).
-%         \item [(3)] 若\(x\)是\(f(x)\)的间断点，那么\(\displaystyle{S(x)=\lim_{h \to 0}\frac{f(x+h)+f(x-h)}{2}}\).
-%     \end{itemize}
-% \end{theorem}
+以下是一些常用周期函数的傅里叶展开
+\newline
+(1) 梯形波（奇函数）
+\[f(t)\sim\frac{4A}{\pi\omega d}\sum_{n\,\trm{odd}}\sin\left(\frac{n\omega d}{n^2}\right)\sin(n\omega t)\]
+(2) 矩形脉冲（偶函数）
+\[f(t)\sim\alpha A + \frac{2A}{\pi}\sum_{n=1}^{\infty}\frac{\sin(\alpha n \pi)}{n} \cos(n\omega t)\]
+(3) 方波（奇函数）
+\[f(t) \sim \frac{4A}{\pi}\sum_{n\,\trm{odd}} \frac{\sin(n\omega t)}{n}\]
+(4) 三角波（奇函数）
+\[f(t) \sim \frac{8A}{\pi^2}\sum_{n\,\trm{odd}}\frac{i^{n-1}\sin(n\omega t)}{n^2}\]
+(5) 锯齿波（非奇非偶）
+\[f(t) \sim \frac{A}{2}-\frac{A}{\pi}\sum_{n=1}^{\infty} \frac{\sin(n\omega t)}{n}\]
 
-\subsection{从傅里叶级数到傅里叶变换}
 
-回顾复数项的傅里叶级数：
-\begin{reference}
-    如果周期为\(T\)的函数\(f(t)\)的性质足够良好以至于满足狄利克雷条件，则\(f(t)\)可做如下展开：
-    \begin{align*}
-        f(t) &= \sum_{n=-\infty}^{\infty}c_ne^{in\omega t} \\
-        &= \cdots + c_{-2}e^{-2i\omega t} + c_{-1}e^{-i\omega t} + c_{0}e^{i0\omega t} + c_{1}e^{i\omega t} + c_{2}e^{2i\omega t} + \cdots
-    \end{align*}
-    其中
-    \[c_n=\int_{t_0}^{t_0+T}f(x)e^{-in\omega t}\trm{d}t, \qquad \omega=\frac{2\pi}{T}\]
-\end{reference}
+\subsection{傅里叶级和傅里叶变换的联系}
 
-同时对比无限维向量空间中任意一个向量在基底\(\{\vec{\varepsilon}_n\}_{n=-\infty}^{\infty}\)的分解公式：
-\begin{align*}
-    \vec{\alpha} &= \sum_{n=-\infty}^{\infty}a_n\vec{\varepsilon}_n \\
-    &= \cdots + a_{-2}\vec{\varepsilon}_{-2} + a_{-1}\vec{\varepsilon}_{-1} + a_{0}\vec{\varepsilon}_{0} + a_{1}\vec{\varepsilon}_{1} + a_{2}\vec{\varepsilon}_{2} + \cdots
-\end{align*}
-这两个公式很相似. 甚至可以直接说，复数项的傅里叶级数实际上就是将\(f(t)\)在基底\(\mathcal{A}=\{e^{in\omega t}\}_{n=-\infty}^{\infty}\)上展开.
+刚才平行地导出了傅里叶级数和傅里叶变换，很快也很自然，但傅里叶级数和傅里叶变换的联系却被忽略了，这一节就来补上这部分的内容。
 
-\textit{
-    联系向量相加的几何意义，向量的基分解公式告诉我们，空间中任意一个向量\(\vec{\alpha}\)都可以由每一个\(\vec{\varepsilon}_n\)伸长或缩短为为原来的\(a_n\)倍之后首尾相接得到. 由于\(e^{in\omega t}\)在复平面上表现为一个以角速度\(n\omega\)旋转的单位向量. 所以复数项的傅里叶级数告诉我们，\(f(t)\)（更准确地说是起点位于原点、终点在实轴上\(f(t)\)处的向量）可以由多个正在分别以角速度\(\{\cdots, -2\omega, -\omega, 0, \omega, 2\omega, \cdots\}\)旋转、长度分别为\(\{\cdots, c_{-2}, c_{-1}, c_0, c_1, c_2, \cdots\}\)的向量首尾相接得来（负的角速度表示方向相反），同时还能保证这些向量首尾相接之后终点恰好在实轴上.
-}
+联系向量相加的几何意义，向量的基分解公式告诉我们，空间中任意一个向量\(\vec{\alpha}\)都可以由每一个\(\vec{\varepsilon}_n\)伸长或缩短为为原来的\(a_n\)倍之后首尾相接得到. 由于\(e^{in\omega t}\)在复平面上表现为一个以角速度\(n\omega\)旋转的单位向量. 所以复数项的傅里叶级数告诉我们，\(f(t)\)（更准确地说是起点位于原点、终点在实轴上\(f(t)\)处的向量）可以由多个正在分别以角速度\(\{\cdots, -2\omega, -\omega, 0, \omega, 2\omega, \cdots\}\)旋转、长度分别为\(\{\cdots, c_{-2}, c_{-1}, c_0, c_1, c_2, \cdots\}\)的向量首尾相接得来（负的角速度表示方向相反），同时还能保证这些向量首尾相接之后终点恰好在实轴上.
 
-\textit{
-    然而这些旋转向量的角速度是分立的，存在角速度为\(\omega\)的旋转向量，也存在角速度为\(\omega\)的旋转向量，却不存在角速度为\(1.5\omega\)的旋转向量. 角速度值最小间隔是\(\Delta \omega = \omega =\dfrac{2\pi}{T}\). 如果将\(T\)增大，那么\(\Delta \omega\)就会减小，当\(T\to\infty\)时，\(\Delta \omega \to 0\)，这时可以认为\(f(t)\)展开的基底是\(\mathcal{A}=\{e^{i\omega t}\}_{\omega \in \mathbb{R}}\)，根据正交展开的思想，这时应该改写为
-    \[f(t)=\int_{\mathbb{R}}c_\omega e^{i\omega t}\trm{d}t\]
-    其中系数
-    \[c_\omega = \frac{\langle f(t), e^{i\omega t} \rangle}{\langle e^{i\omega t},e^{i \omega t} \rangle} = \int_{\mathbb{R}}f(t)\overline{e^{i\omega t}}\trm{d}t=\int_{\mathbb{R}}f(t)e^{-i\omega t}\trm{d}t\]
-    这就是傅里叶变换及其反变换，但你会发现\(\langle e^{i\omega t},e^{i \omega t} \rangle\)似乎算不出来，所以为了严谨起见，以下仍通过定积分导出. 关于这个内积到底怎么算，接下来会通过严格定义某些东西把它彻底解决.
-}
+然而这些旋转向量的角速度是分立的，存在角速度为\(\omega\)的旋转向量，也存在角速度为\(\omega\)的旋转向量，却不存在角速度为\(1.5\omega\)的旋转向量. 角速度值最小间隔是\(\Delta \omega = \omega =\dfrac{2\pi}{T}\). 如果将\(T\)增大，那么\(\Delta \omega\)就会减小，当\(T\to\infty\)时，\(\Delta \omega \to 0\)，这时可以认为\(f(t)\)展开的基底是\(\mathcal{A}=\{e^{i\omega t}\}_{\omega \in \mathbb{R}}\)，根据正交展开的思想，这时应该改写为
+\[f(t)=\int_{\mathbb{R}}c_\omega e^{i\omega t}\trm{d}t\]
+其中系数
+\[c_\omega = \frac{\langle f(t), e^{i\omega t} \rangle}{\langle e^{i\omega t},e^{i \omega t} \rangle} = \int_{\mathbb{R}}f(t)\overline{e^{i\omega t}}\trm{d}t=\int_{\mathbb{R}}f(t)e^{-i\omega t}\trm{d}t\]
+这就是傅里叶变换及其反变换，但你会发现\(\langle e^{i\omega t},e^{i \omega t} \rangle\)似乎算不出来，所以为了严谨起见，以下仍通过定积分导出. 关于这个内积到底怎么算，接下来会通过严格定义某些东西把它彻底解决.
+
 
 \vspace{0.5cm}
 
@@ -334,13 +365,24 @@
 
 \subsection{傅里叶级数的收敛性讨论}
 
-一般来说，当把函数展成级数之后，要讨论级数的收敛性，最初傅里叶提出这个级数以后，没有对其收敛性进行严格讨论，这些工作是由其学生狄利克雷完成的. 尽管这部分工作并没有上文所讨论的傅里叶级数的提出与合理化那么具有开创性，但需要用到的数学工具却更加多而丰富.
+这是最硬核的一节，需要做大量的数学推导. 一般来说，当把函数展成级数之后，要讨论级数的收敛性，最初傅里叶提出这个级数以后，没有对其收敛性进行严格讨论，这些工作是由其学生狄利克雷完成的. 尽管这部分工作并没有上文所讨论的傅里叶级数的提出与合理化那么具有开创性，但需要用到的数学工具却更加多而丰富.
 
 \subsubsection{吉布斯现象}
 
-有跳跃间断点的函数，观察它的傅里叶级数的逼近情况. 
-% insert image
-可以发现随着逼近程度的增加（即\(n\)不断增大），部分和在间断点两侧的值总是会出现峰值无法减小的震荡（这个峰值又称为\uline{超调量}），超调量几乎与\(n\)无关，但是与跳跃的高度成正比. 设跳跃的高度为\(a\)，随着\(n\)的增加，超调量的值近似为\(\beta a=0.0895a\)，即大约\(9\%\).
+对于有跳跃间断点的函数，观察它的傅里叶级数的逼近情况. 以周期\(T=8\)、高位值\(A=2\)、高位占空\(\tau=4\)的方波为例，一个周期内它的解析式可以写作
+\[f(t)=A\left[\varepsilon\left(t+\frac{\tau}{2}\right)-\varepsilon\left(t+\frac{\tau}{2}\right)\right]=2\left[\varepsilon\left(t+2\right)-\varepsilon\left(t+2\right)\right]\]
+其指数形式的傅里叶级数系数为 
+\[c_n=\frac{1}{T}\int_{T}f(t)e^{-in\omega t}\trm{d}t=\int_{-2}^{2}Ae^{-in\omega t}\trm{d}t = \frac{A}{in\omega T}\left[e^{-in\omega t}-e^{in\omega t}\right] = \trm{sinc}\frac{\pi n}{2}\]
+因此
+\[S_N[f](t) = \sum_{n=-N}^{N}\trm{sinc}\frac{\pi n}{2}e^{in\omega t} = 1+2\sum_{n=0}^{N}\trm{sinc}\frac{\pi n}{2}\cos\frac{\pi t}{4}\]
+
+\begin{figure*}[hbtp]
+    \centering
+    \includegraphics[width=\textwidth]{gibbs2.eps}
+    \caption{吉布斯现象}
+\end{figure*}
+
+把图像画出来，可以发现随着逼近程度的增加（即\(n\)不断增大），部分和在间断点两侧的值总是会出现峰值无法减小的震荡（这个峰值又称为\uline{超调量}），超调量几乎与\(n\)无关，但是与跳跃的高度成正比. 设跳跃的高度为\(a\)，随着\(n\)的增加，超调量的值近似为\(\beta a=0.0895a\)，即大约\(9\%\).
 
 用数学语言来描述，设被展开函数为\(f(x)\)，其复数项傅里叶级数的部分和为\(S_N[f](x)\)，即
 \[ S_N[f](x) = \sum_{n=-N}^{N} c_ke^{in\omega x} = \sum_{n=-N}^{N}\int_T f(t)e^{-in\omega t}\trm{d}t e^{in\omega x} = \sum_{n=-N}^{N}\int_Tf(t)e^{in\omega(x-t)}\trm{d}t \]
@@ -348,8 +390,8 @@
 \begin{theorem}{吉布斯现象(Gibbs' phenomenon)}
     若\(f(x)\)的周期为\(T\)，跳跃间断点为\(x_0\)，两端值之差\(f(x_0^+)-f(x_0^-)=a\)，则有
     \[\lim_{N \to \infty} S_N[f]\left(x_0+\frac{T}{2N}\right)=f(x_0^+)+\beta a\]
-    \[\lim_{N \to \infty} S_N[f]\left(x_0-\frac{T}{2N}\right)=f(x_0^-)+\beta a\]
-    其中\(\beta\)表示超调量，为
+    \[\lim_{N \to \infty} S_N[f]\left(x_0-\frac{T}{2N}\right)=f(x_0^-)-\beta a\]
+    其中\(\beta\)表示超调量相对于跳跃高度的比例，为
     \[\beta=\frac{1}{\pi}\int_{0}^{\pi}\frac{\sin(x)}{x}\trm{d}x-\frac{1}{2} \approx 0.08948987 \cdots\]
 \end{theorem}
 \textit{
@@ -388,13 +430,33 @@
         &=  \lim_{N \to \infty} \sum_{n=1}^{N}\frac{\pi}{N}\frac{\sin\left(\frac{n\pi}{N}\right)}{\frac{n\pi}{N}}  = \pi \lim_{N\to\infty} \sum_{n=1}^{N}\frac{1}{N}\trm{sinc}\left(\frac{n\pi}{N}\right)\\
         &= \pi\int_{0}^{1}\frac{\sin(\pi x)}{\pi x}\trm{d}x = \trm{Si}(\pi) = \pi\left(\frac{1}{2}+\beta\right)
     \end{align*}
-    第二段还是凑黎曼和
-    \[{\color{blue}I_2(\infty)} = \lim_{N \to \infty}{\color{blue}\sum_{n=0}^{N}\frac{1}{n}\sin\left(\frac{n\pi}{N}-n\omega L \right)} = \pi\left(\frac{L}{T}-\frac{1}{2}\right)\]
-    第三段还是凑黎曼和
+    至于第二段，需要给出一个引理
+}
+\begin{lemma}{}
+    \[\sum_{n=1}^{\infty}\frac{\sin(kn)}{n}=\frac{\pi-k}{2}\]
+\end{lemma}
+\textit{
+    该引理的证明：构造\((0,\pi]\)上的函数
+    \[f(x)=\left\{\begin{aligned} &\frac{\pi-x}{2}, &x \in [0,\pi] \\ &\frac{-\pi-x}{2}, & x \in (-\pi, 0) \end{aligned} \right. \]
+    是奇函数，展成傅里叶级数之后只存在\(\sin\)项
+    \[b_n = \frac{1}{\pi}\int_{-\pi}^{\pi}f(x)\sin(nx)\trm{d}x = \frac{2}{\pi}\int_{0}^{\pi}\frac{\pi-x}{2}\sin(nx)\trm{d}x=\frac{1}{n}\]
+    因此在\([0,\pi]\)上\(\displaystyle{\frac{\pi-x}{2}=\sum_{n=1}^{\infty}\frac{\sin(nx)}{n}}\)，引理证毕.
+}
+
+\textit{
+    根据引理，有
+    \begin{align*}
+        {\color{blue}I_2(\infty)} 
+        &= \lim_{N \to \infty}{\color{blue}\sum_{n=0}^{N}\frac{1}{n}\sin\left(\frac{n\pi}{N}-n\omega L \right)} 
+        = \lim_{N \to \infty}{\color{blue}\sum_{n=0}^{N}\frac{1}{n}\sin \left[n\left(\frac{\pi}{N}-\omega L \right)\right]} \\
+        & \sim \lim_{N \to \infty} \frac{\pi-\left(\frac{\pi}{N}-\omega L \right)}{2}
+        = \pi\left(\frac{L}{T}-\frac{1}{2}\right)
+    \end{align*}
+    第三段也可以根据引理得到
     \begin{align*}
         {\color{brown}I_3(\infty)} &= \lim_{N \to \infty}{\color{brown}\sum_{n=1}^{N}\frac{1}{n}\int_{a}^{b}f'(t)\sin\left[\frac{n\pi}{N}+n\omega(t-a)\right]\trm{d}t} \\
         &= \lim_{N \to \infty} \int_{a}^{b}h'(t)\sum_{n=1}^{N}\frac{1}{n}\sin\left[\frac{n\pi}{N}+n\omega(t-a)\right]\trm{d}t \\
-        \mbox{\textnormal{(凑黎曼和)}} &= \pi \int_{a}^{b}h'(t)\left(\frac{t-a}{T}-\frac{1}{2}\right)\trm{d}t \\
+        \mbox{\textnormal{(根据引理)}} &= \pi \int_{a}^{b}h'(t)\left(\frac{t-a}{T}-\frac{1}{2}\right)\trm{d}t \\
         &= \frac{\pi}{T}\int_{a}^{b}h'(t)t\trm{d}t-\pi\left(\frac{a}{T}+\frac{1}{2}\right)\int_{a}^{b}h'(t)\trm{d}t \\
         \mbox{\textnormal{(分部积分)}} &= \frac{\pi}{T}\left[h(b)b-h(a)a-\int_{a}^{b}h(t)\trm{d}t\right]-\pi[h(b)-h(a)]\left(\frac{a}{T}+\frac{1}{2}\right)
     \end{align*}
@@ -501,6 +563,29 @@
 
 \subsubsection{在任意处间断点的收敛性讨论}
 
+TBD
+
+跨越千山万水，经过了好几页的数学推导，我们终于得到了傅里叶级数收敛的定理.
+\begin{theorem}{傅里叶级数收敛定理/狄利克雷定理}
+    若函数\(f(x)\)的周期为\(T\)，或仅在一个长度为\(T\)的区间上有定义，同时满足以下三个条件：
+    \begin{itemize}
+        \item [(1)] \(f(x)\)在一个周期区间上绝对可积，即\(\displaystyle{\int_{T} |f(x)|\trm{d}x < +\infty}\).
+        \item [(2)] 在任意有界的区间内，\(f(x)\)只能存在有限个极值点.
+        \item [(3)] 在任意有界的区间内，\(f(x)\)只能存在有限个第一类间断点.
+    \end{itemize}
+    以上三者称为\uline{狄利克雷条件}(Dirichlet conditions)，此时该函数可以延拓成的\textbf{一致收敛的}傅里叶级数\(S_{\infty}[f](x)\)，满足：
+    \begin{itemize}
+        \item [(1)] \(S_{\infty}[f](x)\)的定义域是\(\mathbb{R}\).
+        \item [(2)] 若\(x\)是\(f(x)\)的连续点，那么\(S_{\infty}[f](x)=f(x)\).
+        \item [(3)] 若\(x\)是\(f(x)\)的间断点，那么\(\displaystyle{S_{\infty}[f](x)=\lim_{h \to 0}\frac{f(x+h)+f(x-h)}{2}}\).
+    \end{itemize}
+\end{theorem}
+
+
+\subsection{时域-频域的不确定性原理}
+TBD
+傅里叶带宽定理、Gabor极限，可以同海森堡不确定性原理相联系.
+
 \subsection{单位冲激函数（狄拉克delta函数）}
 
 讨论傅里叶变换怎能不提到它？毕竟它最初就随着傅里叶变换被首先提出来的（所以提出者不是狄拉克，但首先由狄拉克下了较为严格的定义）. \uline{单位冲激函数}(unit impulse function)是一个非常特殊的函数，很难给出显式的定义，但其性质又决定了它具有广泛的用途.
@@ -509,9 +594,9 @@
 
 最常见地，它由以下两个等式隐式地定义出来：
 \[\left\{\begin{aligned} & \int_{-\infty}^{\infty}\delta(x)\trm{d}x=1 \\ & \forall x \neq 0: \delta(x)=0. \end{aligned}\right.\]
-根据积分的几何意义容易发现，它在\(x=0\)处的值只能为正无穷大.
+根据积分的几何意义容易发现，它在\(x=0\)处的值只能为正无穷大，这在黎曼积分的意义下是一种不可积的函数；即使\(x=0\)看成无穷间断点，那么黎曼积分为\(0\)，而不可能是\(1\). 黎曼积分不允许它存在，这充分说明了\(\delta\)函数的特殊性.
 
-历史上，傅里叶在《热分析理论》一书中考虑了如下积分，把它用现在的形式写下来：
+至于这个函数是怎么被提出来的，最初傅里叶在《热分析理论》(\textit{Théorie analytique de la chaleur})一书中考虑了如下积分，把它用现在的形式写下来：
 \[f(x) = \frac{1}{2\pi}\int_{-\infty}^{+\infty}\trm{d}\omega e^{i\omega x} \int_{-\infty}^{\infty}\trm{d}\alpha f(\alpha)e^{-i\omega x}\]
 柯西把它改成了另一种更好看的形式
 \[f(x) = \frac{1}{2\pi}\int_{-\infty}^{\infty}\left[\int_{-\infty}^{\infty}e^{i\omega(x-\alpha)}\trm{d}\omega\right]f(\alpha)\trm{d}\alpha\]
@@ -529,7 +614,7 @@
     \item[(2)] 全域积分为1：\[\int_{-\infty}^{\infty}f_n(x)\trm{d}x=1\] 
     \item[(3)] 逼近性质：\[\lim_{n\to\infty}f_n(0)=+\infty\] 
 \end{itemize}
-以下列举几个例子：
+随着\(n\)的增大，\(f_n(x)\)的形态就越来越接近\(\delta\)函数，以下列举几个例子：
 \begin{itemize}
     \item [(1)] 采样函数
     \[f_n(x)=\frac{\sin(nx)}{\pi x}\]
@@ -537,12 +622,15 @@
     \[f_n(x)=\frac{1}{\sqrt{\pi n}}\exp\left(-\frac{x^2}{n}\right)\]
     \item [(3)] 泊松核
     \[f_n(x) = \frac{1}{\pi}\frac{n}{x^2+n^2}\]
-    \item [(4)] 柯西主值
+    \item [(4)] 柯西主值（其实等价于采样函数）
     \[f_n(x) = \int_{-n}^{n}e^{i\omega x}\trm{d}\omega\]
 \end{itemize}
 
-\(delta\)函数还可看作是某些函数的形式极限. 之所以说“形式”极限，是因为若要真正地计算极限，会发现它根本就不存在，但随着极限的条件“逐渐”被满足，得到的函数形态也越来越接近\(\delta(x)\). 首先考虑正态分布密度函数\(\displaystyle{f(x) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]}\)，它是一条钟形曲线，并且和\(\delta(x)\)有一个共同点，那就是“曲线”下的面积都为\(1\)，令\(\mu=0\)，同时\(\sigma\)尽可能地小，得到的函数就趋于\(\delta(x)\)，即
-\[\delta(x) = \lim_{\sigma \to 0} \frac{1}{\sqrt{\pi}\sigma}\exp\left(\frac{x^2}{\sigma^2}\right)\]
+\begin{figure*}[hbtp]
+    \centering
+    \includegraphics[width=\textwidth]{deltaapprox.eps}
+    \caption{\(\delta\)函数的逼近}
+\end{figure*}
 
 \subsubsection{关于积分定义的问题}
 
@@ -669,33 +757,38 @@ weak*拓扑的定义有点抽象.
 
 \subsection{采样和插值}
 
-采样定理是从连续到离散迈出的第一步，这个定理告诉我们，只要\(f(t)\)存在最高频率，那么可以等间距地记录\(f(t)\)的值，这些采样点可以完全确定\(f(t)\).
+\subsubsection{采样定理}
 
+采样定理是从连续到离散迈出的第一步，这个定理告诉我们，只要\(f(t)\)存在最高频率，那么可以等间距地记录\(f(t)\)的值，这些记录下来的离散的值可以完全确定连续的\(f(t)\).
 \textit{
-\noindent（以下推导过程是香农的原始思路）
 \newline
-假设\(f(t)\)的最高角频率是\(\omega_H\)，意思是当\(\omega > \omega_H\)时，均有\(\hat{f}(\omega)=0\)（注意不是没有定义，是等于\(0\)），那么在反傅里叶变换时可以使用\(\omega_H\)来代替其积分上下界，即
+（以下推导过程是香农的原始思路）
+\newline
+假设\(f(t)\)的最高角频率是\(\omega_H\)，意思是当\(\omega > \omega_H\)时，均有\(\hat{f}(\omega)=0\)（不一定无定义），那么在傅里叶逆变换时可以使用\(\omega_H\)来代替其积分上下界，即
 \[f(t) = \mathcal{F}^{-1}[\hat{f}(\omega)](t) = \frac{1}{2\pi}\int_{-\infty}^{\infty}\hat{f}(\omega)e^{i\omega t}\trm{d}\omega = \frac{1}{2\pi}\int_{-\omega_H}^{\omega_H}\hat{f}(\omega)e^{i\omega t}\trm{d}\omega\]
-若令\(\omega_B=2\omega_H\)，则
-\[\frac{2\pi}{\omega_B}f\left(-\frac{2\pi k}{\omega_B}\right) = \frac{1}{\omega_B}\int_{-\omega_B/2}^{\omega_B/2}\hat{f}(\omega)e^{\frac{i2\pi k\omega}{\omega_B}}\trm{d}\omega\]
-将\(\hat{f}(\omega)\)延拓成复数项形式的傅里叶级数（周期自然是\(\omega_B\)，另外这里\(\omega\)已经有了别的含义，所以在展开式中直接写成\(2\pi/\omega_B\)），接着可以发现系数\(c_k\)能被换掉
-\[ \hat{\tilde{f}}(\omega) = \sum_{k=-\infty}^{+\infty}{\color{red} c_k}e^{\frac{i2\pi k\omega}{\omega_B}} 
-= \sum_{k=-\infty}^{+\infty} {\color{red} \left[\frac{1}{\omega_B} \int_{\omega_B}\hat{f}(\omega)e^{-\frac{i2\pi k\omega}{\omega_B}}\trm{d}\omega\right]}e^{\frac{i2\pi k\omega}{\omega_B}} 
-= \sum_{k=-\infty}^{+\infty} {\color{red} \frac{2\pi}{\omega_B}f\left(-\frac{2\pi k}{\omega_B}\right)}e^{\frac{i2\pi k\omega}{\omega_B}}\]
-仔细思考这个等式的含义，左边是\(f(t)\)的频谱函数，它经过反傅里叶变换即可得到完整的\(f(t)\)，右边是个无穷级数，参与到该无穷级数运算的有关于\(f(t)\)的东西只有\(f(0), f(\pm 2\pi/\omega_B), f(\pm 4\pi/\omega_B), f(\pm 6\pi/\omega_B), \cdots\)这些等间隔的采样值. 这就意味着，只要知道了这些采样值，就可以知道\(f(t)\)每一点的值，而且是精确值.
+若令\(B=2\omega_H\)表示双边带宽，则
+\[\frac{2\pi}{B}f\left(-\frac{2\pi k}{B}\right) = \frac{1}{B}\int_{-B/2}^{B/2}\hat{f}(\omega)e^{\frac{i2\pi k\omega}{B}}\trm{d}\omega\]
+将\(\hat{f}(\omega)\)延拓成复数项形式的傅里叶级数（周期自然是\(B\)，另外这里\(\omega\)是哑变量，所以在展开式中直接写成\(2\pi/B\)），接着可以发现系数\(c_k\)能被换掉
+\[ \hat{\tilde{f}}(\omega) = \sum_{k=-\infty}^{+\infty}{\color{red} c_k}e^{\frac{i2\pi k\omega}{B}} 
+= \sum_{k=-\infty}^{+\infty} {\color{red} \left[\frac{1}{B} \int_{B}\hat{f}(\omega)e^{-\frac{i2\pi k\omega}{B}}\trm{d}\omega\right]}e^{\frac{i2\pi k\omega}{B}} 
+= \sum_{k=-\infty}^{+\infty} {\color{red} \frac{2\pi}{B}f\left(-\frac{2\pi k}{B}\right)}e^{\frac{i2\pi k\omega}{B}}\]
+仔细思考这个等式的含义，左边是\(f(t)\)的频谱函数，它经过反傅里叶变换即可得到完整的\(f(t)\)，右边是个无穷级数，参与到该无穷级数运算的有关于\(f(t)\)的东西只有\(f(0), f(\pm 2\pi/\omega_B), f(\pm 4\pi/\omega_B), f(\pm 6\pi/\omega_B), \cdots\)这些离散的值. 这就意味着，只要知道了这些采样值，就可以知道\(f(t)\)每一点的值，而且是精确值.
 \newline
-在给出最终定理之前，再把式子整理一下. 考虑到\(\omega_B\)表示角频率，那么\(\displaystyle{\frac{2\pi}{\omega_B}}\)就具有了时间的含义. 如果令\(\displaystyle{T_s=\frac{2\pi}{\omega_B}}\)，并设\(\displaystyle{f[n]=f(nT_s)}\)，再做个简单换元，就得到了时域采样定理.
+在给出最终定理之前，再把式子整理一下. 考虑到\(B\)表示角频率（的差值），那么\(\displaystyle{\frac{2\pi}{B}}\)就具有了时间间隔的含义. 如果令\(\displaystyle{T_s=\frac{2\pi}{B}}\)，并设\(\displaystyle{f[n]=f(nT_s)}\)，再做个简单换元，就得到了时域采样定理.
 }
 
-\begin{theorem}{奈奎斯特-香农采样定理(Nyquist-Shannon sampling theorem)}
-    如果一个函数\(f(t)\)的角频率不超过\(\omega_H\)，则\(f(t)\)可以被一系列间距为\(T_s=\dfrac{2\pi}{\omega_B}\)的采样点确定，其中\(\omega_B=2\omega_H\)称为\uline{奈奎斯特抽样率}(Nyquist sampling rate)，\(T_s\)称为\uline{奈奎斯特抽样间隔}(Nyquist sampling interval). 更进一步地，该函数对应的频域表达式为
+\begin{theorem}{奈奎斯特-香农采样定理(Nyquist-Shannon sampling theorem)/低通采样定理}
+    如果一个函数\(f(t)\)的角频率不超过\(\omega_H\)，则\(f(t)\)可以被一系列间距为\(T_s=\dfrac{\pi}{\omega_H}\)的采样点确定. 此时\(f(t)\)的双边频带宽度\(B=2\omega_H\)也称为\uline{奈奎斯特抽样率}(Nyquist sampling rate)，\(T_s\)称为\uline{奈奎斯特抽样间隔}(Nyquist sampling interval). 更进一步地，该函数对应的频域表达式为
     \[\hat{f}(\omega) = T_s \sum_{n=-\infty}^{\infty}f[n]e^{-iT_sn\omega}\]
 \end{theorem}
 
+换个角度想，为什么离散的采样值能
+
 对偶地，有频域上的函数也有采样定理
 \begin{corollary}{频域采样定理}
-    如果时域函数仅在长度为\(T\)的区间内有定义，记\(\omega_0=\dfrac{2\pi}{T}\)为频域采样间隔，\(\hat{f}[n]=\hat{f}(n\omega_0)\)为频域采样序列，则根据这个序列可确定延拓出完整的时域函数
-    \[f(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\hat{f}[n]e^{in\omega_0t}\]
+    如果时域函数\(f(t)\)仅在长度为\(T\)的区间内有定义，记\(\omega_0=\dfrac{2\pi}{T}\)为频域采样间隔，\(\hat{f}[n]=\hat{f}(n\omega_0)\)为频域采样序列，则根据这个序列可确定延拓出完整的时域函数
+    \[\tilde{f}(t)=\frac{1}{T}\sum_{n=-\infty}^{+\infty}\hat{f}[n]e^{in\omega_0t}\]
+    其中\(\tilde{f}(t)\)是\(f(t)\)的以\(T\)为周期的延拓.
 \end{corollary}
 
 接下来这条推论非常重要，它非常宏观地刻画了时域和频域的对偶性：时域和频域只要有一个域是离散的，那么另一个域就是连续且周期的的，反之成立. 这同时也否定了后面出现的离散傅里叶变换精确刻画原函数的可能性.
@@ -711,7 +804,8 @@ weak*拓扑的定义有点抽象.
     \end{align*}
     频域的证明类似.
 }
-\vspace{1.0cm}
+
+\subsubsection{插值公式：从采样点恢复原信号}
 
 采样定理好是好，但想从采样点还原完整的\(f(t)\)，要先计算一波无穷级数，然后再反傅里叶变换才行. 为何不现在就完成这个过程呢？
 上式两边同时求傅里叶反变换，得到
@@ -734,7 +828,7 @@ weak*拓扑的定义有点抽象.
 \end{theorem}
 之所以称为插值公式，连续函数\(f(t)\)可以看做\(f[n]\)的延拓，因为当\(T_s=1\)时，有\(f(n)=f[n]\).
 
-\subsection{离散时间傅里叶变换}
+\subsubsection{离散时间傅里叶变换}
 
 采样定理说明了，完整的频域表达式可以由时域上间隔为\(T_s\)的采样点确定. 采样点组成的序列相当于取值限定在\(nT_s, n\in \mathbb{Z}\)的函数，而数列本身是取值限定在整数的函数. 若令\(T_s=1\)，那么采样点序列也就成了数列. 这告诉我们，不仅是连续函数，数列也可以做傅里叶变换，为了有别于连续函数的傅里叶变换，时域采样序列的傅里叶变换称为“离散时间傅里叶变换”.
 
@@ -812,5 +906,24 @@ weak*拓扑的定义有点抽象.
         称为\(f[n]\)的\uline{共轭反对称分量}.
     \end{definition}
 \end{itemize}
+
+\subsection{快速（离散）傅里叶变换}
+\subsubsection{基2-FFT算法}
+TBD
+\subsubsection{基4-FFT算法}
+TBD
+\subsubsection{库利-图基算法}
+TBD
+\subsubsection{Chirp-Z}
+TBD
+
+\subsection{拉普拉斯变换：给傅里叶变换打补丁}
+TBD
+
+\subsection{Z变换：给离散傅里叶变换打补丁}
+TBD
+
+\subsection{设计低通滤波器}
+TBD
 
 \end{document}

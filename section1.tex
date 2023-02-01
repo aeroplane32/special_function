@@ -2,6 +2,1752 @@
 
 \begin{document}
 
+\part{数理逻辑和集合论}
+
+在高等数学中，场论和多元函数微积分建立在一元函数微积分之上，后者又建立在极限理论上. 一层层搭起来，你也许会好奇数学大厦最底层架构究竟是怎样的. 其实数学大厦并没有什么“最底层架构”的说法，因为这已经涉及到了哲学的层面. 但目前的主流是将数理逻辑和公理化的集合论作为底层架构，从而推演出数学大厦其他部分，而集合论公理的选取又以\uline{策梅洛-弗兰克尔集合论}(ZF)为主流，在大部分时候会加上选择公理(AC). 此外，\uline{冯·诺伊曼 - 博内伊 - 哥德尔集合论} (NBG)中“类”的概念在某些时候又特别有用，所以经常也一并讨论，并将选择公理的适用范围推广到了“类”上. 公理化集合论的前身是朴素集合论，曾触发了罗素悖论而被很多数学家，后来引入了公理化方法规避了罗素悖论才得以重新启用. 然而公理化方法是形式逻辑的内容，其在定义各种概念时引入了朴素集合论的相关概念. 所以接下来首先介绍朴素集合论，然后讨论数理逻辑的内容，最后到公理集合论.
+
+\section{数学第一步，朴素集合论}
+
+朴素集合论于19世纪70年代由康托尔(G. Cantor)开始研究，它对“什么是集合”没有限制，把任意对象放在一起都可以形成\uline{集合}(set)，而这些对象就称为\uline{元素}(element)，记作“元素\(\in\)集合”. 具体来说，关于“什么是集合”的问题，有如下\uline{概括原则}(comprehensive scheme)：
+\[\mbox{对于任意命题}\varphi\mbox{，}\{x|\varphi\}\mbox{是一个集合.}\]
+这样构造集合的方法我们称为\uline{描述法}，当然还有\uline{列举法}，欲说明集合\(A\)中只含有\(1,2,3,4\)这4个元素，写作\(A=\{1,2,3,4\}\)即可. 使用列举法来描述集合时，元素的书写顺序是无序的，也就是说\(\{1,2,3\}\)和\(\{1,3,2\}\)是相同的集合，同时我们也要求列举时元素不能重复，例如\(\{1,2,2,3\}\)就是错误的列举，不过我们不必画地为牢，可以认为它等于\(\{1,2,3\}\)，但不是最简的表达而已，剧透：公理集合论中的外延公理肯定了这种想法.
+
+除了“属于”以外，还有“包含”的概念. 如果集合\(A\)的元素在\(B\)中都能找到，就称\(A\)是\(B\)的\uline{子集}(subset)、\(B\)是\(A\)的\uline{超集}(superset)，或称\(B\)包含\(A\)，记作\(A \subseteq B\)，欲进一步表明\(A \neq B\)，则写作\(A \subset B\).
+
+有两个特殊的集合，第一个什么元素都没有，称为\uline{空集}(empty set)，记作\(\emptyset\)；第二个集合是所有集合的集合，可以用描述法表示为\(\{x|x=x\}\)，记作\(\mathbb{V}\)，称为\uline{大全集}或者\uline{集合宇宙}(universe).
+
+此外，集合有几种基本运算，集合\(A\)和\(B\)的\uline{并集}(union)由\(A\)的全部元素和\(B\)的全部元素组成，没有其他元素，记作\(A \cup B\)；集合\(A\)和\(B\)的\uline{交集}(intersection)由\(A\)和\(B\)共有的元素组成，记作\(A \cap B\)；\(A\)和\(B\)的\uline{差集}(difference)由属于\(A\)但不属于\(B\)的元素组成，记作\(A-B\)，有一个类似的概念称为\uline{补集}(complement)，\(B\)相对于\(A\)的补集就是\(A-B\)，接下来不使用这个概念；\(A\)和\(B\)的\uline{对称差集}(symmetric difference)由只属于\(A\)和\(B\)其中一个的元素组成，等价于\((A-B)\cup(B-A)\)，记作\(A\triangle B\)，这个概念很少用到；集合\(A\)的\uline{幂集}(power set)由\(A\)的子集构成，记作\(\mathcal{P}(A)\). 集合的并、交、补和命题逻辑的或、且、非表达的意思相近，但根据定义可以看出来，后者更为基本.
+
+虽然朴素集合论提出的概念非常少，但是我们已经可以借助它完成很多事情了.
+
+\section{关系理论}
+
+\subsection{一般的二元关系}
+
+集合中的元素书写顺序是无序的，因此我们希望发明出一种符号，也像集合由多个对象组成，但将其元素列举出来时的书写是有序的. 坐标就是这样的记号，例如\((1,2,3)\neq(1,3,2)\). 考虑到集合论自诞生以来便有一统数学江湖之势，我们希望能将坐标看作一种特殊的集合. 目前大多采用Kuratowski的定义：
+\[(a,b) := \{\{a\},\{a,b\}\}\]
+可以证明这种定义时有效的：当且仅当\(a=c,b=d\)时，才有\((a,b)=(c,d)\). 对于含有更多元素的有序组，按照以下这种方式定义：
+\[(a,b,c):=(a,(b,c))\]
+\[(a,b,c,d):=(a,(b,c,d))\]
+
+定义好了有序对，我们便可以讨论一些高级话题了. 定义两个集合的\uline{直积}(cartesian product)：
+\[A \times B := \{(a,b) | a \in A \mbox{且} b \in B\}\]
+通俗地理解，左元来自第一个集合、右元来自第二个集合的所有可能的有序对组成的集合就是两个集合的直积. 例如\(A=\{1,2\},B=\{3,4,5\}\)，则\(A\times B=\{(1,3),( 2,3),(1,4),(2,4),(1,5),(2,5)\}\).
+
+\uline{二元关系}(binary relation)是直积的子集，我们常说的描述关系的语句都符合这种格式：“\(A\)和\(B\)具有\(R\)关系”，以表明不同的对象之间存在联系. 有序对就体现了这样的联系，而联系是普遍的，同种联系可能存在不止一对元素之间，把具有同种联系的多对元素放入一个集合\(R\)，则该集合就完整地刻画了这种联系. 因此“\(x\)和\(y\)具有\(R\)关系”就形式地写成\((x,y) \in R\)，有时也习惯性地写作\(R(x,y)\)或\(xRy\).
+
+例如已知集合\(A=\{1,2,3,4\}\)，在上面建立二元关系“\(<\)”，其含义同我们日常所理解的“\(<\)”，因为\(1<2\)、\(1<3\)、\(1<4\)、\(2<3\)、\(2<4\)和\(3<4\)，所以\(<\,\,=\,\,\{(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)\}\)，充分贯彻了集合论“万物皆集合”的思想. 接下来给出关系的正式定义.
+
+\begin{definition}{二元关系}
+    对于集合\(R\)，如果存在\(X,Y\)，使得\(R \subseteq X \times Y\)，则称\(R\)为\uline{二元关系}(binary relation). 如果\(X = Y\)，即\(R \subseteq X^2\)，则可以说该关系\uline{装备}(equipped)在集合\(X\)上，此时可将该集合及其关系一并记作\(\langle X; R \rangle\).
+    \begin{itemize}
+        \item  左元组成的集合称为\uline{定义域}(domain)，记作\(\trm{dom}(R)= \{x |(x,y)\in R\}\)； 右元组成的集合称为\uline{值域}(range)，记作\(\trm{ran}(R)= \{y | (x,y) \in R\}\)；值域的超集称为\uline{陪域}(codomain).
+        \item  定义域的子集\(X\)中的元素作为左元放入\(R\)得到的右元集合\(Y=\{y|xRy\}\)称为\(X\)在\(R\)下的\uline{像}(image)，记作\(Y=R[X]\)；反过来，集合\(Y\)的元素作为右元放入关系\(R\)得到的左元集合\(X=\{x|xRy\}\)称为\(Y\)在\(R\)下的\uline{逆像}(preimage)，记作\(X=R^{-1}(Y)\).
+        \item  对于两个关系\(R,S\)，称\(S \circ R = \{(x,z) | xRy\mbox{ 且 }yRz\}\)为\(R\)和\(S\)的\uline{复合}(composition).
+        \item  对于关系\(R\)，若\(xRx\)恒成立，则称\(R\)是\uline{自反的}(reflexive)；若\(xRx\)恒不成立，那就是\uline{反自反的}(anti-reflexive).
+        \item  对于关系\(R\)，若\(xRy\)成立能推出\(yRx\)成立，则称\(R\)是\uline{对称的}(symmetric)；若\(xRy\)与\(yRx\)只有一个成立，或两者都成立时能推出\(x=y\)，则称\(R\)是\uline{反对称的}(antisymmetric).
+        \item  对于关系\(R\)，若\(xRy\)和\(yRz\)成立能推出\(xRz\)成立，则称\(R\)是\uline{传递的}(transitive).
+        \item  对于关系\(R\)，若存在唯一的元素\(x_0\)，使得\(xRx_0\)能推出\(x=x_0\)，则称\(R\)是\uline{良基的}(well-founded)，而该元素称为关于\(R\)的最小元（如果觉得难以理解可以试试把\(R\)看成\(\leq\)）.
+        \item  对于关系\(R \subseteq X \times X\)，若\(X\)任意两个元素\(x,y\)满足\(xRy,yRx,x=y\)三者至少其一，则称\(R\)在\(X\)上是\uline{连通的}(connective)（\(X\)中的任意两个元素都会被\(R\)触及到）.
+    \end{itemize}
+\end{definition}
+
+需要注意，自反性与反自反性可以两者都不具有，即\(xRx\)有时成立有时不成立；对称性与反对称性也是同样的道理. 
+
+\subsection{序关系}
+
+\uline{序关系}(ordering)作为一个大类没有统一的定义，但共同点是\textbf{装备在某个集合上}，且\textbf{至少拥有传递性}，而在满足传递性的基础上，如果还具有更多的性质，那么就有不同的名称，给个定义：
+\begin{definition}{各种各样的序关系}
+    具有反自反性的序关系也称为\uline{严格的}(strict)序关系，否则就是不严格的序关系（例如\(<\)与\(\leq\)），\textbf{接下来如果没有特别强调，默认为非严格的序关系，对自反性不做要求}.
+    \newline
+    具有传递性的二元关系称为\uline{预序关系}(quasi-ordering)，是要求最宽的序关系；
+    \newline
+    具有传递性、反对称性的序关系称为\uline{偏序关系}(partial ordering)；
+    \newline
+    具有传递性、反对称性、连通性的二元关系称为\uline{全序关系}(total ordering)或\uline{线序关系}(linear ordering)；
+    \newline
+    具有传递性、反对称性、连通性、良基性的二元关系称为\uline{良序关系}(well-ordering)；
+    \newline
+    具有传递性、自反性、对称性的二元关系称为\uline{等价关系}(equivalence relation)；
+\end{definition}
+对于装备在集合\(X\)上的序关系\(R\)，将组合\(\langle X; R\rangle\)统称为\uline{有序集}(ordered set)，当然有时候会省略掉符号\(R\)，就简单将\(X\)称为有序集，然后用“\(<\)”之类的符号来表示\(R\)上的序关系. 如果关系\(R\)满足更多的性质，\(\langle X; R\rangle\)也可能会被称为偏序集、全序集、良序集等. 但凡\(R\)能够达到偏序的要求，就可以定义出以下这些概念.
+
+\begin{definition}{偏序关系的8个特殊元}
+    如果\(\langle X; R\rangle\)是偏序集，\(S \subseteq X\)，那么对于\(a \in X\)：
+    \begin{itemize}
+        \item  如果\(a \in S\)，且任意\(x \in S\)均不满足\(aRx\)，那么\(a\)称为\(S\)的\uline{极大元}(maximal)，如果进一步地均满足\(xRa\)，那么\(a\)称为\(S\)的\uline{最大元}(greatest element).
+        \item  如果\(a \in S\)，且任意\(x \in S\)均不满足\(xRa\)，那么\(a\)称为\(S\)的\uline{极小元}(minimal)，如果进一步地均满足\(aRx\)，那么\(a\)称为\(S\)的\uline{最小元}(least element).
+        \item  如果任意\(x \in S\)均满足\(xRa\)，那么\(a\)称为\(S\)的\uline{上界}(upper bound)；\(S\)的所有上界中的最小元（如果存在的话）称为\(S\)的\uline{上确界}(supremum)，记作\(\trm{sup}S\).
+        \item  如果任意\(x \in S\)均满足\(aRx\)，那么\(a\)称为\(S\)的\uline{下界}(lower bound)；\(S\)的所有下界中的最大元（如果存在的话）称为\(S\)的\uline{下确界}(infimum)，记作\(\trm{inf}S\).
+    \end{itemize}
+\end{definition}
+
+如果难以理解，把\(R\)改写成\(<\)就好理解多了. 需要注意，\(S\)的极大元意味着\(S\)中的元素要么小于\(a\)，要么和\(a\)不可比较（注意\(R\)不一定是全序，不是所有元素都可以比较），最大元则意味着\(S\)中的元素都可以和\(a\)相比较（这也不需要\(R\)是全序关系），且都小于\(a\). 极大元可以拥有多个，而最大元唯一. 最大元一定是极大元，反之不然. 如果\(R\)是全序，那么极大元与最大元等价，是唯一的. 
+
+% 全序关系的连通性质把集合中的所有元素都串起来了，反对称和传递性质确保元素之间的大小不会出现形成环状，这就是为什么全序关系有时被称为线序关系，被装备了全序关系的集合有时被称为\uline{链}(chain). 此外在全序关系中，有几个值得研究的现象.
+\begin{definition}{集合的切片}
+    设\(\langle X; \leq \rangle\)是偏序集，若\(S \subseteq X\)，{\color{red} 且不存在\(x \in X\)对全体\(s \in S\)都满足\(x \geq s\)}，那么称\(S\)在\(X\)中是\uline{无界的}(unbounded). \newline
+    设\(\langle X; \leq \rangle\)是偏序集，若\(S \subseteq X\)，{\color{red} 且对于任意\(x \in X\)都存在\(s \in S\)使得\(s \geq x\)}，那么称\(S\)在\(X\)中是\uline{占优的}(dominating). \newline
+    设\(\langle X; \leq \rangle\)是全序集，\(A,B\)是其两个非空子集并满足\(A \cup B = X\)且\(A \cap B = \emptyset\)，若对于任意\(a \in A, b \in B\)都有\(a \leq b\)，那么称该划分是一个\uline{分割}(cut). \newline
+    设\(\langle X; \leq \rangle\)是良序集，\(x \in X\)，将小于\(x\)的元素的集合\(\{t | t\leq x\}\)称为\(x\)的\uline{前段}(segment)，记作\(\trm{seg}(x)\).
+\end{definition}
+% ，进一步地，如果“\(\leq\)”是全序关系，就称\(S\)与\(X\)是\uline{共尾的}(cofinal)
+稍微学过一点数学分析的话，你可能会敏锐地察觉到“分割”这个概念就是戴德金分割在全序集上的推广版本.
+\subsection{函数关系和指标系统}
+
+有些特殊的二元关系\(R \subseteq A \times B\)，只要左元确定后，右元也能唯一地确定，就称二元关系\(R\)在集合\(B\)上具有\uline{外延性}(extensionality). 初等数学中的函数恰好具有这样的特性，以下给出函数在集合论上的定义.
+
+\begin{definition}{函数}
+    左元能唯一确定右元的二元关系称为\uline{函数}(function)或\uline{映射}(mapping)，形式化地表达：
+    \[f \mbox{是函数} \Longleftrightarrow \forall p (p \in f \rightarrow (\exists x \exists y(p = (x,y) \wedge (\exists z(((x,z ) \in f) \rightarrow y=z)))))\]
+    \begin{itemize}
+        \item  将函数写作\(f:A \to B\)以表明函数\(f\)的定义域是\(A\)、陪域是\(B\)；将函数写作\(f:x \mapsto y\)表示\((x,y) \in f\)，大多数情况下也写作\(y=f(x)\).
+        \item  定义域中的元素称为\uline{原象}(preimage)，定义域中的元素\(x\)所唯一确定的值域中的元素\(y\)称为\(x\)的\uline{像}(image).
+        \item  若\(f\)在定义域上也有外延性，即\(f(x)=f(y) \rightarrow x=y\)，则称\(f\)是\uline{单射}(injection)；若\(X\subseteq\trm{dom}(f), Y=f(Y)\)，则称\(f:X\to Y\)是\uline{满射}(surjection)，注意这里需要强调定义域和值域；若\(f:X \to Y\)既是单射又是满射，则称\(f\)为\uline{双射}(bijection).
+        \item  对于定义域的子集\(X\)，\(f\upharpoonright X=\{\langle x,y \rangle|x \in X\}\)称为\(f\)的\uline{限制}(restriction)；在满足定义域外延性的前提下，\(f^{-1}=\{\langle y,x \rangle | \langle x,y \rangle \in f\}\)称为\(f\)的\uline{反函数}(inversion)；对于两个函数\(f,g\)，称\(g \circ f = \{\langle x,z | \exists y(y=f(x) \wedge z=g(x))\}\)称为\(f\)和\(g\)的\uline{复合函数}(composition).
+        \item  将所有函数\(f:A \to B\)的集合记作\(B^A\).
+    \end{itemize}
+\end{definition}
+
+对于多元函数\(y = f(x_1,x_2,\cdots,x_n)\)，我们可以构造\(X = (x_1,x_2,\cdots,x_n)\)这个有序组，此时该函数就可以写成\(y = f(X)\)，化成了一元函数. 此外，在介绍直积的时候我们说\(n\)个集合\(A\)的直积\(A \times A \times \cdots \times A\)可以记作\(A^n\)，而在这里如果我们将数字\(n\)看成一个集合，全体从\(n\)到\(A\)的函数的集合也记作\(A^n\)，看起来两者不同，到后面介绍序数的时候你就会发现两者其实是一致的.
+
+借助函数的概念，接下来系统地讨论一种在数学的任何领域都非常有用的记号——指标系统. 在初等数学中，我们知道数列实际上也是函数，以有限长的数列\(\{a_1,a_2,\cdots,a_n\}\)为例，它暗含了一个函数关系\(i \mapsto a_i\)，在这里\(i\)是整数且\(1 \leq i \leq n\)，将数列的每一项写出来相当于列举了它的值域. 在更一般的场合，我们不必限制\(i\)是整数，而可以取自任意一个集合\(I\)，此时某个函数\(f: i \mapsto x_i\)的值域就可以写作\(\{x_i\}_{i \in I}\). 这一整套记号称为\uline{指标系统}，而函数的定义域\(I\)称为\uline{指标集}(indexed set).
+
+有了指标系统，我们可以将任意集合\(X\)写成\(\{x_i\}_{i \in I}\)的形式，这算是描述法和列举法以外又一种构造集合的方式. 指标系统还体现在集合的运算上. \(X_1 \cup X_2\)可以写成\(\displaystyle{\bigcup_{i \in \{1,2\}}X_i}\)的形式，交集、直积等运算类似. 你可能会觉得这种写法在无病呻吟，但我们可以参考初等数学中将\(x_1+x_2+\cdots+x_n\)写成\(\displaystyle{\sum_{i = 1}^{n}x_i}\)的例子，这种写法的优越性就在于多个对象参与运算的时候表达仍然是简洁且精确的，推广到无穷时还可以衍生出级数的概念. 类似地，无穷多个集合参与运算的时候，利用指标系统写起来仍然是简洁且精确的，例如
+\[\bigcup_{i \in \mathbb{N^+}} X_i =\{x | (\exists i \in \mathbb{N^+})(x \in X_i)\} \]
+但是如果写成\(X_1 \cup X_2 \cup X_3 \cup \cdots\)的形式，表述就会不精确，谁也不知道省略号到底省略了多少个对象，尤其是当接下来引入序数以后，“无穷”这个概念也需要讨论，进一步增加了这种写法的不确定程度.
+
+由于任意集合\(X\)都可以写成\(\{x_i\}_{i \in I}\)的形式，所以我们定义\(\displaystyle{\bigcup X := \bigcup_{i \in I}x_i}\)，表示\(X\)的全体元素取并集，这种运算称为\(X\)的“\uline{大并集}”(big union)，或直接称作并集，其他运算类似. 从现在开始并集、交集、直积等运算不再仅仅是两个集合之间的运算，下文如果你看到了“\(X\)的交集”，要立即反应过来其意思是\(X\)中的所有元素取交集.
+
+有了指标系统，我们可以发现直积和函数之间的关系. 设指标集是\(I = \{a,b,c\}\)，有三个集合\(X_a = \{a_1, a_2\}, X_b=\{b_1, b_2\}, X_c = \{c_1, c_2\}\)，，则
+\begin{align*}
+    X_a \times X_b \times X_c &= \{(m,n,p) | m \in X_a, n \in X_b, p \in X_c\} \\
+    &= \{ \\
+        &(a_1,b_1,c_1), (a_1, b_1, c_2), (a_1, b_2, c_1), (a_1, b_2, c_2) \\
+        &(a_2,b_1,c_1), (a_2, b_1, c_2), (a_2, b_2, c_1), (a_2, b_2, c_2) \\
+        &(a_3,b_1,c_1), (a_3, b_1, c_2), (a_3, b_2, c_1), (a_3, b_2, c_2) \\
+    \}
+\end{align*}
+
+将数列推广到指标系统后，失去了一个好的性质：数列的下标是整数，可以比较大小，而指标不一定. 这个问题将在后文得到解决，引入序数、序型和序列等概念之后便可初见端倪，最终在讨论选择公理时证明良序定理以彻底解决.
+
+\subsection{等价关系}
+
+等价关系也是一种重要的二元关系. 等价关系具有自反性、对称性和传递性，是一种特殊的序关系，但是它具有一些其他序关系都不具有的特殊性质. 值得拿出来单独讨论.
+
+对于一般的序关系\(R\)，若\((a,b) \in R\)或\((b,a)\in R\)，那么就说\(a\)和\(b\)是\uline{可比的}(comparable)，全序关系意味着所有元素两两之间都是可比的. 对于等价关系\(R\)，自反性意味着自己和自己是可比的，传递性意味着如果\(a_1\)和\(a_2\)可比、\(a_2\)和\(a_3\)可比、\(a_3\)和\(a_4\)可比等等，不管这个“可比链条”有多长，链条上的任意两个元素（比如\(a_1\)和\(a_5\)，\(a_{114514}\)和\(a_{1919810}\)）都是可比的，而只要某个元素\(b\)和某一个\(a_i\)不可比，那么立马就可以说\(b\)就和所有的\(a_i\)不可比. 可以说等价关系划出了一个个小圈子，同一个圈子内的元素两两可比，不同的圈子完全没有关系. 更重要的是对称性，使得圈内所有元素都是“平等”的，可以互换位置. 现在我们先正式定义这样的“小圈子”.
+
+\begin{definition}{等价与划分}
+    \par
+    对于任意集合\(A\)，若存在一系列集合\(\{S_i\}_{i \in I}\)，使得\(i \neq j \Leftrightarrow S_i \cap S_j = \emptyset\)（即两两不交），并且\(\displaystyle{\bigcup_{i \in I}S_i = A}\)（即能互相补充成完整的\(A\)），那么称\(\{S_i\}_{i \in I}\)是\(A\)的\uline{划分}(partition).
+    \par
+    对于建立了等价关系的集合\(\langle A; \equiv \rangle\)，对于任意\(x \in A\)，所有与\(x\)等价的元素的集合\(\{y\in A | y \equiv x\}\)称为关于\(x\)的\uline{等价类}(equivalence class)，记作\([x]_{\equiv}\). \(A\)中所有等价类的集合\(\{[x]_\equiv | x \in A\}\)称为\(A\)对\(\equiv\)的\uline{商集}(quotient set)，记作\(A/\equiv\).
+\end{definition}
+
+
+\section{序型与序数}
+
+\subsection{序型}
+
+假设集合\(A = \{1,2,3,4\}\)，把里面的每个元素都乘2，得到\(A' = \{2,4,6,8\}\). 集合\(A\)中的元素满足\(1<2<3<4\)，集合\(A'\)的元素满足\(2<4<6<8\). 在乘以\(2\)的过程中，我们发现：
+\begin{itemize}
+    \item “\(<\)”是\(A\)和\(A'\)上的全序，用该全序把两个集合的元素串成一条链，链长都是4.
+    \item \(A\)中的任意两个元素\(x,y\)，如果\(x<y\)，乘以2之后有\(2x<2y\)，不等号方向不变. 我们可以称这种性质为“乘以2这个操作的保序性”.
+\end{itemize}
+你可能感觉莫名其妙，为什么要举这个例子呢？上面两条“发现”非常显然，把它写出来有什么用呢？你肯定见过类似的情况，我们以前学数学第一次遇到负数时，。。。
+
+\begin{definition}{序同构}
+    设有两个带关系的集合\(\langle A; R \rangle, \langle B; S \rangle\)，如果存在双射\(f:A \to B\)，如果\(x,y \in A\)满足\(x R y\)就能推出\(f(x) S f(y)\)，那么称这两个集合是\uline{同构的}(isomorphic)，该双射称为\uline{同构映射}(isomorphism)；\newline
+    进一步地，如果\(R\)和\(S\)是偏序关系，则称它们拥有相同的\uline{序型}(order type)，记作\(\trm{OT}(R) = \trm{OT}(S)\)，该同构映射又称为\uline{序嵌入}(order-embedding).
+\end{definition}
+
+因为同构这个概念涉及到的两个集合上关系的关系，是集合结构的问题，将来还会在讨论代数结构的时候深入探讨.
+
+定义序数的动机是想构造出一个良序集\(\langle X,< \rangle\)，使得\(x < y \Leftrightarrow x \in y\). 但是这样的集合不是唯一的，因为该良序的最小元尚未指定，比如\(\{x_0,\{x_0\},\{\{x_0\}\}, \cdots\}\)就满足条件，此时\(x_0\)是最小元，可以任意指定. 于是冯·诺伊曼加了一个条件：\(x\in y \Leftrightarrow x \subset y\)（满足这个条件的集合\(y\)称为\uline{传递集}(transitive set)）. 这样立马就得到了唯一确定的最小元：空集.
+
+\begin{definition}{序数}
+    如果\(\alpha\)是传递集，且\(\langle \alpha,\in \rangle\)是良序集，那么\(\alpha\)称为\uline{序数}(ordinal number). 全体序数组成的类记作\(\mathbb{ON}\).
+\end{definition}
+这里为什么用“类”而不是“集合”呢？答案将在后面揭晓.
+
+最小的序数是\(\emptyset\)，除去\(\emptyset\)后，最小的序数是\(\{\emptyset\}\)，其次到\(\{\emptyset,\{\emptyset\}\}\)，冯·诺伊曼给这些序数都做了记号：
+\begin{align*}
+    0 & := \emptyset &&\\
+    1 & := \{\emptyset\} &&= \{0\}\\
+    2 & := \{\emptyset,\{\emptyset\}\} &&= \{0,1\}\\
+    3 & := \{\emptyset,\{\emptyset\},\{\emptyset,\{\emptyset\}\}\} &&= \{0,1,2\}\\
+    4 & := \{\emptyset,\{\emptyset\},\{\emptyset,\{\emptyset\}\},\{\emptyset,\{\emptyset\},\{\emptyset,\{\emptyset\}\}\}\} &&= \{0,1,2,3\}\\
+    & \cdots
+\end{align*}
+可见任何一个序数\(\alpha\)和比该序数大的最小序数\(\alpha^+\)都满足\(\alpha^+=\alpha \cup \{\alpha\}\)，所以将\(\alpha^+\)称为\(\alpha\)的\uline{后继序数}(successor ordinal).
+
+这就导出了自然数：
+\begin{definition}{自然数}
+    如果\(\alpha=0\)，或存在自然数\(\beta\)使得\(\alpha=\beta^+\)，那么\(\alpha\)是\uline{自然数}(natural number). 全体自然数的集合称为\(\mathbb{N}\).
+\end{definition}
+注意，自然数的定义是递归的，\(\alpha\)是自然数的前提是它是某个自然数的后继序数，因此\(0\)是自然数，那么\(1\)跟着就是自然数，\(2\)也是自然数……这样就导出了整个自然数集.
+
+\vspace{1cm}
+现在我们来讨论一下集合论中最重要的概念，也是数千年来的数学都不敢触碰的一个概念：无穷. 一些集合论的书直言：集合论就是研究无穷的数学分支. 你也许从刚才序数和自然数的定义看出了一些端倪，将序数从\(0\)开始列举，得到\(1,2,3,4,\cdots\)，似乎就是序数就是自然数. 现在来问一个关键的问题：\(\mathbb{N}\)\textbf{是序数吗？}
+
+首先\(\mathbb{N}\)是传递集，因为任意自然数\(n=\{0,1,\cdots,n-1\} \subset \mathbb{N}\)，\(\in\)和\(\subset\)是等价的；其次\(\langle \mathbb{N},\in \rangle\)是良序集，因为任意两个自然数都可以比较大小（即两个不相等的自然数必然一个属于另一个），而且\(0\)是最小元. 所以\(\mathbb{N}\)是序数.
+
+但\(\mathbb{N}\)却不是自然数，因为对于任意自然数均有\(n \in \mathbb{N}\)且\(n \neq \mathbb{N}\). 所以\(\mathbb{N}\)并不是任何自然数的后继序数. 
+
+这里开始体现出了自然数与序数的差别，自然数若不是\(0\)，就是另一个自然数的后继序数，即总可以从最小的自然数取\textbf{有限次}后继序数达到. 但序数可不一定，除了\(0\)和后继序数之外，还存在一类序数，不能从比它小的序数取有限次后继序数达到，但它等于比它小的所有序数的并集，这类序数称为\uline{极限序数}(limit ordinal). \(\mathbb{N}\)是大于\(0\)的最小极限序数，为了符合序数运算法则，当我们把\(\mathbb{N}\)当作序数来看的时候，会将它记作\(\omega\).
+
+\subsection{归纳和递归}
+
+我们以前学过数学归纳法，它的具体内容是这样：
+\begin{reference}
+    如果一个命题对\(0\)成立，而且只要它对自然数\(n\)成立就对\(n+1\)也成立，那么这个命题对任意自然数都成立.
+\end{reference}
+这种方法适用于所有关于自然数的命题，甚至许多命题在证明的时候只能用数学归纳法. 但其实这只是一系列数学归纳命题之一.
+
+\begin{theorem}{数学归纳(mathematical induction)}
+    \begin{itemize}
+        \item 数学归纳定理，第一形式 \newline
+        如果\(0 \in X\)，并且任意自然数\(n\)都满足“如果\(n \in X\)，那么\(n+1 \in X\)”，那么\(\mathbb{N} \subseteq X\).
+        \item 数学归纳定理，第二形式 \newline
+        如果任意自然数\(n\)都满足“如果所有比\(n\)小的自然数属于集合\(X\)，那么\(n \in X\)”，那么\(\mathbb{N} \subseteq X\).
+        \item 数学归纳原理，第一形式 \newline
+        设有命题\(\phi(n)\)，如果\(\phi(0)\)成立，且任意自然数\(n\)都满足“如果\(\phi(n)\)成立，那么\(\phi(n+1)\)成立”，那么\(\phi(n)\)对任意自然数\(n\)成立.
+        \item 数学归纳原理，第二形式 \newline
+        设有命题\(\phi(n)\)，如果任意自然数\(n\)都满足“如果所有比\(n\)小的自然数\(k\)都满足\(\phi(k)\)，那么\(\phi(n)\)成立”，那么\(\phi(n)\)对任意自然数\(n\)成立.
+    \end{itemize}
+\end{theorem}
+
+数学归纳“定理”和数学归纳“原理”有什么区别呢？我们尚未讨论到数理逻辑，这里先剧透一下，数学归纳“定理”只断言某个元素属于某个集合，是一个定理(theorem)，能用一阶逻辑语言描述；数学归纳“原理”涉及到了尚不明确的命题\(\phi\)，而在一阶逻辑下，“任意”这个量词不能修饰命题、函数等对象（二阶逻辑才可以），即没有“任意命题\(\phi\)”这种说法，只能说“对于不同的命题\(\phi\)，该句子都是一个命题”，所以这里很谨慎地写作“设有命题\(\phi\)”的格式. 对于这种本身不是定理但提供了模板、代入命题会成为定理的句子，我们把它称为“定理模式”(theorem schema).
+
+\begin{proof}
+    归纳定理第一形式. 反证法，如果有哪个自然数满足“\(0 \in X\)且‘如果\(n \in X\)则\(n+1 \in X\)’”但不属于\(X\)，那么所有这样的自然数中必有最小者（良序集的子集是良序集，有最小元），该最小者必然违背双引号框住的命题. \newline
+    归纳定理第二形式. 若存在某个自然数满足“如果所有比\(n\)小的自然数属于集合\(X\)，那么\(n \in X\)”但不属于\(X\)，那么就一定存在一个比它小的自然数不属于\(X\)，所以可以构造集合\(\{n | n \not \in X\}\)，因为良序集的任意子集都是良序集，所以该集合一定有最小元，该最小元立即违背红色部分的命题. \newline
+    归纳原理. 在对应的归纳定理中让集合\(X\)形如\(\{n|\phi(n)\}\)，那么某个自然数\(n\)要想属于这个集合就必须满足命题\(\phi(n)\)，这就证明了归纳原理.
+\end{proof}
+
+你也许觉得这些证明过程很水，有两点原因，一是这些命题实际上是皮亚诺算术系统的公理，是一个很基础的命题；二是该证明过程在朴素集合论语境下进行，如果拿到公理集合论当中就要考虑使用了哪些公理，到时候就不显得水了. 
+
+\textbf{递归}是比归纳更抽象的概念，我们可以从以前学过的数列来理解. 你一定遇到过这样的题目：给出数列的递推公式，求出它的通项公式. 这种题目根据通项公式的形式有不同的解题方法，把你学过的全列出来，那叫一个五花八门. 但实际上递推公式只要稍微复杂一些，就不一定能求出它的通项公式了，例如\(\frac{1}{n}a_{n+1}=a_n^2+2n\)，它的通项公式没有初等形式. “没有初等形式”和“没有通项公式”的区别很大，尽管没有初等形式，但递归定理保证了通项公式（加上初值）可以唯一确定通项公式，即完整地刻画这个数列.
+
+上面这个例子中的递推公式整理一下，得到\(a_{n+1}=na_n^2+2n^2\)，其中涉及的变量只有\(a_n\)和\(n\)\footnote{当然你认为变量只有\(n\)也没问题，因为我们要证明的命题就是“映射\(n \mapsto a_n\)是唯一确定的”，即\(a_n\)是\(n\)的因变量，真正的自变量只有\(n\)，但是现在尚未证明，所以可将\(a_n\)也认为是自变量.}，记\(g(x,y)=xy^2+2x^2\)，那么断言“数列\(\{a_n\}_{n \in \mathbb{N}}\)有通项公式”等价为“已知\(a_0\)和函数\(g(a_n,n)\)，\(a_n\)可被唯一确定”.
+
+斐波那契数列则是更一般的情况，它的递推公式为\(a_n=a_{n-1}+a_{n-2}\)，涉及到前两项，在这种情况下仅根据\(a_0\)不能唯一确定通项公式，还需要\(a_1\)才行；同理，如果递推公式涉及到更多之前的项，则可能需要更多的初值. 在最极端的情况下，\(a_n\)需要\(a_0\)到\(a_{n-1}\)所有这\(n\)项才能求出来，这好办，我们让函数\(g\)的自变量为\(\{a_1,a_2,\cdots,a_n\}=\{a_k\}_{k<n}\)这个集合即可.
+
+\begin{theorem}{递归定理(recursion theorem)}
+    设有一个集合\(X\)，函数\(f: X^{<\omega} \to X\)，那么有且仅有一个序列\(\{a_n\}_{n \in \mathbb{N}}\)，使得\(a_n = f(\{a_k\}_{k < n})\).
+\end{theorem}
+
+\begin{proof}
+    存在性很好证明，首先\(a_0 = f(\emptyset)\)存在，\(\{a_k\}_{k \leq 0}\)存在. 假设\(\{a_k\}_{k \leq n}\)存在，由于\(a_{n+1} = f(\{a_k\}_{k \leq n})\)存在，所以\(\{a_k\}_{k \leq n+1}\)，根据数学归纳原理的第一形式，任意\(n \in \mathbb{N}\)，\(\{a_k\}_{k \leq n}\)都存在，把这些序列一起取个并集就是\(\{a_n\}_{n \in \mathbb{N}}\). \newline
+    唯一性更好证明了，假设\(\{a_n\}_{n \in \mathbb{N}}, \{b_n\}_{n \in \mathbb{N}}\)两个序列都符合条件，首先\(\{a_k\}_{k < 0} = \{b_k\}_{k < 0} = \emptyset\)，假设\(\{a_k\}_{k < n} = \{b_k\}_{k < n}\)，此时有\(a_n = f(\{a_k\}_{k < n}) = f(\{b_k\}_{k < n}) = b_n\)，所以\(\{a_k\}_{k < n+1} = \{b_k\}_{k < n+1}\)，根据数学归纳原理第一形式，对任意\(n\)均有\(\{a_k\}_{k < n} = \{b_k\}_{k < n}\)，即对于任意\(n\)，\(a_n = b_n\)，所以\(\{a_n\}_{n \in \mathbb{N}} = \{b_n\}_{n \in \mathbb{N}}\).
+\end{proof}
+
+接下来我们把归纳和递归推广到涉及到超穷序数的情况. 从数学归纳原理的第一形式切入，如果我们想让所有序数都满足某个性质\(\phi\)，\textbf{仅仅声明“0满足\(\phi\)”和“如果\(\alpha\)满足则\(\alpha^+\)满足”足够吗？}最简单的反例：我们设命题\(\phi\)为“小于\(\omega\)”，这时“\(0 < \omega\)”和“如果\(\alpha < \omega\)那么\(\alpha^+ < \omega\)”都是成立的，但是“\(\omega < \omega\)”就不对了，归纳假设还需要针对极限序数增加一条.
+
+\begin{theorem}{超穷归纳(transfinite induction)}
+    \begin{itemize}
+        \item 超穷归纳定理，第一形式 \newline
+        设有一个类\(X\)，如果\(0 \in X\)，并且任意序数\(\alpha\)都满足“若\(\alpha \in X\)则\(\alpha+1 \in X\)”，并且任意极限序数\(\alpha\)都满足“若\(\beta < \alpha\)则\(\alpha \in X\)”，那么\(\mathbb{ON} \subseteq X\).
+        \item 超穷归纳定理，第二形式 \newline
+        设有一个类\(X\)，如果任意序数\(\alpha\)都满足“若\(\beta < \alpha\)则\(\alpha \in X\)”，那么\(\mathbb{N} \subseteq X\).
+        \item 超穷归纳原理，第一形式 \newline
+        设有命题\(\phi(\alpha)\)，如果\(\phi(0)\)成立，且序数\(\alpha\)都满足“如果\(\phi(\alpha)\)成立，那么\(\phi(n+1)\)成立”，并且任意极限序数\(\alpha\)都满足“若\(\phi(\beta)\)对所有小于\(\alpha\)的序数\(\beta\)成立则\(\phi(\alpha)\)成立”，那么\(\phi(\alpha)\)对任意序数\(\alpha\)成立.
+        \item 超穷归纳原理，第二形式 \newline
+        设有命题\(\phi(\alpha)\)，如果任意序数\(\alpha\)都满足“若\(\phi(\beta)\)对所有小于\(\alpha\)的序数\(\beta\)成立则\(\phi(\alpha)\)成立”，那么\(\phi(\alpha)\)对任意序数\(\alpha\)成立.
+    \end{itemize}
+\end{theorem}
+
+将数学归纳推广到超穷归纳以后，第一形式变长了，第二形式还像原来那样简洁，所以将来我们会经常使用第二形式.
+
+\begin{theorem}{超穷递归(transfinite recursion)}
+    对于任意函数\(f: \mathbb{V} \to \mathbb{V}\)，存在唯一的序列\(\{a_\xi\}_{\xi \in \mathbb{ON}}\)满足\(a_\alpha = f(\{a_\xi\}_{\xi < \alpha})\).
+\end{theorem}
+    
+\subsection{序数运算法则}
+
+\begin{definition}{序数运算法则}
+    加法
+    \begin{align*}
+        \alpha + 0 &:= \alpha && \\
+        \alpha + \beta^+ &:= (\alpha+\beta)^+ && \\
+        \alpha + \beta &:= \displaystyle{\trm{sup}_{\substack{\gamma < \beta}}} (\alpha + \gamma) && \mbox{其中}\beta\mbox{是极限序数}
+    \end{align*}
+    乘法
+    \begin{align*}
+        \alpha \cdot 0 &:= 0 && \\
+        \alpha \cdot \beta^+ &:= \alpha \cdot \beta+ \alpha&& \\
+        \alpha \cdot \beta &:= \displaystyle{\trm{sup}_{\substack{\gamma < \beta}}} (\alpha \cdot \gamma) && \mbox{其中}\beta\mbox{是极限序数}
+    \end{align*}
+    乘方
+    \begin{align*}
+        \alpha^0 &:= \alpha && \\
+        \alpha^{\beta^+} &:= \alpha^\beta \cdot \alpha && \\
+        \alpha^\beta &:= \displaystyle{\trm{sup}_{\substack{\gamma < \beta}}} (\alpha^\gamma) && \mbox{其中}\beta\mbox{是极限序数}
+    \end{align*}
+\end{definition}
+
+有了序数，你就知道“如何数到无穷之后”了：
+\[0,1,2,3,\cdots,\omega,\omega+1,\omega+2,\cdots,\omega\cdot 2,\omega\cdot 2+1,\cdots,\omega^2,\cdots,\omega^\omega,\cdots\]
+\(\omega\)及以后的序数都不是自然数，不能从\(0\)取有限次后继得到，所以将它们称为\uline{超穷序数}(transfinite ordinal). 你也许会问有没有最大的序数，答案是没有，因为任何序数加一都会更大.
+
+\section{势与基数}
+
+\subsection{等势}
+
+在朴素集合论中，集合的势通俗理解起来比较容易，但严格定义则非常抽象. 通俗理解，集合的势是集合的性质，表征了集合中元素的多少，是一个可以比较的对象. 问题来了，如何比较两个集合的元素谁多谁少？
+
+一种方法是数个数，但这种方法有缺陷. 首先，“个数”是一个自然数，需要借助另一个集合来描述该集合，而且当集合的元素不是有限个的时候，这种方法就失效了. 也许你会提议使用序数，但如果使用序数来描述无穷集合的个数，就可能会出现因元素排序不同而有不同结果的现象，例如\(\mathbb{N}\)有两种表示方法：
+\[\mathbb{N} = \{n | n \in \mathbb{N}\} = \{2n,2n+1 | n \in \mathbb{N}\}\]
+按照第一种表示方法，直觉上就会觉得\(\mathbb{N}\)包含\(\omega\)个元素，而第二种表示则将自然数分了奇偶，各自都有\(\omega\)个，暗示\(\mathbb{N}\)含有\(\omega\cdot2\)个元素. 集合是同一个集合，但因描述不同而出现两种结果，这是我们不能接受的.
+
+因此应该使用另一种方法. 我们可以从幼儿园的游戏获得启发：有5棵树和3朵花，现在要比较数和花哪个更多. 然而小朋友不一定认识3和5这么“大”的数字，于是让一棵树与一朵花连线，连了线之后的不能再连，最后所有的花都连上了线，但有的树没有连线，就这样得出树比较多的结论，这个过程没有引入自然数，却也比较了多少. 把“连线”翻译成“一一对应”（即双射），我们就得出了比较集合元素个数的方法：如果两个集合之间能建立双射，那么这两个集合的元素就是一样多的；如果一个集合能建立到另一个集合的单射，但无论怎么修改该单射的对应法则，都不能射满，那么后者的元素明显更多. 集合的势正是通过这种方法定义的.
+
+\begin{definition}{集合的势}
+    集合\(A\)的\uline{势}(cardinality)记作\footnote{大多数尤其是近年来的资料都喜欢把集合\(A\)的势记作\(|A|\)，但双竖线实在太常用了，容易弄混，所以采用老教材的符号.}\(\trm{card}(A)\)，对于集合\(A,B\)：
+    \par
+    如果能建立单射\(f:A \to B\)，则记\(\trm{card}(A) \leq \trm{card}(B)\)；
+    \par
+    如果能建立双射\(f:A \to B\)，则记\(\trm{card}(A) = \trm{card}(B)\)；
+    \par
+    如果能建立单射\(f:A \to B\)，但该单射不是满射，则记\(\trm{card}(A) <\trm{card}(B)\).
+    \par
+    如果存在自然数\(n\)，使得\(\trm{card}(A) = \trm{card}(n)\)，就可以简写为\(\trm{card}(A) = n\).
+\end{definition}
+
+在朴素集合论语境下，集合的势是个很奇怪的概念，你可以比较两个集合的势谁大谁小，但没法讨论单个集合的“势”究竟是什么东西，只能通过符号的约定暂时规避. 这个问题将在公理集合论中引入选择公理之后得到解决. 一些教材把单个集合的势定义为与该集合等势所有集合的类，即
+\[\trm{card}(A) = \{x|\trm{card}(x)=\trm{card}(A)\}\]
+当然，这个定义非常不尽人意，因为没有道清“势”究竟是什么，而是把集合的势定义为一大捆相互等价的集合.
+
+关于势的定义，有以下几个命题符合我们心目中关于“集合元素的个数”的直觉：
+\begin{itemize}
+    \item [(1)] 若\(\trm{card}(A)=\trm{card}(B), \trm{card}(B)=\trm{card}(C)\)，则\(\trm{card}(A)=\trm{card}(C)\).
+    \item [(2)] 若\(A \subseteq B\)，则\(\trm{card}(A) \leq \trm{card}(B)\).
+    \item [(3)] \uline{势的夹挤定理}：若\(A \subseteq B \subseteq C\)且\(\trm{card}(A) = \trm{card}(C)\)，则\(\trm{card}(B) = \trm{card}(C)\).
+        \begin{proof}
+            关于势的夹挤定理. 既然\(\trm{card}(A) = \trm{card}(C)\)，就一定存在双射\(f: C \to A\). 这时构造两个序列\(\{A_n\}_{n \in \mathbb{N}}\)和\(\{B_n\}_{n \in \mathbb{N}}\)：
+            \begin{align*}
+                & A_0 = A, \qquad A_{n+1} = f[A_n] \\
+                & B_0 = B, \qquad B_{n+1} = f[B_n]
+            \end{align*}
+            这时令函数\(g: A \to B\)
+            \[g(x) = \left\{
+                \begin{aligned}
+                    & f(x), &\mbox{存在}n\mbox{使得}x \in A_n - B_n \\
+                    & x, &\mbox{其他}
+                \end{aligned}
+            \right. 
+            \]
+            容易验证\(g\)就是\(A \to B\)的双射.
+        \end{proof}
+    \item [(4)] \uline{康托尔-伯恩斯坦-施罗德定理}(Cantor-Bernstein-Schröder theorem)：
+    \newline
+    若\(\trm{card}(X) \leq \trm{card}(Y)\)且\(\trm{card}(X) \geq \trm{card}(Y)\)，则\(\trm{card}(X) = \trm{card}(Y)\)，即势的大小关系具有反自反性.
+    \begin{proof}
+        关于康托尔-伯恩斯坦-施罗德定理. 因为\(\trm{card}(X) \leq \trm{card}(Y)\)，所以存在单射\(f:X \to Y\)，即\(f[X] \subseteq Y\)；因为\(\trm{card}(X) \geq \trm{card}(Y)\)，所以存在单射\(f:Y \to X\)，即\(g[Y] \subseteq X\)，所以\(g[f[X]] \subseteq g[Y] \subseteq X\). 别忘了任何一个单射都是从定义域到值域的双射，又因为双射的复合也是双射，所以\(\trm{card} \trm{ran} (g \circ f) = \trm{card}(X)\). 根据势的夹挤定理就得到了\(\trm{card}(Y) = \trm{card}(g[Y]) = \trm{card}(X)\).
+    \end{proof}
+\end{itemize}
+
+\begin{note}
+    康托尔-伯恩斯坦-施罗德定理的证明是数学史上的典型，在大部分教材中证明过程包含了夹挤的部分，只不过这里拆开了. 这三位数学家以及戴德金都曾独立证明过该命题. 1887年康托尔就发表了该定理，但是没有证明，1895年又发表了一次，并提出将集合的势做全序排列之后便可立即得到该命题，但是他没能证明“基数可以全序排列”——因为这是选择公理的等价命题. 戴德金1887年就证明了该命题，但没有发表. 直到1908年，策梅洛才找到戴德金的证明，并于同一年提出了策梅洛公理集合论(\textsf{Z}). 比戴德金晚一些，施罗德1896年证明出了该命题，而伯恩斯坦则是1897年，不过都是独立证明的. 该定理中夹挤部分的证明实在是太巧妙了，以至于恩德滕(H.B.Enderton)的集合论直接把该定理的可视化证明当作封面.
+\end{note}
+
+接下来证明几个有趣的命题，在有限集合上，“数个数”和“配对”的方法得出的结果都是符合直觉的，然而涉及到了无穷，情况就有些违反直觉.
+\begin{itemize}
+    \item [(1)] 对于无穷集合\(A\)，有\(\trm{card}(A \times A) = \trm{card}(A)\).
+    \begin{proof}
+        完整的证明需要用到超限归纳法，所以这里来证个弱化的版本：若\(\trm{card}(A)=\trm{card}(\mathbb{N})\)，则\(\trm{card}(A \times A) = \trm{card}(A)\).
+        \newline
+        因为\(f(x) = (x,x): A \to (A \times A)\)是单射，所以\(\trm{card}(A) \leq \trm{card}(A \times A)\)，这是显然的. 接下来证明\(\trm{card}(A) \geq \trm{card}(A \times A)\). 由于\(A\)可数，所以它的元素可以被序列\(\{a_n\}_{n \in \mathbb{N}}\)枚举，所以\(A \times A = \{(a_i, a_j)|i,j \in \mathbb{N}\}\).这时候定义映射\(f(a_i,a_j) = a_{2^i 3^j}\)，根据算数基本定理\footnote{算数基本定理(fundamental theorem of arithmetic)：每个大于\(1\)的自然数可以唯一地分解为有限个素数的乘积.}，\(2^i3^j\)对于不同的\(i,j\)值得到不同的自然数，因此\(f\)是一个单射，即\(\trm{card}(A) \geq \trm{card}(A \times A)\)，最终得到\(\trm{card}(A) = \trm{card}(A \times A)\).
+    \end{proof}
+
+    根据这个结果，\(\trm{card}(\mathbb{N})=\trm{card}(\mathbb{Q})\)，而\(\mathbb{Z} \subset \mathbb{Q}\)，所以\(\trm{card}(\mathbb{N})=\trm{card}(\mathbb{Z})=\trm{card}(\mathbb{Q})\). 此外，\(n\)维空间中的有理点、奇数集、偶数集、素数集都可数；
+
+    \item [(2)] \uline{康托尔定理}(Cantor's theorem)：\(\trm{card}(\mathcal{P}(A)) > \trm{card}(A)\).
+    \begin{proof}
+        \(\trm{card}(\mathcal{P}(A)) \geq \trm{card}(A)\)是显然的，因为\(f(x)=\{x\}\)是\(A \to \mathcal{P}(A)\)的单射，重点在于证明\({\rm card}(\mathcal{P}(A)) \neq {\rm card}(A)\). 反证法，假设存在双射\(g:A \to \mathcal{P}(A)\)，构造\(A\)的子集\(B=\{x \in A | x \not \in g(x)\}\)，\(B \in \mathcal{P}(A)\)，所以存在\(x \in A\)使得\(f(x)=B\)，然后矛盾就出来了：
+        \[x \in B \Longleftrightarrow x \not \in g(x) \Longleftrightarrow x \not \in B\]
+        因此该双射是不存在的，\({\rm card}(\mathcal{P}(A)) > {\rm card}(A)\).
+    \end{proof}
+
+    \item [(3)] \({\rm card}\left(2^A\right) = {\rm card}(\mathcal{P}(A))\).
+    \begin{proof}
+        利用示性函数. 定义\(f(S) = \chi_S:\mathcal{P}(A) \to \{f | f: A \to \{0,1\}\}\). 易验证\(f\)是双射. 因为从\(\mathcal{P}(A)\)中挑出任意子集，得到的示性函数\(\chi_S\)也不同.
+    \end{proof}
+\end{itemize}
+
+以上第3条的证明没有限定集合是有限集还是无限集，这告诉我们，即使是无限集合，其元素个数仍可以比较多少. \(\trm{card}(\mathbb{N})\)是我们遇到的第一个无穷集合，事实上在承认选择公理的条件下\footnote{不承认选择公理的话就会出现一些非常混乱的集合，比如六种戴德金无穷，测度论将会遭受毁灭性的打击，数学分析也将难以进行.}它也是“包含元素最少的”无穷集合，也就是说如果\(X\)为无穷集合，就必有\(\trm{card}(X)\geq\trm{card}(\mathbb{N})\). 如果无穷集合元素的个数与自然数“一样多”，就会存在一个序列\(\{a_n\}_{n\in\mathbb{N}}\)能把\(X\)中的元素一一枚举出来，这便是所谓“可数”或者“可列”.
+
+\begin{definition}{可数/可列与不可数/不可列}
+    若存在自然数\(n\)，使得\(\trm{card}(X)=n\)，则称\(X\)是有穷的(finite).
+    \par
+    若\(\trm{card}(X)=\trm{card}(\mathbb{N})\)，则称\(X\)是\uline{可数的}(countable)或\uline{可列的}(enumerable). 
+    \par
+    若\(\trm{card}(X)>\trm{card}(\mathbb{N})\)，那么\(X\)就是\uline{不可数的}(uncountable)或\uline{不可列的}(denumerable).
+    \par
+    有限集和可数无穷集合称\uline{至多可数集}.
+\end{definition}
+
+这里补充一个和字典-序列有关的命题，后面无论是数理逻辑还是数系的构造，我们都常常会用到这里的结论. 一个句子是若干个字或词按一定顺序拼接而成的，而这些字或词也不是凭空捏造的，而是有一部字典或词典收录所有可能出现的字或词. 从集合的角度来看，句子就是字典里的元素组成的序列，即记字典为\(\Sigma\)，有限长的句子即序列\(\{a_i\}_{i < n}\)，无限长（可数无穷长）的句子即序列\(\{a_i\}_{i \in \mathbb{N}}\)，其中所有的\(a_i \in \Sigma\)，全体序列的集合记为\(\Sigma^*\). 现在问题来了，\({\rm card}(\Sigma)\)、序列的长度和\({\rm card}(\Sigma^*)\)有什么关系呢？直接上答案.
+\begin{itemize}
+    \item 若\(\Sigma\)和序列长度都有限，那么\(\Sigma^*\)也是有限的.
+    \begin{proof}
+        这就是个排列组合的问题，假设\({\rm card}(\Sigma)=m\)为序列长度为\(n\)，这就相当于有\(n\)个位置、每个位置有\(m\)种可能的放法，一共有几种可能的情况？\(m^n\)种. 这都没涉及到无穷.
+    \end{proof}
+
+    \item 若\(\Sigma\)可数无穷、序列长度有限，那么\(\Sigma^*\)可数无穷.
+    \begin{proof}
+
+        该证明需要用到算数基本定理和“素数的个数是无穷的”这两个结论. 既然\(\Sigma\)可数无穷，那么就存在双射\(f:\Sigma \to \mathbb{N}\)将字典中的元素用自然数来编号. 假设序列长度是\(n\)，那么我们构造一个映射
+        \[g: \{a_0, a_2, \cdots, a_{n-1}\} \mapsto 2^{f(a_0)+1}3^{f(a_1)+1}5^{f(a_2)+1}\cdots p_n^{f(a_{n-1})+1}\]
+        其中\(p_n\)表示第\(n\)各素数. 这个映射就是\(\Sigma \to \mathbb{N}\)的单射，为什么？首先\(g\)是一个映射，因为各个\(f(a_i)\)是唯一确定的自然数。\(2^{f(a_0)+1}3^{f(a_1)+1}5^{f(a_2)+1}\cdots p_n^{f(a_{n-1})+1}\)是有限项相乘的形式，所以也是唯一确定的自然数. 其次\(g\)是单射，因为根据算数基本定理，每个自然数\(c\)都能唯一分解成\(2^{c_1}3^{c_2}5^{c_3}\cdots p_n^{c_n}\)的形式，这就隐含了一个\(c \mapsto \{c_1, c_2, \cdots, c_n\}\)的双射，现在我们反过来，就得到了\(g\)是单射. 至于为什么要给每个指数都加\(1\)，是避免\(f\)将字典元素映射到\(0\)时会造成的某些问题，无伤大雅. 
+
+        既然\(g\)是\(\Sigma^* \to \mathbb{N}\)的单射，那么\({\rm card}(\Sigma^*) \leq {\rm card}(\mathbb{N})\). 要证明\({\rm card}(\Sigma^*) \geq {\rm card}(\mathbb{N})\)是很平凡的事情，因为\(f\)的逆映射把自然数映射到了\(\Sigma\)中，而字典中的字可以看作长度为\(1\)的序列，因此\(n \mapsto \{f^{-1}(n)\}\)就是单射. 根据势的夹挤定理，\({\rm card}(\Sigma^*) = {\rm card}(\mathbb{N})\)，可数无穷.
+    \end{proof}
+
+    \item 若\(\Sigma\)有限且元素多于\(1\)个、序列长度可数无穷，那么\(\Sigma^*\)不可数无穷.
+    \begin{proof}
+        反证法. 假设\(\Sigma^*\)可数，那么就会有一个序列\(\{S_i\}_{i \in \mathbb{N}}\)把它列出来，现在构造一个序列\(S^*=\{b_0, b_1, b_2, \cdots\}\)，然后随便选取两个字典元素\(c_1, c_2\)，当\(S_i\)的第\(i\)项为\(c_1\)时\(b_i=c_2\)，其他时候\(b_i=c_1\)，那么\(S^*\)的第\(i\)项就与\(S_i\)的第\(i\)项不同了，所以\(S^*\)不等于任意一个\(S_i\)，但很明显\(S^* \in \Sigma^*\)，矛盾了，所以\(\Sigma^*\)不可数无穷. 
+    \end{proof}
+    \begin{note}
+        这个证明有点抽象，举个具体的例子. 设\(\Sigma = \{c_1, c_2, c_3, \cdots, c_{114514}\}\)，如果\(\Sigma^*\)可数，那么就会有\(\{S_i\}_{i \in \mathbb{N}}\)把它列出来：
+        \begin{align*}
+            S_0 &= \{&&{\color{red}c_3}, &&c_{43590}, &&c_{24}, &&c_{2346}, &&c_{100000}, &&\cdots\} \\
+            S_1 &= \{&&c_{78}, &&{\color{red}c_1}, &&c_{34}, &&c_{786}, &&c_{2313}, &&\cdots\} \\
+            S_2 &= \{&&c_{475}, &&c_{81}, &&{\color{red}c_{14347}}, &&c_{468}, &&c_{7186}, &&\cdots\} \\
+            S_3 &= \{&&c_{349}, &&c_{4709}, &&c_{54136}, &&{\color{red}c_{2346}}, &&c_{1348}, &&\cdots\} \\
+            S_4 &= \{&&c_{98478}, &&c_{8890}, &&c_{92515}, &&c_{14847}, &&{\color{red}c_1}, &&\cdots\} \\
+            \cdots \\
+            S^* &= \{&&{\color{red}c_1}, &&{\color{red}c_2}, &&{\color{red}c_1}, &&{\color{red}c_1,} &&{\color{red}c_2}, &&\cdots\} \\
+        \end{align*}
+        很明显\(S^*\)的第\(i\)项就与\(S_i\)的第\(i\)项不同，这就说明\(S^*\)无法被枚举出来，从而导出矛盾. 这种证明方法称为\uline{对角线证法}(diagonal argument)，最早被康托尔用来证明实数集不可数，他的证法是这样的：已知每个无限小数都是实数，假设无限小数可列，那么数列\(\{a_n\}_{n \in \mathbb{N}}\)可以把区间\((0,1)\)内的小数列出来，然后构造第\(i\)位和\(a_i\)的第\(i\)位不同的小数\(a^*\)（比如选取\(4\)和\(7\)来判定）.
+        \begin{align*}
+            a_0 &= 0.{\color{red}2} 1845\cdots \\
+            a_1 &= 0.9{\color{red}8} 724\cdots \\
+            a_2 &= 0.83{\color{red}1} 66\cdots \\
+            a_3 &= 0.395{\color{red}7} 4\cdots \\
+            a_4 &= 0.5836{\color{red}3}\cdots \\
+            \cdots \\
+            a^* &= 0.{\color{red}77747}\cdots
+        \end{align*}
+        这就充分说明了\(a^*\)没有被枚举出来，因此实数区间\((0,1)\)上的实数不可数. 康托尔1891年发表了这个证明. 当然，他在1879年的文章\textit{Ueber eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen}中就已经用区间套的方法证明了连续统（实数区间）是不可数的，这篇文章尽管不到四页半，却被视为集合论的开山之作，它的发表标志着集合论的诞生.
+    \end{note}
+    \item 若\(\Sigma\)和序列长度都可数无穷，那么\(\Sigma\)不可数无穷. \newline
+    相比于上一种情况，加大字典只会让序列只增不减，所以当然不可数无穷啦.
+\end{itemize}
+
+根据上面的结果，我们自然会觉得如果\(\Sigma\)和序列长度都不可数无穷时\(\Sigma^*\)也不可数无穷. 但是不可数无穷之间也是相对大小的，尽管\(\mathbb{R}\)和\(\mathcal{P}(\mathbb{R})\)都是不可数无穷，但是康托尔定理告诉我们后者比前者势大. 所以\({\rm card}(\Sigma^*)\)比\({\rm card}(\Sigma^*)\)大吗？如果大的话，大多少？我们现在无法回答，因为知识储备还太少——连\({\rm card}\)是什么都不知道. 这将在后面引入选择公理的时候详细讨论.
+
+\subsection{基数运算法则}
+
+以上我们定义了集合的势\(\trm{card}(A)\)，规定了集合的势什么情况下相等、大于、小于另一个集合的势，但是势的这种定义有些令人不满，因为我们希望将势定义为一个简洁并且单独的对象，而不是而不是一大捆相互等价的集合. 因此我们应该提出自然数往无穷方向扩展的方式，使之能适应集合的势的定义.
+
+\begin{definition}{基数（依赖选择公理）}
+    对于序数\(\alpha\)，若任意小于\(\alpha\)的序数\(\beta\)，都满足\(\trm{card}(\beta)<\trm{card}(\alpha)\)，则称序数\(\alpha\)是一个\uline{基数}(cardinal number).
+    \par
+    集合\(A\)的势\(\trm{card}(A)\)定义为与其等势的基数.
+\end{definition}
+
+这下我们给基数找到了简洁的定义，容易发现，对于两个基数\(\kappa\)和\(\lambda\)，\(\trm{card}(\kappa)<\trm{card}(\lambda), \kappa<\lambda, \kappa \in \lambda, \kappa \subset \lambda\)这四个命题是等价的. 然而，经过本章开头的论证，我们不应该仅仅用序数来定义基数，还要解决“重新排序后元素个数不等”的问题. 因此应该给基数制定一套运算法则.
+
+% \begin{definition}{基数运算法则}
+%     \begin{itemize}
+%         \item  后继
+%         \[\kappa^+ = \min\{\lambda|\lambda > \kappa\}\]
+%         \item  加法
+%         \[\kappa + \lambda := \trm{card}(A\cup B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda, A \cap B = \emptyset\]
+%         \item  乘法
+%         \[\kappa \cdot \lambda := \trm{card}(A\times B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda\]
+%         \item  乘方
+%         \[\kappa^\lambda := \trm{card}(A^B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda\]
+%     \end{itemize}
+% \end{definition}
+\begin{definition}{基数运算法则}
+    后继
+    \[\kappa^+ := \min\{\lambda|\lambda > \kappa\}\]
+    加法
+    \[\kappa + \lambda := \trm{card}(A\cup B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda, A \cap B = \emptyset\]
+    乘法
+    \[\kappa \cdot \lambda := \trm{card}(A\times B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda\]
+    乘方
+    \[\kappa^\lambda := \trm{card}(A^B), \quad \mbox{其中}\trm{card}(A) = \kappa, \trm{card}(B)=\lambda\]
+\end{definition}
+基数是一类特殊的序数，它们既可以参与序数运算，也可以参与基数运算，具体参加哪一套需要在记号上加以区分，以上在定义基数运算法则时，把基数用\(\kappa, \lambda, \mu, \nu, \cdots\)等靠后的希腊字母表示，而强调序数时一般使用\(\alpha, \beta, \gamma, \delta, \cdots\)等靠前的希腊字母. 很容易验证，当限定在有限集合的时候，序数、基数的运算结果是相同的，都非常符合直觉，比如\(2 \times 3\)，无论套用序数运算法则还是基数运算法则，甚至是将来使用皮亚诺公理定义的自然数运算法则，抑或是更往后的整数、有理数、实数、复数运算法则，它都等于\(6\). 而序数与基数的差异出现在无穷之后，因此我们使用希伯来字母来强调它的基数身份.
+
+\begin{definition}{阿列夫数和贝斯数}
+    序列\(\aleph_\alpha:\mathbb{ON} \to \mathbb{ON}\)和\(\beth_\alpha:\mathbb{ON} \to \mathbb{ON}\)定义如下：
+    \[\begin{aligned}
+        & \aleph_0 &=\quad& \trm{card}(\mathbb{N}) && \beth_0 &=\quad& \trm{card}(\mathbb{N}) &\\
+        & \aleph_{\alpha+1} &=\quad& \aleph_{\alpha}^+ && \beth_{\alpha+1} &=\quad& \trm{card}(\mathcal{P}(\beth_\alpha)) &\\
+        & \aleph_{\alpha} &=\quad& \bigcup_{\beta < \alpha}\aleph_{\beta} && \beth_{\alpha} &=\quad& \bigcup_{\beta < \alpha}\beth_{\beta} & \alpha\mbox{是极限序数}
+    \end{aligned}\]
+\end{definition}
+
+根据康托尔定理，\(\beth_\alpha \geq \aleph_\alpha\)，但是等号是否成立呢？取幂集得到的基数是否正好是下一个基数？康托尔穷尽一生都没能得出答案，但他认为是相等的，这个断言被称为\uline{广义连续统假设}(generalized continuum hypothesis, GCH)，而\uline{连续统假设}(continuum hypothesis, CH)仅断言\(\beth_1=\aleph_1\). 这个问题到目前为止都没有答案，接下来在公理集合论中还会详细讨论.
+
+\section{朴素集合论的局限性}
+
+朴素集合论的概括原则断言了符合\(\{x|\varphi(x)\}\)形式的对象都是集合，如果\(x\)满足命题\(\varphi(x)\)，那么\(x\)就属于这个集合，否则就不属于. 这个原则在很长一段时间内都被认为是正确的，直到1901年罗素构造出了如下集合：
+\[A=\{x|x \not \in x\}\]
+试问，\(A \in A\)吗？如果\(A \in A\)，那么\(A\)就需要满足命题\(x \not \in x\)，即\(A \not \in A\)；如果\(A \not \in A\)，那么\(A\)就满足了命题，因此\(A \in A\). 无论怎么选择，都会得到矛盾的结果，这个矛盾称为\uline{罗素悖论}(Russel's paradox).
+
+\begin{note}
+布劳威尔(L. E. J Brouwer)和外尔(H. Weyl)认为这是对集合论的致命一击，但哥德尔没有把它当成严重的问题，他认为问题出在数学的边界上，而且是靠近哲学的边界上，并且通过公理化的方法，可以将这个问题完美解决. 而罗素本人则通过赋予集合以“类型”来否定\(x \in x\)这个命题的合法性，由此创立了\uline{类型论}(type theory). 现在一般认为，公理化的集合论规避了罗素悖论，至于这种规避是否解决了问题，则依据哲学立场的不同有不同的看法.
+\end{note}
+
+\section{数学第二步，数理逻辑}
+
+\sout{数理逻辑“以数学的方式研究数学”(by 以色列数学家Shalah)，这句话有两个层面的意思，一是“使用数学”，即使用数学工具来研究逻辑，二是“为了数学”，即研究对象是数学里出现的逻辑和数学家常用的逻辑. 
+
+整个学科的研究目标就是指出哪些命题是真的、哪些不是真的、哪些无法判断，这种真有两个层面，第一个层面的“真”不依赖于现实世界. 比如“\(1+1=2\)”是真的，不依赖于现实世界中“一个苹果和另一个苹果放在一起就得到两个苹果”这样的事实，而依赖于一些形式上的假定（公理、前提、推演法则），这个层面的真我们称之为语法上的真；第二个层面的真则要依赖一个外部结构来判断，这个外部结构有可能是现实世界中的某些事实，也可能是我们理想中的另外一个世界的事实，总之留有相当多的主观的余地，这个层面的真我们称之为语义上的真. 
+
+作为反例，网上关于\(0.999\cdots\)是否等于1的争论，甚至用现实世界的例子来解释等于或不等于都不是数理逻辑的研究内容——因为这个命题正确与否依赖于背后的形式系统. 作为整个数理逻辑部分的开头，首先需要明确以下两对概念.}
+
+% 元语言和对象语言. 我们接下来在定义
+% 语法和语义.
+
+\section{命题逻辑}
+
+朴素集合论的概括原则断言形如\(\{x|\phi\}\)的东西是一个集合，没有规定额外的条件，由此就导致了罗素悖论. 为了克服朴素集合论的这个缺陷，数学家对“什么是集合”的问题做了深入的研究，第一步就是规定\(\phi\)应该是什么形式，这就是形式逻辑所研究的内容. 
+
+自然语言中的\uline{命题}(proposition)我们以前学过，就是能写成“如果……那么……”形式的陈述句. 然而命题最重要的地方不在于它的句子形式，而是它能够判断真假，形式地说，即存在一个函数
+\[v: \mbox{命题的集合} \to \{\mbox{真},\mbox{假}\}.\] 
+接下来我们不必去理会一个命题本身是什么样的，认为它是良好的命题（即能判断真假），然后像字母代替数一样，也用一个字母（比如\(A\)）表示命题，此时对其判断真假的过程就可以记为\(v(A)\)，得到的结果只有两种：真(T)和假(F). 给定了命题的真假，把它用连接词连接成长命题，这个长命题和给定的命题有什么样的真假关系，这就是命题逻辑语义的研究内容. 
+
+\subsection{语义和真假赋值}
+
+\begin{definition}{命题逻辑的语言要素}
+    最简单的命题逻辑的语言有两种符号. 
+    \begin{itemize}
+        \item \uline{命题符号}(proposition)，用\(A_0, A_1, A_2, \cdots\)等符号来表示，命题符号组成的集合记作\(\mathcal{L}_0^0\).
+        \item \uline{逻辑连接词}(logic connective)，有以下两个：\newline
+            \uline{否定连接词}(negation)，写作“\(\neg\)”，读作“非”；\newline
+            \uline{条件连接词}(condition)，又称\uline{实质蕴含连接词}(material implication)，写作“\(\to\)”，读作“蕴含”.
+        \item 括号，让连接词的作用范围表达得更清楚，这里只使用小括号.
+    \end{itemize}
+\end{definition}
+
+你也许会感到奇怪，以前学过的逻辑连接词是“\(\vee\)”、“\(\wedge\)”和“\(\neg\)”，为什么现在只有两个，还出现了一个“\(\to\)”呢？当然使用这三个也是可以的，但是毕竟有三个连接词啊，比两个要复杂一些，并且我们将会证明，定义中所使用的两个连接词和我们学过的三个连接词，表达能力是一样的，也就是说，我们学过的三个连接词所构造出来的复杂句子，使用这两个连接词一样能构造出来，反之亦然. 好了，有了命题符号作为原材料、连接词作为工具，接下来的事情自然就是构建句子了. 就像起房子一样，我们需要正确地安排好两种符号的书写顺序，比如“{\color{blue} \(((\neg(\neg A_1)) \to A_2) \to ((\neg(\neg A_1)) \to (\neg(\neg A_2)))\)}”是正确的写法，而“{\color{red} \((A_1)) \to ) \to ((\neg A_2) \to (\neg A_1)) \to (\neg(\mbox{狗}\neg\neg A_2 ((\neg ) \to)\)}”就是错误的写法. 正确的写法写出来的句子称为\uline{合式公式}(well-formed formula, WFF)，现在我们就来规定什么是合式公式.
+
+\begin{definition}{命题逻辑的合式公式}
+    命题逻辑合式公式一般使用小写希腊字母\(\varphi, \psi\)等表示，有以下三种组成方式\footnote{严格来说我们需要首先用序列定义字符串及其连接运算，再定义什么是合式公式，但是那样会显得太晦涩，这里姑且略去那些繁文缛节.}：
+    \begin{itemize}
+        \item 命题符号是合式公式. 
+        \item 若\(\varphi\)是合式公式，则\((\neg \varphi)\)是合式公式.
+        \item 若\(\varphi, \psi\)都是是合式公式，则\((\varphi \to \psi)\)是合式公式.
+    \end{itemize}
+    由\(\mathcal{L}_0^0\)中的命题符号组成的所有可能的合式公式的集合记为\(\mathcal{L}_0\)，称为命题逻辑语言.
+\end{definition}
+
+这个定义采用递归的方式规定什么是合式公式，我们在朴素集合论里已经证明了递归定义的合法性. 合法是合法，但你有没有觉得太麻烦了呢，就像上面那个蓝色的合式公式一样，括号太多了. 之前说过，括号是为了避免歧义，比如“\(\neg A_1 \to A_2\)”的意思是“\((\neg A_1) \to A_2\)”还是“\(\neg (A_1 \to A_2)\)”呢？但我们反过来考虑，为什么算式\(3\times 5+6\)没有歧义呢？是因为我们规定了乘法的优先级要比加法高. 因此我们也给两个连接词规定优先级：\textbf{“\(\neg\)”比“\(\to\)”更优先，也比接下来介绍的所有二元连接词更优先.} 这样“\(\neg A_1 \to A_2\)”就表示“\((\neg A_1) \to A_2\)”，上面那个蓝色的公式就可以写作{\color{blue} \((\neg\neg A_1 \to A_2) \to (\neg\neg A_1 \to \neg\neg A_2)\)}，姑且不论基于真假的化简，至少这样看起来顺眼多了.
+
+以上定义出的合式公式，有以下几个性质：
+\begin{itemize}
+    \item 对于一个合式公式\(\varphi\)，在其中任意一个命题符号之前的符号序列都不是合式公式.
+    \item \uline{唯一可读性定理}：对于一个合式公式\(\varphi\)，要么\(\varphi\)是逻辑符号，要么\(\varphi\)形如\(\neg \psi\)且\(\psi\)唯一，要么\(\varphi\)形如\(\psi_1 \to \psi_2\)且\(\psi_1\)和\(\psi_2\)唯一，三者必满足其一且只满足其一.
+    \item \uline{合式公式归纳定理}：令\(P(\varphi)\)是关于合式公式的性质，若对于每个命题符号\(A_i\)，\(P(A_i)\)都成立；且如果\(P(\varphi)\)和\(P(\psi)\)都成立\(P(\neg\varphi)\)和\(P(\varphi \to \psi)\)就一定成立，那么\(P(\varphi)\)对全体合式公式\(\varphi\)都成立.
+\end{itemize}
+
+
+命题最重要的一点是可以判断真假. 现在有了函数\(v: \Sigma \to \{T, F\}\)，对每一个命题符号判定真假，却不能给符号连接而成的合式公式判断真假，所以现在就来补全它.
+
+\begin{definition}{合式公式的真假赋值/真值指派}
+    设\(v: \Sigma \to \{T,F\}\)，定义\(\bar v:\Sigma^* \to \{T,F\}\)为扩张的真假赋值函数：
+    \begin{itemize}
+        \item 若\(\varphi\)是逻辑符号，则\(\bar v(\varphi) = v(\varphi)\).
+        \item 若\(\varphi\)形如\(\neg \psi\)，且\(\bar v(\psi)\)有定义，则\(\bar v(\varphi) = \left\{\begin{aligned} &T, & \bar v(\psi) = F \\ & F, & \bar v(\psi) = T \end{aligned}\right.\).
+        \item 若\(\varphi\)形如\(\psi_1 \to \psi_2\)，则\(\bar v(\varphi) = \left\{\begin{aligned} &F, & \bar v(\psi_1) = T, \bar v(\psi_2) = F \\ & T, & \mbox{其他} \end{aligned}\right.\)
+    \end{itemize}
+\end{definition}
+
+利用数学归纳可以证明，\(\bar v\)是合法的函数，即扩张的真假赋值是唯一的. 
+
+\begin{note}
+    难以理解的地方来了，根据定义，只要\(A_1\)是假命题，无论\(A_2\)是真是假，“\(A_1 \to A_2\)”都是真命题. 由于我们定义蕴含连接词的时候直观上将其理解为“推出”，这就意味着假命题可以推出任意命题，并且你将会看到，后面要讨论的语义后承和句法后承都有“假推任意”的现象. 这种现象称为\uline{爆炸原理}(ex falso quodlibet)，对很多人来说难以置信. 我们可以这么理解，“\(A_1 \to A_2\)”声明了一个承诺：当\(A_1\)成立的时候\(A_2\)也要成立，而句子的真值取决于这个承诺有没有被打破. 如果\(A_1\)为真\(A_2\)为假，承诺被打破，“\(A_1 \to A_2\)”为假，但如果\(A_1\)为假，连承诺的前提都没达成，那这个承诺就不适用，而没有被打破，句子仍然为真，但这是“无意义的真”，即“虚真”(vacuously true).
+\end{note}
+
+现在来说说我们熟悉的另外三个连接词.
+\begin{itemize}
+    \item \uline{合取连接词}(conjunction)，写作“\(\wedge\)”，读作“且”，\(A_1 \vee A_2\)等价于\(\neg (A_1 \to \neg A_2)\).
+    \item \uline{析取连接词}(disjunction)，写作“\(\vee\)”，读作“或”，\(A_1 \vee A_2\)等价于\(\neg A_1 \to A_2\).
+    \item \uline{双条件连接词}(bicondition)，写作“\(\leftrightarrow\)”，读作“当且仅当”，\(A_1 \vee A_2\)等价于\((A_1 \to A_2) \wedge (A_2 \to A_1)\).
+\end{itemize}
+
+这个时候就可以祭出真值表了. 需要注意，只有当\(v(A_i)\)确定以后，\(\bar v(\varphi)\)才有讨论的意义，命题逻辑并不关注某个\(A_i\)为什么为真，另一个\(A_j\)为什么为假，而是关注将多个命题连接成的复杂句子的真假. “不关注原子事实的真假”这一思想今后还会在其他地方体现.
+
+\begin{table}[hbtp]
+    \begin{center}
+        \begin{tabular}{cc|ccccc}
+            \hline
+            \(\varphi\) & \(\psi\) & \(\neg \varphi\) & \(\varphi \to \psi\) & \(\varphi \vee \psi\) & \(\varphi \wedge \psi\) & \(\varphi \leftrightarrow \psi\) \\
+            \hline
+            T & T & F & T & T & T & T \\
+            T & F & F & F & T & F & F \\
+            F & T & T & T & T & F & F \\
+            F & F & T & T & F & F & T \\
+            \hline
+        \end{tabular}
+        \caption{五个连接词的真值表}
+    \end{center}
+\end{table}
+
+\subsection{命题的语义}
+
+\begin{definition}{语义后承}
+    设真假赋值函数\(\bar v\)是\(v\)的扩张，若\(\bar v(\varphi) = T\)，称\(v\)\uline{满足}(satisfies)合式公式\(\varphi\). \newline
+    若\(\Gamma \subseteq \mathcal{L}_0\)且\(v\)满足\(\Gamma\)中的每一个合式公式，称\(v\)满足集合\(\Gamma\)，也称\(\Gamma\)可被\(v\)满足. \newline
+    如果\(v\)满足集合\(\Gamma\)，就一定满足合式公式\(\varphi\)，则称集合\(\Gamma\)\uline{重言蕴含}(tautologically implies)合式公式\(\varphi\)，也称\(\varphi\)为公式集\(\Gamma\)的\uline{语义后承}(sematics consequence)，记作\(\Gamma \vDash \varphi\). \newline
+    如果\(\Gamma\)只有一个公式\(\psi\)，那么\(\{\psi\} \vDash \varphi\)可以简写为\(\psi \vDash \varphi\). 如果\(\varphi \vDash \psi\)且\(\psi \vDash \varphi\)，那么称\(\varphi\)和\(\psi\)\uline{重言等价}(tautologically equivalent).
+\end{definition}
+
+\begin{note}
+    比如，在侦探小说里，有三个嫌疑人X,Y,Z，而现在我们得到了三条线索：
+    1. X,Y之一是犯人；2.X,Z是犯人；3.不可能Y或Z是犯人. 现在我们将嫌疑人的编号作为其犯罪的命题符号，即\(X\)表示“X是犯人”这个命题，三条线索就可以写成\((X \vee Y), (X \vee Z), \neg(Y \vee Z)\)，令\(\Gamma\)为这三条公式的集合，然后可以列出一张表：
+    \begin{table}[hbtp]
+        \begin{center}
+            \begin{tabular}{ccc|ccc}
+                \hline
+                \(X\) & \(Y\) & \(Z\) & \((X \vee Y)\) & \((X \vee Z)\) & \(\neg(Y \vee Z)\) \\
+                \hline
+                T & T & T & T & T & F \\
+                T & T & F & T & T & F \\
+                T & F & T & T & T & F \\
+                {\color{red}T} & {\color{red}F} & {\color{red}F} & {\color{red}T} & {\color{red}T} & {\color{red}T} \\
+                F & T & T & T & T & F \\
+                F & T & F & T & F & F \\
+                F & F & T & F & T & T \\
+                F & F & F & F & F & T \\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{table}
+    此时只有表中红色那一行所代表的赋值函数才能满足\(\Gamma\)，而此时\(X\)被满足，所以\(\Gamma \vDash X\). 
+\end{note}
+
+现在来思考一个特殊情况：\(\emptyset \vDash \varphi\). 用自然语言翻译：“如果对于每个赋值函数\(v\)，都满足\(\emptyset\)中的公式，那么\(v\)满足\(\varphi\)”. 这又是一个“如果……那么……”的命题，首先\(v\)是否满足空集中的“每一个公式”呢？弄不清楚就把这个句子展开：“如果某个公式属于空集，那么该公式被\(v\)满足”. “某个公式属于空集”本身就是假命题了，所以这个句子为真，即\(v\)满足空集中的“每一个公式”. 所以只要“任意一个\(v\)都满足\(\varphi\)”即可. 这意味着，无论命题符号是真是假，\(\varphi\)总是一个真命题.
+
+\begin{definition}{重言式和谬论}
+    如果\(\emptyset \vDash \varphi\)，则称\(\varphi\)是\uline{重言式}(tautology)，可以简写为\(\vDash \varphi\). \newline
+    如果任何真假赋值函数都不能满足命题\(\varphi\)，就称\(\varphi\)是一个\uline{谬论}(contradiction).
+\end{definition}
+
+接下来给出几个常用的重言式，这些重言式作为非常经典的逻辑规律，在将来还会经常出现.
+\begin{itemize}
+    \item 或和且的交换律、结合律、分配律
+    \begin{align*}
+        & (A \vee B) \leftrightarrow (B \vee A) && (A \wedge B) \leftrightarrow (B \wedge A) \\
+        & ((A \vee B) \vee C) \leftrightarrow (A \vee (B \vee C)) && ((A \wedge B) \wedge C) \leftrightarrow (A \wedge (B \wedge C)) \\
+        & (A \vee (B \wedge C)) \leftrightarrow ((A \vee B) \wedge (A \vee C)) && (A \wedge (B \vee C)) \leftrightarrow ((A \wedge B) \vee (A \wedge C))
+    \end{align*}
+    \item 德摩根律(De Morgan law)
+    \[\neg(A \wedge B) \leftrightarrow (\neg A \vee \neg B) \qquad \neg (A \vee B) \leftrightarrow (\neg A \wedge \neg B)\]
+    \item 双重否定(double negation)：\(\neg \neg A \leftrightarrow A\)
+    \item 排中律(exclude middle)：\(A \wedge \neg A\)
+    \item 矛盾律(contradiction)：\(\neg (A \wedge \neg A)\)
+    \item 导出律(exportation)：\(((A \wedge B) \to C) \leftrightarrow (A \to (B \to C))\)
+    \item 逆否命题等价于原命题/换质位法(contraposition)：\((A \to B) \leftrightarrow (\neg B \to \neg A)\)
+\end{itemize}
+
+\subsection{逻辑连接词的高级玩法}
+
+这一节讲的还是命题的语义. 命题符号可以被真假赋值函数映射为某个真值，用逻辑连接词把命题符号连接成合式公式以后可以被扩展的真假赋值函数映射为某个真值，例如\(v(A)=T,\bar{v}(\neg A)=F\)，\(\neg A\)的真值取决于\(A\)的真值. 如果我们从函数的角度来看问题，就可以把逻辑连接词看作一个把真值映射为真值的函数，例如“\(\neg\)”可以看成一个\(F \mapsto T, T \mapsto F\)的函数，而“\(\to\)”可以看作一个二元函数：\((T,T) \mapsto T, (T,F) \mapsto F, (F,T) \mapsto T, (F,F) \mapsto T\). 
+
+推广这种想法，逻辑函数是一个\(n\)元函数\(B(X_1, X_2, \cdots, X_n)\)，接受\(n\)个真值，并映射为一个真值. 如果两个逻辑函数映射的规则是相同的，那就算做同一个函数. 如果真值只有\(T,F\)两个，运用一点点组合学的知识，我们可以很快算出一元逻辑函数有\(4\)个，二元逻辑函数有\(16\)个，三元逻辑函数有\(256\)个，\(n\)元逻辑函数有\(2^{2^n}\)个（\(n\)个位置，每个位置有两种可能的真值，一共有\(2^n\)种排列情况，而对于每种排列情况，都有两个可能的输出，因此有\(2^{2^n}\)个可能的输出）. 
+
+对于某个涉及了\(n\)个命题符号的合式公式\(\alpha\)，其真值由这些命题符号的真值唯一决定，这就确定了一个逻辑函数\(B_\alpha\). 现在问题就来了，反过来是否成立，即一个逻辑函数\(B_\alpha(X_1, X_2, \cdots, X_n)\)是否能被某个涉及\(n\)个命题符号\(A_1, A_2, \cdots, A_n\)的合式公式\(\alpha\)表达：即当\(v(A_i)=X_i\)时，\(\bar{v}(\alpha) = B_\alpha(X_1, X_2, \cdots, X_n)\)？
+
+\begin{note}
+    例如给定了一个逻辑函数\(B_\alpha(X_1, X_2, X_3)\)如下面左边的表格，那么说\(\alpha: A_1 \to \neg (A_2 \to \neg A_3)\)表达了这个逻辑函数，因为当\(A_1, A_2, A_3\)的真值分别为\(X_1, X_2, X_3\)时，\(\alpha\)的真值为\(B_\alpha(X_1, X_2, X_3)\)，如下面右边的表格所示.
+    
+    % \begin{table}[h!]
+        \begin{center}
+
+            \begin{tabular}{ccc|c}
+                \hline
+                \(X_1\) & \(X_2\) & \(X_3\) & \(B_\alpha(X_1, X_2, X_3)\) \\
+                \hline
+                F & F & F & T \\
+                F & F & T & T \\
+                F & T & F & T \\
+                F & T & T & T \\
+                T & F & F & F \\
+                T & F & T & F \\
+                T & T & F & F \\
+                T & T & T & T \\
+                \hline
+            \end{tabular}
+            \quad
+            \begin{tabular}{ccc|c}
+                \hline
+                \(v(A_1)\) & \(v(A_2)\) & \(v(A_3)\) & \(\bar{v}(\alpha)\) \\
+                \hline
+                F & F & F & T \\
+                F & F & T & T \\
+                F & T & F & T \\
+                F & T & T & T \\
+                T & F & F & F \\
+                T & F & T & F \\
+                T & T & F & F \\
+                T & T & T & T \\
+                \hline
+            \end{tabular}
+
+        \end{center}
+    % \end{table}
+
+\end{note}
+
+你一定马上意识到了（也许没意识到）逻辑函数是否能确定一个合式公式和允许选取的逻辑连接词有关. 在上面的例子中如果我们不允许使用“\(\neg\)”，那就不存在满足条件的合式公式. 对于逻辑连接词的集合\(C\)，如果任意\(n\)元的逻辑函数都能用只涉及\(n\)的命题符号的、由\(C\)中的连接词连接而成的合式公式表达，就称\(C\)为\uline{功能完全的}(complete). 接下来我们证明\(\{\neg, \vee, \wedge\}\)是功能完全的.
+
+\begin{proof}
+    如果\(B_\alpha(X_1, X_2, \cdots, X_n)\)恒等于\(F\)，那么取\(\alpha: A_1 \wedge \neg A_1\)就好了. \newline
+    如果\(B_\alpha(X_1, X_2, \cdots, \cdots, X_n)\)不恒等于\(F\)，那就把映射至\(T\)的真值组合全列举出来，假设有\(m\)个：
+    \begin{align*}
+        \bar{X}_1 &= (X_{11}, X_{12}, \cdots, X_{1n}) \\
+        \bar{X}_2 &= (X_{21}, X_{22}, \cdots, X_{2n}) \\
+        \cdots &\\
+        \bar{X}_m &= (X_{m1}, X_{m2}, \cdots, X_{mn}) \\
+    \end{align*}
+    此时设\[B_{ij} = \left\{ \begin{aligned} &A_{j}, &X_{ij} = T \\ &\neg A_j, &X_{ij} = F \end{aligned} \right.\]
+    这样\(B_{ij}\)就恒真了，这时再设
+    \[C_i = B_{i1} \wedge B_{i2} \wedge \cdots \wedge B_{in}\]
+    因为该真假赋值满足每个\(B_{ij}\)，所以也满足\(C_i\). 同时也只有唯一的真假赋值满足\(C_i\)，不信你试试看，哪怕只改变一个命题符号的真值，某个\(B_{ij}\)就变假了，就不满足\(C_i\)了. 此时令
+    \[\alpha = C_1 \vee C_2 \vee \cdots \vee C_m\]
+    当然\(v\)也会满足\(\alpha\). 此时求出的\(\alpha\)就表达了函数\(B_\alpha(X_1, X_2, \cdots, X_n)\). 另一方面，因为每个\(C_i\)只有一个真假赋值能满足，所以仅有\(m\)个真假赋值能满足\(\alpha\)，也就是说，任意调整\(\alpha\)涉及到的每个命题符号的真假，能满足\(\alpha\)的情况只有\(m\)种，而这\(m\)种就是\(X_i\)所对应的真假赋值. 于是公式\(\alpha\)就表达出了逻辑函数\(B_\alpha\). 证毕.
+
+    该证明可能有些抽象了，这里用上面的例子来验证. \(B_\alpha(X_1, X_2, X_3)\)一种有8种输入，其中有5种能够映射至\(T\)，按照证明中说的去做，写出映射至\(T\)的真值组合\(\bar{X}_i\)以及组合好的命题命题\(C_i\).
+    
+    \begin{align*}
+        &\bar{X}_1 = (F,F,F) && C_1 = \neg A_1 \wedge \neg A_2 \wedge \neg A_3 \\
+        &\bar{X}_2 = (F,F,T) && C_2 = \neg A_1 \wedge \neg A_2 \wedge A_3 \\
+        &\bar{X}_3 = (F,T,F) && C_3 = \neg A_1 \wedge A_2 \wedge \neg A_3 \\
+        &\bar{X}_4 = (F,T,T) && C_4 = \neg A_1 \wedge A_2 \wedge A_3 \\
+        &\bar{X}_5 = (T,T,T) && C_5 = A_1 \wedge A_2 \wedge A_3 \\
+    \end{align*}
+
+    这时构造出来的命题\(\alpha\)就是
+    \[
+        (\neg A_1 \wedge \neg A_2 \wedge \neg A_3) \vee (\neg A_1 \wedge \neg A_2 \wedge A_3) \vee (\neg A_1 \wedge A_2 \wedge \neg A_3) \vee (\neg A_1 \wedge A_2 \wedge A_3) \vee (A_1 \wedge A_2 \wedge A_3)
+    \]
+
+    想让真假赋值满足公式\(C_1\)，那就必须有\(v(A_1)=v(A_2)=v(A_3)=F\)；想满足公式\(C_2\)，那就必须有\(v(A_1)=F, v(A_2)=F, v(A_3)=T\)；同理，想满足\(C_3, C_4,C_5\)，都有不同且唯一的真假赋值. 来看最终的\(\alpha=C_1 \vee C_2 \vee C_3 \vee C_4 \vee C_5\)，由于某个真假赋值至多只能满足一个\(C_i\)，因此共有\(5\)个真假赋值可以满足\(\alpha\)，而这\(5\)个真假赋值给\((A_1,A_2,A_3)\)指派的真值恰好分别是\(5\)个\(\bar{X}_i\)列出的真值，所以\(\alpha\)表达出了\(B_\alpha(X_1,X_2,X_3)\).
+
+\end{proof}
+
+好，现在证明了\(\{\neg, \vee, \wedge\}\)是功能完全的，以它为桥梁，我们可以证明其他某些连接词的组合也是功能完全的，当且仅当那些连接词和\(\{\neg, \vee, \wedge\}\)能互相表示.
+\begin{itemize}
+    \item \(\{\neg, \to\}\)是功能完全的，因为
+    \begin{align*}
+        A_1 \to A_2 &\mbox{重言等价于} \neg A_1 \vee A_2 & A_1 \vee A_2 &\mbox{重言等价于} \neg A_1 \to A_2  \\
+        && A_1 \wedge A_2 &\mbox{重言等价于} \neg (A_1 \to \neg A_2)
+    \end{align*}
+    \item \(\{\neg, \wedge\}\)和\(\{\neg, \vee\}\)都是功能完全的.
+    \item 在数字电路设计中常用到“与非”(NAND)和“或非”(NOR)两种逻辑连接词，\(A_1 \,\,\trm{NAND} \,\,A_2\)与\(A_1 \wedge A_2\)的真假相反，\(A_1 \,\,\trm{NOR} \,\, A_2\)与\(A_1 \vee A_2\)的真假相反，\(\{\trm{NAND}\}\)和\(\{\trm{NOR}\}\)都是功能完全的，因为
+    \begin{align*}
+        \neg A  &\mbox{重言等价于} A \,\,\trm{NAND}\,\, A & A_1 \,\,\trm{NAND}\,\, A_2 &\mbox{重言等价于} \neg A_1 \wedge A_2  \\
+        A_1 \wedge A_2 &\mbox{重言等价于} (A_1 \,\,\trm{NAND} \,\, A_2) \,\,\trm{NAND} \,\, (A_1 \,\,\trm{NAND} \,\, A_2) &  \\
+        A_1 \vee A_2 &\mbox{重言等价于} (A_1 \,\,\trm{NAND} \,\, A_1) \,\,\trm{NAND} \,\, (A_2 \,\,\trm{NAND}\,\, A_2) & 
+    \end{align*}
+    \begin{align*}
+        \neg A  &\mbox{重言等价于} A \,\,\trm{NOR}\,\, A & A_1 \,\,\trm{NOR}\,\, A_2 &\mbox{重言等价于} \neg A_1 \vee A_2  \\
+        A_1 \wedge A_2 &\mbox{重言等价于} (A_1 \,\,\trm{NOR} \,\, A_2) \,\,\trm{NOR} \,\, (A_1 \,\,\trm{NOR} \,\, A_2) &  \\
+        A_1 \vee A_2 &\mbox{重言等价于} (A_1 \,\,\trm{NOR} \,\, A_1) \,\,\trm{NOR} \,\, (A_2 \,\,\trm{NOR}\,\, A_2) & 
+    \end{align*}
+    \item \(\{\wedge, \to\}\)不是功能完全的.
+\end{itemize}
+
+当我们充分刻画了逻辑连接词的功能完全性和冗余性之后，我们不妨放开束缚着的手脚，接下来大胆地使用冗余的连接词简化公式的书写，比如\(\vee, \wedge, \leftrightarrow\)等.
+
+\subsection{命题的语法}
+
+本节主要讨论“证明”这个概念. 你可能觉得，前面朴素集合论已经证明了许多命题，意味着即使不讨论这个概念，我们一样能证明许多命题. 确实，即使不用严格规定“证明”是什么，我们一样能使用它，数学界几千年来也一样能发展得好好的. 然而，在朴素集合论中，当我们用概括原则规定“什么是集合”以后，罗素悖论就逼出了朴素集合论的局限性. 同样地，我们希望通过严格规定“什么是证明”，从而逼出“证明”这个工具的局限性，从而发现某些“不可证”的东西，这就是数理逻辑这门学科存在的意义之一——研究手段的局限性.
+
+从一个例子出发. 我们小学就学过三角形内角之和为180°，后来使用内错角相等的结论证明. 把证明的过程复现一下，首先我们设三角形三个角分别为\(\alpha, \beta, \gamma\)，过\(\alpha\)的顶点作其对边的平行线，因为内错角相等，所以\(\beta = \beta_1, \gamma = \gamma_1\)，而此时\(\alpha + \beta_1 + \gamma_1 = 180^\circ\)，所以三个角之和为180°.
+
+从这个证明的过程中能发现什么？这个证明过程出现了一个又一个命题，用“因为……所以……”这类关联词连接，可以形象地说，证明过程就是从假设到结论的逻辑链条. 不过这个链条也不是任意的，首先它必须要有限长. 在这个证明中，我们用到了“内错角相等”这个命题，在欧氏几何中，这个命题又根据“同位角相等”推出，而同位角相等又由另外一些命题推出，不断往上追溯简直没完没了. 真的能没完没了吗？如果追不到头，就违背了“逻辑链条有限长”的原则了. 因此必须有一些命题不由其他命题证出，这样的命题我们称为\uline{公理}(axiom). 请注意，这里并没有要求公理必须被赋值为真，现在讨论的是命题逻辑的语法，和语义没有关系. 在上例中，我们所用到的公理既可以是经典的欧几里得五大基本公设，也可以是现代解析几何中的一些假设，但是这些公理都只与几何概念有关，我们还需要另外附加一些的公理，更确切地说称为\uline{公理模式}(axiom scheme)，只与命题逻辑有关，并且可以把具体的命题套进去，使得证明有出发点，这些公理称为\uline{逻辑公理}(logical axiom). 逻辑公理的集合习惯使用大写希腊字母\(\Lambda\)表示，而那些于逻辑无关的公理的集合习惯上使用大写希腊字母\(\Gamma\)表示. \(\Gamma \cup \Lambda\)就是所有公理，{\small 但逻辑公理可能有点太浅显所以常常忽略.}
+
+其次，逻辑链条的每一环到下一环都必须要有依据. 问一个看起来很蠢的问题：为什么内错角相等，而\(\beta\)和\(\beta_1\)互为内错角，就能推出\(\beta\)和\(\beta_1\)相等？当然，我们可以用真假赋值函数来验证这是一个重言式. 然而，真假赋值只能用来验证某个命题是不是某些命题的语义后承，但并没有明确指出这些命题有哪些语义后承——即只能“验旧”，没告诉你怎么“推新”. 因此我们需要明确规定怎样才能“推新”，这种规定称为\uline{推理规则}(rule of inference). 利用名为XXX的推理规则从旧的命题\(\alpha_1, \alpha_2, \cdots, \alpha_n\)推出新命题\(\beta\)，记作
+\[\{\alpha_1, \alpha_2, \cdots, \alpha_n\} \vdash \beta \qquad ({\rm XXX})\]
+或者用竖式记作
+\[{{\alpha_1, \alpha_2, \cdots, \alpha_n} \over {\beta}} ({\rm XXX})\]
+推理规则直接反映了其制定者的哲学立场，这里算是一处数学与哲学的交汇之地.
+
+规定了公理和推理规则，我们就搭好了一个公理化的形式推演系统.
+
+\begin{definition}{推演系统(deduction system)}
+    公理化的形式推演系统建立在形式语言\(\mathcal{L}\)上，包含公理\(\Gamma\)、逻辑公理\(\Lambda\)和推理规则三部分. 如果一个公式\(\alpha\)满足\(\alpha \in \Gamma \cup \Lambda\)或能被\(\Gamma \cup \Lambda\)使用有限次推理规则得到，就称\(\alpha\)是\(\Gamma\)的一个\uline{内定理}(inner theorem)或\uline{语法后承}(syntactic consequence)，记作\(\Gamma \vdash \alpha\)，而该推演过程就称为\(\alpha\)的\uline{证明}(proof). \newline
+    特别地，如果\(\Gamma=\emptyset\)，那么\(\emptyset \vdash \alpha\)可以简写为\(\vdash \alpha\)；如果\(\Gamma\)只有一个元素\(\varphi\)，那么\(\{\varphi\} \vdash \alpha\)可以简写为\(\varphi \vdash \alpha\). \newline
+    如果\(\Gamma \vdash \varphi\)，且\(\Gamma \vdash \neg \varphi\)，就说公理\(\Gamma\)是\uline{不一致的}(inconsistent)，否则就是\uline{一致的}(consistent). 
+\end{definition}
+
+这里需要再三强调，命题逻辑的语言是一个形式语言，而我们正在用自然语言叙述它的方方面面. 在这种情况下，自然语言就是\uline{元语言}(metalanguage)，命题逻辑的语言就是\uline{对象语言}. 接下来我们会讨论“命题逻辑语言本身就具有的性质”，或者“关于命题逻辑语言本身的定理”，而这些性质定理只能用自然语言描述，所以它们称为\uline{元定理}(metatheorem). 上面提到的“内定理”则是在搭好了推演系统后，完全使用对象语言导出的合式公式，一定要分清这两者的区别. 将来熟悉形式推演之后，叫做定理就好了. 后面当我们讨论到一阶逻辑语言和二阶逻辑语言的时候，还会再遇到元定理/内定理的区别.
+
+另外这里笼统地把证明定义为推演的过程，是因为推演最终会形成有命题组成的树，这棵树就是证明的严格定义. 然而树是组合学的概念，我们将来讨论到组合集合论的时候再详细展开，实际上，在接下来要介绍的希尔伯特推演系统中，推演过程形成的命题树只有一支，即退化为了序列. 
+
+在直觉上我们会认为，只要保持一致性，往\(\Gamma\)中塞入的公理越多，推演系统能导出的公式就越多（或者不变，但至少不会减少），这种直觉是对的（，因此可以说\(\Gamma=\emptyset\)能推出来的内定理的“普适性”是最广的.
+
+\subsection{希尔伯特推演系统}
+
+现在我们来介绍一个具体的形式推演系统：希尔伯特系统. 接下来如果没有特别说明，就默认使用这里介绍的希尔伯特系统. 
+
+其实严格的措辞应该是“希尔伯特风格的命题逻辑形式推演系统”，首先不存在所谓“希尔伯特系统”，只有\uline{希尔伯特风格}(Hilbert style)，指的是有很多条逻辑公理、但只有极少推理规则的特点；其次这是命题逻辑的推演系统，因为我们接下来还会介绍希尔伯特一阶逻辑的推演系统. 
+
+我们要介绍的推演系统建立在命题逻辑语言\(\mathcal{L}_0\)上，只用\(\neg, \to\)两个连接词，逻辑公理\(\Lambda\)包含三条公理：
+\begin{itemize}
+    \item [(A1)] 宽容律. \(\alpha \to \beta \to \alpha\)
+    \begin{note}
+        如果\(\alpha\)成立，那么无论\(\beta\)是什么，\(\alpha\)都成立. 例如\(\alpha:\)明天下雨；\(\beta:\)我做某事；(A1):“如果明天下雨，那么不管我做什么，明天都会下雨”. 需要再三强调，这里的“成立”是语法层面的成立，和真假赋值无关.
+    \end{note}
+    \item [(A2)] 蕴含分配律. \((\alpha \to \beta \to \gamma) \to (\alpha \to \beta) \to (\alpha \to \gamma)\)
+    \begin{note}
+        例如\(\alpha:\)某天是周二；\(\beta:\)某天不下雨；\(\gamma:\)某天上体育课；(A2):“如果每个周二不下雨就上体育课，那么如果每个周二都不下雨，就每个周二都上体育课”.
+    \end{note}
+    \item [(A3)] 逆否命题法则. \((\neg \beta \to \neg \alpha) \to (\neg \beta \to \alpha) \to \beta\)
+    \begin{note}
+        如果\(\beta\)不成立能推出\(\alpha\)不成立也能推出\(\alpha\)成立，那么\(\beta\)就是成立的.
+    \end{note}
+\end{itemize}
+
+历史上有不少数学家提出了各自的希尔伯特风格的推演系统，包括一些大数学家例如弗雷格(Gottlob Frege)、塔斯基(Alfred Tarski)、罗素，甚至是希尔伯特本人，当然它们的“推演能力”都是相当的（能演绎出一样多的命题），我们选取的这三条公理由美国数学家门德尔松(Elliot Mendelson)提出.
+
+你可以把任何简单或复杂的公式当成\(\alpha,\beta,\gamma\)等套入逻辑公理，得到的公式仍然可以称为逻辑公理，例如(A1):\({\color{red}\alpha} \to ({\color{blue}\beta} \to {\color{red}\alpha})\)，把\(\beta \to \gamma\)套入\(\alpha\)，把公理(A2):\((\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))\)套入\(\beta\)，就得到了
+\[({\color{red} (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))}) \to (({\color{blue}\beta \to \gamma}) \to ({\color{red}(\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))}))\]
+这么一个又臭又长的公式，但它仍然能称为“公理”. 所以逻辑公理看似只有三条，实际上是无数条，往里套用不同的公式都能得到不同的公理. 这三条公理只是一个框架，允许把具体的公式套进去. 剧透一下，在一阶逻辑中，我们把这种“框架型”的公理称为\uline{公理模式}(axiom schema)，而套用了具体公式产生的新公式称为该公理模式的\uline{实例}(instance)（如果你学过有“类”这个概念的编程语言，相信你一定能很快理解公理模式和实例的概念）. 进一步剧透：在二阶逻辑中这两个概念又将有新的诠释，这种新的诠释正是一阶二阶逻辑最大的不同点. 
+
+希尔伯特推演系统的推理规则只有一条，称为\uline{肯定前件}或\uline{分离规则}(modus ponens，'method of replacing by putting'的拉丁文简写，简称MP)，
+\[{\alpha, \alpha \to \beta \over \beta}({\rm MP})\]
+因为只有一条推理规则，所以\textbf{证明过程能简化为一条公式序列}，所以以后的证明将不使用竖式写法，而使用自然语言附上每一步的依据.
+
+接下来我们做三件很无趣的事情：推几个\(\Gamma=\emptyset\)时的所谓“普适性最广”的内定理、推几个元定理、列举我们认为理所当然的内定理.
+
+% 希尔伯特系统看似简单，但是该系统已经能导出许多符合我们心目中对推理的直觉的性质（元定理和内定理）了，.
+
+首先我们推几个常用的内定理. 推出的内定理就像逻辑公理一样，也是“定理模式”，可以把具体的公式往里套. （我猜你不会想看以下这些又臭又长的演绎过程）
+\begin{itemize}
+
+    \item 自蕴含律-内定理. \(\vdash \alpha \to \alpha\)
+    \begin{proof}
+        \begin{itemize}
+            \item [1.] \(\vdash (\alpha \to (\alpha \to \alpha) \to \alpha) \to (\alpha \to (\alpha \to \alpha)) \to (\alpha \to \alpha)\)（公理A2的实例）
+            \item [2.] \(\vdash \alpha \to ((\alpha \to \alpha) \to \alpha)\)（公理A1的实例）
+            \item [3.] \(\vdash (\alpha \to (\alpha \to \alpha)) \to (\alpha \to \alpha)\)（根据1和2使用肯定前件推出）
+            \item [4.] \(\vdash \alpha \to (\alpha \to \alpha)\)（公理A1的实例）
+            \item [5.] \(\vdash \alpha \to \alpha\)（根据3和4使用肯定前件推出）
+        \end{itemize}
+    \end{proof}
+
+    \item \uline{假言三段论}(hypothetical syllogism)-内定理. \((\beta \to \gamma) \to (\alpha \to \beta) \to (\alpha \to \gamma)\)
+    \begin{note}
+        设\(\alpha\)：“正在讨论的某人是我”，\(\beta\):“某人上了富豪榜”，\(\gamma\):“某人很有钱”. 假言三段论：“某人上了富豪榜就说明他很有钱，我上了富豪榜，所以我很有钱”.
+    \end{note}
+    \begin{proof}
+        有些公式写出来太长了，令\(\varphi\)为公理A2的实例：\((\alpha \to \beta \to \gamma) \to (\alpha \to \beta) \to (\alpha \to \gamma)\).
+        \begin{itemize}
+            \item [1.] \(\vdash \varphi \to ((\beta \to \gamma) \to \varphi)\)（公理A1的实例）
+            \item [2.] \(\vdash (\beta \to \gamma) \to \varphi\)（根据1和公理A2使用肯定前件推出）
+            \item [3.] \(\vdash ((\beta \to \gamma) \to \varphi) \to (((\beta \to \gamma) \to (\alpha \to (\beta \to \gamma))) \to ((\beta \to \gamma) \to ((\alpha \to \beta) \to (\alpha \to \gamma))))\)（公理A2的实例）
+            \item [4.] \(\vdash ((\beta \to \gamma) \to (\alpha \to (\beta \to \gamma))) \to ((\beta \to \gamma) \to ((\alpha \to \beta) \to (\alpha \to \gamma)))\)（根据2和3使用肯定前件推出）
+            \item [5.] \(\vdash (\beta \to \gamma) \to (\alpha \to (\beta \to \gamma))\)（公理A1的实例）
+            \item [6.] \(\vdash (\beta \to \gamma) \to ((\alpha \to \beta) \to (\alpha \to \gamma))\)（根据4和5使用肯定前件推出）
+        \end{itemize}
+    \end{proof}
+
+    \item 假言三段论-内定理（调换大小前提）. 
+    \begin{proof}
+        \begin{itemize}
+            \item [1.] \(\vdash \varphi_1: (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))\)（假言三段论的实例）
+            \item [2.] \(\vdash \varphi_2: ((\alpha \to \beta) \to (\alpha \to \gamma)) \to (\beta \to (\alpha \to \beta)) \to (\beta \to (\alpha \to \gamma))\)（假言三段论的实例）
+            \item [3.] \(\vdash \varphi_2 \to \varphi_1 \to (\alpha \to (\beta \to \gamma)) \to (\beta \to (\alpha \to \beta)) \to (\beta \to (\alpha \to \gamma))\)（假言三段论的实例）
+            \item [4.] \(\vdash \varphi_1 \to (\alpha \to (\beta \to \gamma)) \to (\beta \to (\alpha \to \beta)) \to (\beta \to (\alpha \to \gamma))\)（根据2和3使用肯定前件推出））
+            \item [5.] \(\vdash \varphi_3: (\alpha \to (\beta \to \gamma)) \to (\beta \to (\alpha \to \beta)) \to (\beta \to (\alpha \to \gamma))\)（根据3和4使用肯定前件推出）
+            \item [6.] \(\vdash \varphi_3 \to ((\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \beta)) \to ((\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \gamma))\)（公理A2的实例）
+            \item [7.] \(\vdash ((\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \beta)) \to ((\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \gamma))\)（根据5和6用肯定前件推出）
+            \item [8.] \(\vdash \beta \to \alpha \to \alpha\)（公理A1的实例）
+            \item [9.] \(\vdash (\beta \to \alpha \to \beta) \to (\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \beta)\)（公理A1的实例）
+            \item [10.] \(\vdash (\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \beta)\)（根据8和9用肯定前件推出）
+            \item [11.] \(\vdash (\alpha \to \beta \to \gamma) \to (\beta \to \alpha \to \gamma)\)（根据9和10用肯定前件推出）
+            \item [12.] \(\vdash \varphi_1 \to ((\alpha \to \beta) \to (\beta \to \gamma) \to (\alpha \to \gamma))\)（11的实例）
+            \item [13.] \(\vdash (\alpha \to \beta) \to (\beta \to \gamma) \to (\alpha \to \gamma)\)（根据11和12用肯定前件推出）
+        \end{itemize}
+    \end{proof}
+
+    \item 双重否定消去-内定理. \(\vdash \neg \neg \alpha \to \alpha\)
+    \begin{proof}
+        \begin{itemize}
+            \item [1.] \(\vdash (\neg \alpha \to \neg \neg \alpha) \to (\neg \alpha \to \neg \alpha) \to \alpha)\)（公理A3的实例）
+            \item [2.] \(\vdash ((\neg \alpha \to \neg \neg \alpha) \to (\neg \alpha \to \neg \alpha \to \alpha)) \to (\neg \neg \alpha \to (\neg \alpha \to \neg \neg \alpha) \to (\neg \alpha \to \alpha) \to \alpha)\)（公理A1的实例）
+            \item [3.] \(\vdash \varphi: \neg \neg \alpha \to (\neg \alpha \to \neg \neg \alpha) \to (\neg \alpha \to \alpha) \to \alpha\)（根据1和2使用肯定前件推出）
+            \item [4.] \(\vdash \varphi \to ((\neg \neg \alpha \to \neg \alpha \to \neg \neg \alpha) \to (\neg \neg \alpha \to (\neg \alpha \to \neg \alpha) \to \alpha))\)（公理A2的实例）
+            \item [5.] \(\vdash (\neg \neg \alpha \to \neg \alpha \to \neg \neg \alpha) \to (\neg \neg \alpha \to (\neg \alpha \to \neg \alpha) \to \alpha)\)（根据3和4使用肯定前件推出）
+            \item [6.] \(\vdash \neg \neg \alpha \to \neg \alpha \to \neg \neg \alpha\)（公理A1的实例）
+            \item [7.] \(\vdash \neg \neg \alpha \to (\neg \alpha \to \neg \alpha) \to \alpha\)（根据5和6用肯定前件推出）
+            \item [8.] \(\vdash (\neg \neg \alpha \to (\neg \alpha \to \neg \alpha) \to \alpha) \to ((\neg \neg \alpha \to \neg \alpha \to \neg \alpha) \to (\neg \neg \alpha \to \alpha))\)（公理A2的实例）
+            \item [9.] \(\vdash (\neg \neg \alpha \to \neg \alpha \to \neg \alpha) \to (\neg \neg \alpha \to \alpha)\)（根据7和8用肯定前件推出）
+            \item [10.] \(\vdash \neg \alpha \to \neg \alpha\)（自蕴含律的实例）
+            \item [11.] \(\vdash (\neg \alpha \to \neg \alpha) \to (\neg \neg \alpha \to \neg \alpha \to \neg \alpha)\)（公理A1的实例）
+            \item [12.] \(\vdash \neg \neg \alpha \to \neg \alpha \to \neg \alpha\)（根据10和11用肯定前件推出）
+            \item [13.] \(\vdash \neg \neg \alpha \to \alpha\)（根据9和12用肯定前件推出）
+         \end{itemize}
+    \end{proof}
+
+    \item 双重否定引入-内定理. \(\vdash \alpha \to \neg \neg \alpha\).
+    \begin{proof}
+        \begin{itemize}
+            \item [1.] \(\vdash \varphi_1: (\neg \neg \neg \alpha \to \neg \alpha) \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha)\)（公理A3的实例）
+            \item [2.] \(\vdash \varphi_1 \to (\neg \alpha \to (\neg \neg \neg \alpha \to \neg \alpha) \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha)\)（公理A1的实例）
+            \item [3.] \(\vdash \varphi_2: \alpha \to (\neg \neg \neg \alpha \to \neg \alpha) \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha\)（根据1和2使用肯定前件推出）
+            \item [4.] \(\vdash \varphi_2 \to ((\alpha \to \neg \neg \neg \alpha \to \neg \alpha) \to (\alpha \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha))\)（公理A2的实例）
+            \item [5.] \(\vdash (\alpha \to \neg \neg \neg \alpha \to \neg \alpha) \to (\alpha \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha)\)（根据3和4使用肯定前件推出）
+            \item [6.] \(\vdash \neg \neg \neg \alpha \to \neg \alpha\)（双重否定消去的实例）
+            \item [7.] \(\vdash (\neg \neg \alpha \to \neg \alpha) \to \alpha \to (\neg \neg \alpha \to \neg \alpha)\)（公理A1的实例）
+            \item [8.] \(\vdash \alpha \to \neg \neg \neg \alpha \to \neg \alpha\)（根据6和7用肯定前件推出）
+            \item [9.] \(\vdash \alpha \to (\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha\)（根据5和8用肯定前件推出）
+            \item [10.] \(\vdash \alpha \to ((\neg \neg \neg \alpha \to \alpha) \to \neg \neg \alpha) \to (\alpha \to \neg \neg \neg \alpha \to \alpha) \to (\alpha \to \neg \neg \alpha)\)（公理A2的实例）
+            \item [11.] \(\vdash (\alpha \to \neg \neg \neg \alpha \to \alpha) \to (\alpha \to \neg \neg \alpha)\)（根据9和10用肯定前件推出）
+            \item [12.] \(\vdash \alpha \to \neg \neg \neg \alpha \to \alpha\)（公理A1的实例）
+            \item [13.] \(\vdash \alpha \to \neg \neg \alpha\)（根据11和12用肯定前件推出）
+         \end{itemize}
+    \end{proof}
+
+    \item 换质换位-内定理. \(\vdash (\alpha \to \beta) \to (\neg \beta \to \neg \alpha)\)
+    \begin{proof}
+        \begin{itemize}
+            \item [1.] \(\vdash \beta \to \neg \neg \beta\)
+            \item [2.] \(\vdash (\beta \to \neg \neg \beta) \to (\alpha \to \beta) \to (\alpha \to \neg \neg \beta)\)
+            \item [3.] \(\vdash \varphi_1: (\alpha \to \beta) \to (\alpha \to \neg \neg \beta)\)
+            \item [4.] \(\vdash \neg \neg \alpha \to \alpha\)
+            \item [5.] \(\vdash (\neg \neg \alpha) \to (\alpha \to \neg \neg \beta) \to (\neg \neg \alpha \to \neg \neg \beta)\)
+            \item [6.] \(\vdash \varphi_2: (\alpha \to \neg \neg \beta) \to (\neg \neg \alpha \to \neg \neg \beta)\)
+            \item [7.] \(\vdash \varphi_2 \to \varphi_1 \to ((\alpha \to \beta) \to (\neg \neg \alpha \to \neg \neg \beta))\)
+            \item [8.] \(\vdash \varphi_1 \to ((\alpha \to \beta) \to (\neg \neg \alpha \to \neg \neg \beta))\)
+            \item [9.] \(\vdash (\alpha \to \beta) \to (\neg \neg \alpha \to \neg \neg \beta)\)
+            \item [10.] ...
+        \end{itemize}
+    \end{proof}
+    
+\end{itemize}
+
+接下来证明几个元定理
+
+\begin{itemize}
+    \item [(1)] \uline{归纳原理}(induction principle). 设\(S\)是合式公式的集合，\(\Gamma \subseteq S, \Lambda \subseteq S\)，并且由\(S\)中的公式通过肯定前件推导出的新公式也在\(S\)中（即肯定前件在\(S\)中封闭），则\(S\)中有\(\Gamma\)的全部定理.
+    % \item [(2)] 规则T. 若\(\Gamma \vdash \alpha_1, \Gamma \vdash \alpha_2, \cdots, \Gamma \vdash \alpha_n\)，且\(\{\alpha_1, \alpha_2, \cdots, \alpha_n\} \vDash \beta\)，则\(\Gamma \vdash \beta\).
+
+    % \item [(2)] 如果\(\Gamma \vdash \alpha\)，那么存在\(\Gamma' \subseteq \Gamma\)，使得\(\Gamma' \vdash \to \alpha\).
+    \item [(2)] \uline{演绎定理}(deduction theorem). 若\(\Gamma \cup \{\alpha\} \vdash \beta\)，则\(\Gamma \vdash \alpha \to \beta\)，反之亦然.
+    \begin{proof}
+        假设\((\beta_1,\beta_2,\cdots,\beta_n)\)是\(\Gamma \cup \{\alpha\} \vdash \beta\)的一条推演序列，并且\(\beta_n = \beta\). 我们可以对\(\beta_i\)实行归纳. \newline
+        归纳第一步，对于\(i=1\)的情况，有\(\beta_1 \in \Gamma \cup \{\alpha\} \cup \Lambda\)，要么\(\beta_1 = \alpha\). 对于\(\beta_1 \in \Gamma \cup \Lambda\)的情况，按定义有\(\Gamma \to \beta_1\)，注意到\(\beta_1 \to (\alpha \to \beta_1)\)是公理A1的实例，使用肯定前件即可得到\(\Gamma \vdash \alpha \to \beta_1\). 对于\(\beta_1 = \alpha\)的情况，问题就转化为了\(\Gamma \cup \{\alpha\} \vdash \alpha\)如何推导出\(\Gamma \vdash \alpha \to \alpha\). 别忘了\(\alpha \to \alpha\)是不依赖\(\Gamma\)的内定理. \newline
+        归纳第二步，假设\(\Gamma \cup \{\alpha\} \vdash \beta_i\)已经可以导出\(\Gamma \vdash \alpha \to \beta_i\)了，此时要么\(\beta_{i+1} \in \Gamma \cup \{\alpha\} \cup \Lambda\)，要么\(\beta_{i+1}\)由\(\beta_j\)和\(\beta_l = \beta_j \to \beta_{i+1}\)使用肯定前件得到（\(j,l < i+1\)）. 前者就像\(i=1\)的情况一样处理. 对于后者，既然我们已经有了\(\Gamma \cup \{\alpha\} \vdash \beta_j\)和\(\Gamma \cup \{\alpha\} \vdash \beta_l\)，又注意到\((a \to (\beta_j \to \beta_{i+1})) \to ((\alpha \to \beta_j) \to (\alpha \to \beta_{i+1}))\)是公理A2的实例，用两次肯定前件就可以得到\(\Gamma \vdash \alpha \to \beta_{i+1}\)了.
+
+        反过来其实就是肯定前件. 已知\(\Gamma \vdash \alpha \to \beta\)且\(\Gamma \cup \{\alpha\} \vdash \alpha\)，根据肯定前件自然有\(\Gamma \cup \{\alpha\} \vdash \beta\).
+    \end{proof}
+
+    \item [(3)] \uline{换质换位-元定理}(contraposition). 若\(\Gamma \cup \{\alpha\} \vdash \neg \beta\)，则\(\Gamma \cup \{\beta\} \vdash \neg \alpha\).
+    \begin{proof}
+        已知\(\Gamma \cup \{\alpha\} \vdash \neg \beta\)，根据演绎定理可得\(\Gamma \vdash \alpha \to \neg \beta\)，根据换质换位内定理和肯定前件可得\(\Gamma \vdash \beta \to \neg \alpha\)，根据演绎定理可得\(\Gamma \cup \{\beta\} \vdash \neg \alpha\).
+    \end{proof}
+
+    \item [(4)] \uline{爆炸原理-元定理}(ex falso quodlibet). 若\(\Gamma\)不一致，则每个公式都是它的内定理，反之亦然.
+    \begin{proof}
+        （\(\Rightarrow\)）已知\(\Gamma\)不一致，则\(\Gamma \vdash \alpha\)且\(\Gamma \vdash \neg \alpha\). 任选一个公式\(\beta\).
+        根据公理A1，有\(\Gamma \vdash \neg \alpha \to (\beta \to \neg \alpha)\)；根据肯定前件，有\(\Gamma \vdash \beta \to \neg \alpha\)；根据换质换位内定理，有\(\Gamma \vdash \alpha \to \neg \beta\)；根据肯定前件，有\(\Gamma \vdash \beta\).
+        
+        （\(\Leftarrow\)）显然，如果每个公式都是\(\Gamma\)的定理，那么某个公式\(\alpha\)和其否定\(\neg \alpha\)也是，所以\(\Gamma\)不一致.
+    \end{proof}
+    
+    \item [(4)] \uline{归谬-元定理}(reductio ad absurdum). 若\(\Gamma \cup \{\alpha\}\)不一致，则\(\Gamma \vdash \neg \alpha\)，反之亦然.
+    \begin{proof}
+        （\(\Rightarrow\)）若\(\Gamma \cup \{\alpha\}\)不一致，根据爆炸原理元定理，有\(\Gamma \cup \{\alpha\} \vdash \alpha\)；根据演绎定理，有\(\Gamma \vdash \neg \alpha \to \alpha\)；根据公理A3，有\(\Gamma \vdash \neg \alpha \to \alpha\).
+
+        （\(\Leftarrow\)）当\(\Gamma \cup \{\alpha\}\)不一致时有\(\Gamma \cup \{\alpha\} \vdash \beta\)且\(\Gamma \cup \{\alpha\} \vdash \neg \beta\)，根据演绎定理可得\(\Gamma \vdash \alpha \to \beta\)且\(\Gamma \vdash \alpha \to \neg \beta\). 容易验证\(\{\alpha \to \beta, \alpha \to \neg \beta\} \vDash \neg \alpha\)，所以由规则T可得\(\Gamma \vdash \neg \alpha\).
+    \end{proof}
+
+    \item [(5)] \uline{冗余假设定理}(redundant hypothesis theorem). 若\(\Gamma \cup \{\neg \alpha\} \vdash \alpha\)，则\(\Gamma \vdash \alpha\).
+    \begin{proof}
+        已知\(\Gamma \cup \{\neg \alpha\} \vdash \alpha\)，根据演绎定理\(\Gamma \vdash (\neg \alpha \to \alpha)\). 又根据公理A3，\(\Gamma \vdash (\neg \alpha \to \alpha) \to \alpha\)，再用肯定前件就得到了\(\Gamma \vdash \alpha\).
+    \end{proof}
+
+\end{itemize}
+
+\vspace{1cm}
+
+\subsection{语义和语法的统一}
+
+上面几节讨论了命题逻辑的语义和语法，但到现在为止还没有说明什么是语义、什么是语法，不过你肯定已经看出来了，讨论语义离不开真假赋值，讨论语法的时候注重的是运用规则进行推演而不管推导出句子的真假. 在语言学中，\uline{语法}(syntax)关注的是不同词性的词该怎样按照正确的顺序排列成句子，在形式语言中对应着形式推演；\uline{语义}(semantics)则还需要关注每个词的含义以及组成的句子的意义，在形式语言中对应着真值指派. 语法和语义二者有时并不一定兼得，语言学中最著名的例子莫过于Noam Chomsky写的
+\begin{reference}
+    Colorless green idea sleeps furiously. \newline
+    没有颜色的绿色睡得很激烈。
+\end{reference}
+这句话在语法上是正确的，主谓宾定状的顺序都正确，但这个句子却没什么意义甚至自相矛盾. 到现在为止，我们已经讨论了公式集\(\Sigma\)和另一个单独公式\(\varphi\)之间可能存在的语义后承和语法后承，语义后承要求无论什么样的真假赋值函数只要满足了\(\Sigma\)就要满足\(\varphi\)，与真假赋值无关；而语法后承却和推理规则有关，不同的推演系统可能会有不同结论. 但是，我们都希望推演系统的结果在意义上是可以信任的，即不能推出假的公式；或更进一步地希望推演系统能推出一切真的句子. 明显后者的要求比前者高得多.
+
+\begin{definition}{可靠性与完备性}
+    对于某推演系统，其公理集是\(\Gamma\)，如果\(\Gamma \vdash \varphi\)就有\(\Gamma \vDash \varphi\)，就称该推演系统是\uline{可靠的}(sound). \newline
+    反过来，如果\(\Gamma \vDash \varphi\)就有\(\Gamma \vdash \varphi\)，就称该推演系统是\uline{完备的}(complete).
+\end{definition}
+
+命题逻辑的希尔伯特推演系统和自然推演系统既是可靠的也是完备的，接下来分别证明之.
+
+\begin{theorem}{}
+    命题逻辑的希尔伯特推演系统是可靠的，即\(\Gamma \vdash \alpha\)则\(\Gamma \vDash \alpha\).
+\end{theorem}
+
+\begin{proof}
+    希尔伯特系统的公式\(\alpha\)无非就三种，\(\Gamma\)中的公式、\(\Lambda\)中的公式和由肯定前件推出的内定理. \newline
+    如果\(\alpha \in \Lambda\)，那是最好办的，用真值表的方法很容易验证三条逻辑公理都是重言式. \newline
+    如果\(\alpha \in \Gamma\)，那也好办. 回顾\(\Gamma \vDash \alpha\)的定义：当真假赋值\(v\)满足\(\Gamma\)中的每一个公式时就满足\(\alpha\). 既然都满足\(\Gamma\)中的每一个公式了，而\(\alpha \in \Gamma\)，当然满足\(\alpha\). \newline
+    如果\(\alpha\)是由肯定前件推出的内定理，我们可以使用归纳的方法，假设\(\Gamma \vDash \beta, \Gamma \vDash (\beta \to \alpha)\)，若要\(\beta \to \alpha\)为真，而且\(\beta\)为真，那么\(\alpha\)只能为真，所以\(\Gamma \vDash \alpha\). 归纳完毕，所有的内定理都是\(\Gamma\)的语义后承.
+\end{proof}
+
+
+\vspace{1cm}
+
+要证明可靠性，我们只需要验证公理是否为重言式，以及满足公理集的真假赋值是否也满足推导法则推出来的新公式. 完备性比可靠性难证明得多，证明思路也非常绕：我们首先需要证明系统的完备性与“一致则可满足”等价，然后把完备性的证明转移到这上面来；接着我们在保持系统一致性的前提下往公理集\(\Gamma\)中塞入尽可能多的公式得到\(\Gamma^*\)，以至于再任意塞入任何一个公式都会使系统不一致；然后我们构造一个具体的真假赋值满足这个\(\Gamma^*\)，从而说明\(\Gamma\)也是可满足的，这样就证明了\(\Gamma\)“一致则可满足”. 废话不多说，我们开始.
+
+\begin{lemma}{}
+    对于具有公理集\(\Gamma\)的希尔伯特系统，以下两条命题是等价的. \newline
+    (1) 若\(\Gamma\)一致则可满足. \newline
+    (2) 系统是完备的.
+\end{lemma}
+
+\begin{proof}
+    \((1)\Rightarrow(2)\)  假设系统满足条件(1)，并且对于某个公式\(\alpha\)，\(\Gamma \vDash \alpha\)，即满足\(\Gamma\)的真假赋值就一定满足\(\alpha\)，一定不满足\(\neg\alpha\)，所以\(\Gamma \cup \{\neg\alpha\}\)就不可满足. 根据条件(1)，\(\Gamma \cup \{\neg\alpha\}\)不一致，所以\(\Gamma \cup \{\neg \alpha\} \vdash \alpha\)，根据冗余假设定理就有\(\Gamma \vdash \alpha\).
+
+    \((2)\Rightarrow(1)\)  假设系统满足条件(2)且一致，反证：现有公式\(\alpha\)，若\(\Gamma\)不可满足，那么“某个真假赋值满足\(\Gamma\)”就是假命题，而“如果某个真假赋值满足\(\Gamma\)就满足公式\(\alpha\)”是真命题，即\(\Gamma \vDash \alpha\)（这里又是爆炸原理的应用，是哪个层面的爆炸原理呢？值得仔细思考）. 根据条件(2)就有\(\Gamma \vdash \alpha\). 这里没有限制\(\alpha\)是什么公式，所以用同样的论证可得\(\Gamma \vdash \neg \alpha\)，矛盾，所以系统可满足.
+\end{proof}
+
+现在我们成功地转移了焦点，把对完备性的证明转移到了“一致则可满足”上. 以下的林登鲍姆引理是证明的重点，其断言按照某个特定方法构造出的\(\Gamma\)的超集\(\Gamma^*\)是极大且一致的. 为了更好地刻画\(\Gamma^*\)，我们多证明几个命题.
+
+\begin{lemma}{林登鲍姆引理(Lindenbaum's lemma)}
+    设\(\{\alpha_n\}_{n \in \mathbb{N}}\)枚举\(\mathcal{L}_0\)的所有公式，按如下方式构造\(\Gamma\)的极大一致扩张\(\Gamma^*\)：
+    \begin{align*}
+        \Gamma_0 &= \Gamma \\
+        \Gamma_{n+1} &= \left\{ \begin{aligned} & \Gamma_n \cup \{\alpha_n\}, &&\Gamma_n \cup \{\alpha_n\}\mbox{一致} \\ & \Gamma_n \cup \{\neg \alpha_n\}, &&\Gamma_n \cup \{\alpha_n\}\mbox{不一致}\end{aligned} \right. \\
+        \Gamma^* &= \bigcup_{n \in \mathbb{N}} \Gamma_n
+    \end{align*}
+    按照这种方式得到的\(\Gamma^*\)有以下几个特点：\newline
+    (1) \(\Gamma^*\)是一致的；\newline
+    (2) \(\Gamma^*\)是极大的，即对于某个不在\(\Gamma^*\)的公式\(\varphi\)，\(\Gamma^* \cup \{\varphi\}\)不一致；\newline
+    (3) 对于\(\mathcal{L}_0\)中的某个公式\(\varphi\)，要么\(\varphi \in \Gamma\)，要么\((\neg \varphi) \in \Gamma\)；\newline
+    (4) 对于\(\mathcal{L}_0\)中的某两个公式\(\varphi, \psi\)，当且仅当\(\varphi \not \in \Gamma^*\)或\(\psi \in \Gamma^*\)时，\((\varphi \to \psi) \in \Gamma^*\)；\newline
+    (5) \(\Gamma^*\)对推演封闭，即\(\Gamma\)的所有内定理都在\(\Gamma^*\)中.
+\end{lemma}
+
+\begin{proof}
+    (1) 稍微用点归纳就可以证明每个\(\Gamma_n\)都是一致的：\(\Gamma_0\)一致；假设\(\Gamma_n\)一致，若\(\Gamma_n \cup \{\alpha_n\}\)一致，即\(\Gamma_{n+1}\)，否则\(\Gamma_n \cup \{\neg \alpha_n\}\)一致，还是能得出\(\Gamma_{n+1}\)一致；所以全体\(\Gamma_n\)都是一致的. 别忘了\(\Gamma^*\)是全体\(\Gamma_n\)取并集，只要某公式在\(\Gamma^*\)中，那它一定在某个\(\Gamma_n\)中. 反设如果\(\Gamma^*\)不一致，即\(\Gamma^* \vdash \varphi\)且\(\Gamma^* \vdash \neg \varphi\)，则存在两条推演序列分别推出\(\varphi\)和\(\neg \varphi\)，所以存在某个\(\Gamma_n\)使得两条推演序列中出现的所有公式都在其中，然后这个\(\Gamma_n\)就不一致了，矛盾，所以\(\Gamma^*\)一致. \newline
+    (2) 证明其逆否命题. 假设\(\Gamma^* \cup \{\varphi\}\)一致. 首先\(\varphi\)肯定被枚举出来，是某个\(\alpha_n\)，所以\(\Gamma_n \cup \{\varphi\}\)一致，所以\(\varphi \in \Gamma_{n+1}\)，所以\(\varphi \in \Gamma^*\). \newline
+    (3) \(\Gamma \cup \{\varphi\}\)和\(\Gamma \cup \{\neg \varphi\}\)至少有一个是一致的，根据极大性必有\(\varphi \in \Gamma^*\)或\(\neg \varphi \in \Gamma^*\)，但是两个不能同时成立否则\(\Gamma^*\)就不一致了. \newline
+    (4) 
+    (5) 反证，假设\(\varphi \not \in \Gamma^*\)但\(\Gamma^* \vdash \varphi\). 根据极大性有\(\neg \varphi \in \Gamma^*\)，根据推演的定义有\(\Gamma^* \vdash \neg \varphi\)，所以\(\Gamma^*\)就不一致了，矛盾. 
+\end{proof}
+
+\begin{lemma}{}
+    极大一致的\(\Gamma^*\)是可满足的，构造真假赋值：
+    \[ v(A_i) = \left\{ \begin{aligned} &T, & A_i \in \Gamma^* \\ &F, & A_i \not \in \Gamma^* \end{aligned} \right.\]
+    该真假赋值唯一满足\(\Gamma^*\)，即仅满足所有\(\Gamma^*\)内的公式，而其他公式一条也不满足.
+\end{lemma}
+
+\begin{proof}
+    我们对合式公式进行归纳，把合式公式可能出现的所有情况全讨论一遍即可. 所有合式公式仅有三种情况：是某个命题符号、形如\(\neg \alpha\)、形如\(\alpha \to \beta\).
+    \begin{itemize}
+        \item 如果公式\(\alpha\)是命题符号\(A_i\)，看定义立即得到. 
+        \item 如果公式\(\alpha\)形如\(\neg \beta\)且\(\beta\)满足了引理，分两种情况讨论：\newline
+        若\(\beta \in \Gamma^*\)，则\(v(\beta)=T\)，根据林登鲍姆引理有\(\alpha \not \in \Gamma^*\)，同时有\(v(\alpha) = F\)；\newline
+        若\(\beta \not \in \Gamma^*\)，则\(v(\beta)=F\)，根据林登鲍姆引理有\(\alpha \not \in \Gamma^*\)，同时有\(v(\alpha) = F\). \newline
+        所以\(\alpha\)也满足引理. 
+        \item 如果公式\(\alpha\)形如\(\beta \to \gamma\)且\(\beta\)和\(\gamma\)都满足引理，要想让\(\alpha \in \Gamma^*\)，根据林登鲍姆引理，必须有\(\beta \not \in \Gamma^*\)或\(\gamma \in \Gamma^*\)，即\(v(\beta)=F\)或\(v(\gamma)=T\)，这两种情况都能使得\(v(\alpha)=T\). 所以\(\alpha\)也满足引理.
+    \end{itemize}
+\end{proof}
+
+现在万事俱备，只需要小小说明一下即可.
+
+\begin{theorem}{}
+    命题逻辑的希尔伯特推演系统是完备的，即\(\Gamma \vDash \alpha\)则\(\Gamma \vdash \alpha\).
+\end{theorem}
+
+\begin{proof}
+    假定\(\Gamma\)是一致的，将\(\Gamma\)扩张成极大一致的\(\Gamma^*\). 因为\(\Gamma^*\)是可满足的，而满足\(\Gamma^*\)的真假赋值也满足其子集\(\Gamma\)，所以\(\Gamma\)也是可满足的. 这就最终说明了系统是完备的.
+\end{proof}
+
+这个长长的证明过程到这里就结束了，不知道你有没有注意到希尔伯特系统的完备性有一个很重要的前提：在林登鲍姆引理中，我们使用一个序列\(\{\alpha_n\}_{n \in \mathbb{N}}\)枚举了\(\mathcal{L}_0\)的所有公式，这是因为\(\mathcal{L}_0\)是一切合法的有限长的公式的集合，是可数无穷的. 剧透一下，一阶逻辑中的语言\(\mathcal{L}_0\)可没有这个性质，因为一阶逻辑引入了“任意”这个量词，允许我们在其他集合中取其元素组成公式，而这个“其他集合”的势有多大就不知道了，所以一阶逻辑乃至后面的高阶逻辑语言的推演系统就没有完备性了，这个问题由哥德尔和冯·诺伊曼最先发现. 命题逻辑的希尔伯特系统（或者其他具有有限个公理和推理法则的推演系统）具有完备性，意味着如果我们想判别某个公式是不是推演系统内定理，验证它是不是重言式就可以了. 但是一个具有\(n\)个命题符号的公式，其命题符号的真值有\(2^n\)种情况，所以如果你想用真值表验证某个命题是不是重言式的话，需要把这\(2^n\)种情况都过一遍，即需要指数时间\(\mathsf{EXPTIME}\)才能验证. 有没有时间复杂度更低的算法比如多项式时间的算法呢？很可惜，这个问题和计算理论中著名的“\(\mathsf{P} = \mathsf{NP}\)”问题等价. 
+
+\section{一阶逻辑}
+
+\subsection{一阶逻辑的语言}
+
+\begin{definition}{一阶逻辑的语言}
+    一阶逻辑语言由以下几个部分组成：
+    \begin{itemize}
+        \item 连接词和括号，作用与命题逻辑相同.
+        \item \uline{变量}(variable)，记作\(v_1, v_2, \cdots\).
+        \item \uline{全称量词}(universal quantifier)，写作“\(\forall\)”，用于修饰变量.
+        \item \uline{谓词符号}(predicate symbol)，记作\(P_1,P_2,\cdots\)，作用于若干个变量或常量，可以没有.
+        \item \uline{函数符号}(function symbol)，记作\(F_1,F_2,\cdots\)，作用于若干个变量或常量，可以没有.
+        \item \uline{常量}(constant)，记作\(c_1,c_2,\cdots\)，可以没有.
+    \end{itemize}
+    一般来说往往还有个\uline{等于号}(equality symbol)，为了和自然语言中的等于号相区分，以下记作\(\approx\). \newline
+    常量、谓词符号和函数符号是未规定的部分，统称为\uline{图册}(signature)，或者\uline{非逻辑符号}(non-logical symbols)，图册的集合记作\({\rm sig}\mathcal{L}_1 = \{ c_1, c_2, \cdots; P_1, P_2, \cdots; F_1, F_2, \cdots \}\). \newline
+    当然还有括号、逗号、冒号感叹号和存在量词等为了保证无歧义和增强可读性的符号，这些不全是必须的，它们的书写场合接下来会讨论. \newline
+    规定好以上的部分后，此时该一阶语言可以记作\(\mathcal{L}_1\).
+\end{definition}
+
+关于以上的定义，我们给出几点说明.
+\begin{itemize}
+    \item 作用于\(x_1, x_2, \cdots, x_n\)这\(n\)个变量的谓词或函数\(P\)，学术上往往采用波兰写法\(Px_1x_2\cdots x_n\)，我们为了好看不妨写作\(P(x_1,x_2,\cdots,x_n)\).
+    \item 等于号其实是作用于两个变量的谓词符号\(\approx(x_1,x_2)\)，但是它太常用了，而且往往有固定的解释，所以经常单独拿出来，并且我们把\(\approx(x_1,x_2)\)写作\(x_1 \approx x_2\). 
+    \item 就像命题逻辑一样，我们规定量词的优先级高于一切逻辑连接词，当谓词写成连接词形式时（比如等于号\(\approx\)），优先级也高于逻辑连接词，这样可以省掉不必要的括号，当然有时省得太多也不好看，但始终坚持无歧义原则. 有些教材把\(\forall x \alpha\)写作\(\forall x: \alpha\)，可读性当然提高了，但是我们不采用.
+    \item 我们之前常见的存在量词（\(\exists\)）不在这个列表里，那是因为“存在”可以用“任意”加上连接词来等价地解释：\(\exists x \alpha\)可以解释为\(\neg(\forall x (\neg\alpha))\)，就举个具体的例子帮助理解：
+    \[\mbox{桌上的苹果存在有坏的} \Leftrightarrow \mbox{桌上的苹果不全是好的} \Leftrightarrow \mbox{“桌上的任意苹果都是好的”是错的}\]
+    令\(\alpha\)解释为“桌上的苹果是坏的”，“桌上的苹果有坏的”即为\(\exists x \alpha\)，“‘桌上的任意苹果都是好的’是错的”即为\(\neg(\forall x (\neg\alpha))\).
+    \item 有的教材还会引入唯一存在量词（\(\exists!\)）增强公式的可读性，它当然也可以等价解释：\(\exists! x \alpha\)可以解释为\(\exists x \forall y(\alpha \to x \approx y)\)，例如：
+    \[\mbox{桌上的苹果存在只有一个是坏的} \Leftrightarrow \mbox{如果苹果}x\mbox{是坏的，那么桌上的任何坏苹果其实都是苹果}x \]
+    \item 剧透：一阶逻辑语言的“阶”表示量词作用的类型的范围，在一阶语言\(\mathcal{L}_1\)中，量词可以作用于变量，但是不能作用于谓词，谓词只能作用于项；但是在二阶逻辑语言\(\mathcal{L}_2\)中，量词可以作用于谓词，谓词也能作用于谓词，但是量词不能作用于“作用于谓词的谓词”；在三阶逻辑语言中范围又扩得更宽. 你可能想问为什么不直接学高阶语言\(\mathcal{L}_\infty\)，那是出于建立在语言上的推演系统性质的考虑. 我们学过推演系统的五大性质：一致性、可靠性、完全性、可判定性和公理的独立性，一阶语言的推演系统将会丢失可判定性，二阶语言的将会丢失完全性. 并且由于历史原因，大多数推演系统其实都是建立在一阶语言上，再加上哥德尔和司寇伦在一阶逻辑上的突出贡献，使得一阶语言在数理逻辑中有不可撼动的地位. 命题逻辑语言连量词都没有，也称为零阶逻辑语言，所以我们之前将所有命题逻辑语言合式公式的集合记作\(\mathcal{L}_0\).
+    \item 变量的集合\(\{v_i\}_{i \in I}\)是至多可数的，图册是有穷的. 当然也有变量集和图册为无穷的语言，称为\uline{无穷语言} (infinite language)，在模型论中有独特的用处，但是现在不考虑.
+    \item 谓词符号可以类比朴素集合论中的关系，函数符号可以类比朴素集合论中的函数，因此函数可以理解为一种特殊的谓词，而常量可以看作零元函数，因此图册本质上就是谓词的集合，所以有的教材上也把一阶逻辑语言称为一阶谓词语言，但我们还是坚持把它们都列出来.
+    \item 请注意，\(\mathcal{L}_1\)是一个集合，里面是合式公式，\({\rm sig}\mathcal{L}_1 \not \in \mathcal{L}_1\). 和命题逻辑的语言做个对比：命题逻辑的语言只有命题符号（对应于一阶逻辑语言的变量）、连接词和括号，公式中能出现什么符号基本都定死了；而一阶逻辑语言的定义只是搭了一个框架，具体有什么谓词、函数和常量可以根据需要确定，这些没有规定死的部分即图册，当图册确定好之后，一阶语言也就完整了.
+\end{itemize}
+
+举几个使用一阶逻辑语言的具体例子：
+
+\begin{itemize}
+    \item 哲学语言：分析哲学这个分支的出现使得一些哲学家喜欢使用数理逻辑的语言重新叙述哲学命题，例如
+    \begin{itemize}
+        \item 当今的法国国王是秃子.
+        \[\forall x (P_1(x) \to P_2(x))\]
+        其中\(P_1(x)\)用自然语言解释为“\(x\)是当今的法国国王”，\(P_2(x)\)用自然语言解释为“\(x\)是秃子”，当然还可以有不同的解释.
+        \item 金山不存在.
+        \[\neg \exists x(P_1(x) \wedge P_2(x))\]
+        \item 晨星即暮星.
+        \[\forall x(P_1(x) \to \forall y (P_2(x) \to x \approx y))\]
+    \end{itemize}
+    \item 纯谓词演算：有多个谓词符号、多个常量，没有等于号、没有函数符号，\({\rm sig}\mathcal{L}_1 = \langle c_1, c_2, \cdots; P_1, P_2, \cdots \rangle\).
+    \item 初等数论：有常量\(0\)，有谓词符号“\(<\)”和等于号，函数符号有一元的后继函数\(S\)和二元的加号和乘号，\({\rm sig}\mathcal{L}_1 = \langle 0; <; S, +, \cdot \rangle\). 给出几个例子.
+    \begin{itemize}
+        \item \(0\)不是任何自然数的后继.
+        \[\neg \exists x (S(x) \approx 0)\]
+        \item 当且仅当两个自然数相等时，其后继数相等.
+        \[\forall x \forall y(x \approx y \leftrightarrow S(x) \approx S(y))\]
+        \item \(x\)是素数.
+        \[x > S(0) \wedge \forall y \forall z ((y < x \wedge z < x) \to \neg(y \cdot z \approx x) \]
+    \end{itemize}
+    \item 一阶公理集合论：仅有“\(\in\)”一个谓词符号，没有函数符号，没有等于号，没有常量，\(\sigma = \langle \in \rangle\)，当然有时候把等于号放进来，把空集当常量，\({\rm sig}\mathcal{L}_1 = \langle \emptyset; \in, \approx \rangle\). 给出几个例子.
+    \begin{itemize}
+        \item \(x\)是\(y\)的子集.
+        \[\forall z (z \in x \to z \in y)\]
+        \item \(x\)是空集.
+        \[\forall y (\neg (y \in x))\]
+        \item \(x=\{y,z\}\).
+        \[\forall s(s \in x \to (s \approx y \vee s \approx z))\]
+    \end{itemize}
+    你可能会好奇集合论里为什么没有函数，毕竟不久前才在朴素集合论里学习了函数的概念. 但别忘了那个函数是有序对的集合，是用集合定义出来的，不是附带在语言中的. 也别忘了元语言和对象语言的区别. 
+\end{itemize}
+
+
+接下来我们像命题逻辑一样，递归定义什么是“公式”.
+
+\begin{definition}{项和公式}
+    设一阶语言\(\mathcal{L}_1\)，\({\rm sig}\mathcal{L}_1 = \{ c_1, c_2, \cdots; P_1, P_2, \cdots; F_1, F_2, \cdots \}\)，首先定义\uline{项}(term) \newline
+    (1) 每个常量和变量都是一个项. \newline
+    (2) 设\(x_1, x_2, \cdots, x_n\)是\(n\)个项，且函数符号\(F_i\)作用在这些项上，则\(F_i(x_1, x_2, \cdots, x_n)\)也是一个项. \newline
+    设\(x_1, x_2, \cdots, x_n\)是\(n\)个项，且谓词符号\(P_i\)作用在这些项上，则\(P_i(x_1, x_2, \cdots, x_n)\)是一个\uline{原子公式}(atomic formula)，从原子公式开始我们可以定义\uline{合式公式}(well-formed formula, WFF). \newline
+    (1) 原子公式是合式公式. \newline
+    (2) 若\(\varphi\)是合式公式，则\((\neg \varphi)\)是合式公式. \newline
+    (3) 若\(\varphi, \psi\)都是是合式公式，则\((\varphi \to \psi)\)是合式公式. \newline
+    (4) 若\(\varphi\)是合式公式，则\(\forall x \varphi\)是合式公式.\newline
+    一阶逻辑语言全体合式公式的集合记为\(\mathcal{L}_1\).
+\end{definition}
+
+
+在以上的例子中，变量出现了两种，就拿\(\forall y (\neg (y \in x))\)来说，\(y\)被量词约束了，只是一个占位的变量，用\(z\)换掉\(y\)，即\(\forall z (\neg (z \in x))\)得到的还是相同的公式；而\(x\)就不同，如果在上下文中\(x\)还要用到，那就不能随便替换掉. 我们见过不少类似的情况，比如积分\(\int f(x){\rm d}x\)和\(\int f(y){\rm d}y\)是一样的，求和\(\sum_{i=1}^na_i\)和\(\sum_{j=1}^na_j\)是一样的，当时我们把这种只用来占位的变量称为哑变量，现在我们称它们为\uline{受囿的}(bounded)变量，而那些不被量词约束的变量就称为\uline{自由的}(free)变量. 现在我们严格递归定义.
+
+\begin{definition}{自由出现和受囿出现}
+    \begin{itemize}
+        \item 在原子公式中出现的变量是自由出现的.
+        \item 对于公式\(\varphi: \neg \alpha\)，如果变量在\(\alpha\)中自由出现，那么在\(\varphi\)也是自由出现的.
+        \item 对于公式\(\varphi: \alpha \to \beta\)，如果变量在\(\alpha\)和\(\beta\)中自由出现，那么在\(\varphi\)也是自由出现的.
+    \end{itemize}
+    如果变量不是自由出现的，那就是受囿出现的. 如果公式中没有自由出现的变量，就称该公式是一个\uline{封闭的}(closed)公式.
+\end{definition}
+
+习惯上，我们把带有自由变量\(x\)的公式\(\varphi\)写成\(\varphi(x)\)，两个变量\(x,y\)就写成\(\varphi(x,y)\)，你一定经常这么写. 
+
+细细品味定义中的那句话：“如果变量不是自由出现的，那就是受囿出现的”，反过来：“如果变量不是受囿出现的，那就是自由出现的”对吗？也对。看似自由出现和受囿出现是对立的概念，但是请看例子
+\[(\forall x(x \approx x)) \wedge (x \approx c)\]
+这个\(x\)既是受囿出现的，因为出现了“\(\forall x\)”，但也是自由出现的，因为在量词根本就管不到“\(x \approx c\)”. 这个公式是符合句法的合式公式，只不过重复利用了变量\(x\)而已，相信你在编程中也这么做过. 这个例子是一个极端的情况，告诉我们变量既可以是受囿的也可以是自由的，当然习惯上我们不会这么写，也最好不要这么写，我们约定：接下来书写合式公式的时候，避免一个变量既是受囿又是自由的情况.
+
+既然受囿变量可以换掉而不影响公式表达的意思，那可以随便换吗？一般问出这个问题就表明答案显然是不行. 例如
+\[\exists x \neg(x \approx y) \xrightarrow[]{\mbox{把}x\mbox{换成}z} \exists z \neg (z \approx y)\]
+这个替换是没问题的，但是
+\[\exists x \neg(x \approx y) \xrightarrow[]{\mbox{把}x\mbox{换成}y} \exists y \neg (y \approx y)\]
+左边是一个看上去很正确的公式，尤其是把它放在初等数论中解释的时候，有无穷多个自然数，固定一个自然数\(y\)，当然存在与它不等的自然数\(x\)嘛. 右边的公式就错得离谱了，因为我们期望任何东西都等于它自己. 问题出在哪里呢？第一个替换在替换前后自由出现的\(y\)还是自由出现的，但第二个替换在替换前\(y\)是自由出现的，替换后就被量词辖制了，变成了受囿出现的变量，这样的替换肯定是我们不想要的，我们需要规范变量的替换行为.
+
+\subsection{一阶逻辑的语法}
+
+你一定想问，为什么要先讨论语法而不是语义. 因为我们遵循先易后难的顺序，命题逻辑的语义说白了就是命题符号和公式的真假，围绕着真假赋值讨论；而语法涉及到形式证明，可以导出许多让人眼花缭乱的性质，比语义难得多. 一阶逻辑的语法是命题逻辑逻辑语法的扩展，并且这种扩展是比较保守的，没有加入多少新内容；消除了不确定性后才能讨论意义，命题逻辑的不确定因素是命题符号的真假，所以用真假复制消除其不确定性后就可以了，但一阶逻辑由于有变量和不确定的谓词和函数，所以语义讨论起来要复杂得多，例如公式\(\forall x (\neg P(x))\)，想讨论它的真假，那就得弄明白这个谓词\(P\)在元语言层面上该怎么解释、变量\(x\)的取值范围有什么规定. 因此需要引入一个外部结构，并把公式解释成外部结构中的命题，而这个“解释”究竟是什么，也值得我们细细研究，这就使得一阶逻辑的语义比语法难得多.
+
+好啦，
+
+\subsection{一阶逻辑的结构}
+
+正如上节开头所说，想讨论一阶逻辑命题的语义，需要引入外部结构，并把公式解释称这个外部结构的命题. 
+
+\begin{note}
+    至于为什么要引入外部结构，在给出一阶语言例子的时候给出了几个很好的例子. 仅给出公式\(\forall x (P_1(x) \to P_2(x))\)，无法判断它的真假，因为我们只知道\(P_1,P_2\)是谓词，不清楚谓词\(P_1,P_2\)作用于\(x\)会呈现出什么样的真假，没有更多的信息了，换句话说，\(P_1,P_2\)这两个谓词没有意义，这就导致整个公式没有意义，无法判断真假. 
+    
+    我们在命题逻辑中也遇到过类似的情况，公式\(A_1 \to A_2\)是真是假？答案是不确定，我们只有知道\(A_1, A_2\)的真假（即这两个命题符号的意义）之后才能判断公式的真假，真假赋值\(v\)正是帮我们明确了每个命题符号的真假，消除了这种不确定性，我们才能判断公式的真假. 但至于\(v\)为什么将这个\(A_i\)赋值成真，将那个\(A_i\)赋值成假，这种“原子事实”不是数理逻辑关心的事情，我们只关心赋值完成后公式的真假. 
+    
+    回到一阶逻辑，当你把\(P_1(x)\)用自然语言解释为“\(x\)是当今的法国国王”，\(P_2(x)\)用自然语言解释为“\(x\)是秃子”，\(P_1,P_2\)就有了意义，不确定性就消除了. 整个公式就可以用自然语言解释成“当今的法国国王是秃子”，然后就可以判断真假了. 当然我们不关心为什么谓词要这么解释，我们只关心将不确定的部分（谓词等）解释好之后，整个公式的真假.
+
+    无论是命题逻辑还是一阶逻辑，尽管我们可以像搭积木一样摆弄公式（说的就是你，推演系统），但是其语言都有不确定的部分（命题符号、签名），导致整个公式都是没有意义的，我们只有通过“外部力量”（真假赋值、解释函数）消除这种不确定性，才能让公式“有意义”从而讨论真假，尽管我们不关心消除不确定性的过程. 这就是数理逻辑语义研究的基本内容.
+\end{note}
+
+所谓“将公式解释成外部结构的命题”，其重点就是把公式中不确定的部分——说的就是签名——解释为外部结构对应的部分，当然外部结构这种“对应的部分”必须要存在才行，接下来我们给出这种解释严格的规定.
+
+\begin{definition}{一阶结构}
+    一阶逻辑的\uline{结构}(structure)由三部分组成：论域\(M\)、签名\(\sigma\)和解释函数\(I\)组成，一并记作\(\mathcal{M} = \langle M, \sigma, I \rangle\)，其中
+    \begin{itemize}
+        \item \uline{论域}(domain of discourse)是一个集合，要求是非空的.
+        \item \uline{签名}(signature)由常量、关系和函数组成，\(\sigma = \langle c_1^M, c_2^M, \cdots; R_1^M, R_2^M, \cdots; F_1^M, F_2^M, \cdots \rangle\)，这里加了上标\(M\)强调这些常量都是\(M\)的元素、关系和函数都建立在集合\(M\)上，从而区分一阶语言的常量、谓词和函数.
+        \item \uline{解释函数}(interpretation function)，将语言的签名解释成结构中的签名，\(I: {\rm sig}\mathcal{L}_1 \to \sigma\)，分以下三种情况：
+        \begin{itemize}
+            \item 对于语言中的某个常量\(c_i\)，结构中存在某个常量\(c_j^M\)，使得\(I(c_i) = c_j^M\).
+            \item 对于语言中的某个谓词符号\(P_i\)，结构中存在某个关系\(R_j^M\)，使得\(I(P_i) = R_j^M\).
+            \item 对于语言中的某个函数符号\(F_i\)，结构中存在某个函数\(F_j^M\)，使得\(I(F_i) = F_j^M\).
+        \end{itemize}
+    \end{itemize}
+\end{definition}
+
+给出一个具体的例子，自然数的结构\(\mathcal{N} = \langle \mathbb{N}, \{0; <, =; S,+,\cdot\}, I \rangle\)，建立在集合论的语言\(\mathcal{L}_1 = \langle \emptyset; \in, \approx \rangle\)上，并且规定解释函数做出以下解释：
+\begin{center}
+    \begin{tabular}{ccc}
+        \(\mathcal{L}_1\)的签名 & & \(\mathcal{N}\)的签名 \\
+        \(\emptyset\) & \(\longmapsto\) & \(0\) \\
+        \(\in\) & \(\longmapsto\) & \(<\) \\
+        \(\approx\) & \(\longmapsto\) & \(=\)
+    \end{tabular}
+\end{center}
+那么集合论中的公式（这其实是后面\textsf{ZFC}的空集公理）
+\[\exists x \forall y \neg y \in x\]
+就应该解释成
+\[\exists x \forall y \neg y < x\]
+\begin{center}
+    “存在自然数\(x\)，所有自然数\(y\)都不比它小.”
+\end{center}
+这当然是对的（现在还没讨论到满足赋值，尚不严谨），取\(x=0\)，那么就不存在任何小于\(x\)的\(y\)了. 集合论中的公式（其实这是后面\textsf{ZFC}的无序对公理）
+\[\forall x \forall y \exists z \forall t(t \in z \to (t \approx x \vee t \approx y))\]
+就应该解释成
+\[\forall x \forall y \exists z \forall t(t < z \to (t = x \vee t = y))\]
+\begin{center}
+    “对于自然数\(x,y\)，都存在自然数\(z\)，只要某个自然数小于\(z\)，那么它不是\(x\)就是\(y\).”
+\end{center}
+这个公式是对的吗？ 当然错误嘛，取\(x=2,y=3\)，这个\(z\)显然不存在，分几种情况讨论很快就证明出来了. 公理居然是错的，换个严谨的说法，自然数的结构\(\mathcal{N}\)不满足\textsf{ZFC}公理集. 
+% 其实我们在日常生活中也遇到过“用不满足理论的结构试图说明理论是错的”，比如用“一堆谷子加上一堆谷子还是一堆谷子”来推翻\(1+1=2\). \(1+1=2\)本身的正确性和此处的错误性根本就不是一个层面的，在语法上正确，在语义（结构）上错误.
+
+\vspace{1cm}
+
+那么，不确定性就此消失了吗？我们改写一下空集公理，把\(x\)改成自由变量，得到\(\varphi(x): \forall y \neg y \in x\)，翻译之后得到\(\varphi^\mathcal{N}: \forall y \neg y < x\)，这个公式是正确的吗？取\(x=0\)时为真，但\(x\)取其它数的时候就是假的了，也就是说，我们还需要进一步处理自由变量，将自由变量赋值为论域中的某个元素. 剧透：在这个例子中，当自由变量\(x\)赋值为\(0\)即\(s(x)=0\)时，自然数的结构\(\mathcal{{N}}\)就满足\(\varphi^\mathcal{N}\)了，记作\((\mathcal{N},s) \vDash \varphi\). 实际上，我们就像真假赋值那样，把每个变量都赋值为论域中的元素，并将其扩张以处理所有项.
+
+\begin{definition}{满足赋值及其扩张}
+    设语言\(\mathcal{L}_1\)中的全体变量的集合记为\(\mathcal{L}_1^0\)，全体项的集合记为\(T\)，结构\(\mathcal{M} = \langle M,\sigma, I \rangle\)，则赋值函数形如\(s:\mathcal{L}_1^0 \to M\)，将所有变量赋值为论域\(M\)中的元素，即对于变量\(v_i\)，有\(s(v_i) \in M\).
+
+    赋值函数\(s\)按照如下法则扩张成\(\bar{s}: T \to M\)
+    \begin{itemize}
+        \item 对于变量\(v_i\)，\(\bar{s}(v_i) = s(v_i)\).
+        \item 对于常量\(c_i\)，\(\bar{s}(c_i) = I(c_i)\).
+        \item 对于函数\(F_i(x_1, x_2, \cdots, x_n)\)，\(\bar{s}(F_i(x_1, x_2, \cdots, x_n)) = I(F_i)(\bar s(x_1), \bar s(x_2), \cdots, \bar s(x_n))\).
+    \end{itemize}
+\end{definition}
+
+当确定了满足赋值以后，我们就可以正式定义一阶逻辑下的“满足”了.
+
+\begin{definition}{真值模式(T-scheme), 塔斯基, 1933}
+
+    给定结构\(\mathcal{M} = \langle M,\sigma, I \rangle\)和扩张的满足赋值函数\(\bar{s}\)，递归定义\((\mathcal{M}, s) \vDash \varphi\).
+
+    \begin{itemize}
+        \item 如果\(\varphi: P(x_1,x_2,\cdots,x_n)\)，当且仅当\((\bar s(x_1), \bar s(x_2), \cdots, \bar s(x_n)) \in I(P)\)时，有\((\mathcal{M}, s) \vDash \varphi\).
+        \item 如果\(\varphi\)形如\(\neg \alpha\)，当且仅当\((\mathcal{M}, s) \not \vDash \varphi\)时，有\((\mathcal{M}, s) \vDash \varphi\).
+        \item 如果\(\varphi\)形如\(\alpha \to \beta\)，当且仅当\((\mathcal{M}, s) \not \vDash \alpha\)或\((\mathcal{M}, s) \vDash \beta\)时，有\((\mathcal{M}, s) \vDash \varphi\).
+        \item 如果\(\varphi\)形如\(\forall x \alpha\)，当且仅当对于   时
+    \end{itemize}
+
+\end{definition}
+
+\begin{definition}{语义后承}
+    设\(\Gamma\)为一个公式集，\(\varphi\)是一个公式，如果对于所有的结构\(\mathcal{M}\)和满足赋值\(s\)，只要\((\mathcal{M}, s)\)满足\(\Gamma\)就一定满足\(\varphi\)，就称\(\varphi\)是\(\Gamma\)的语义后承，记作\(\Gamma \vDash \varphi\).
+\end{definition}
+
+\begin{definition}{模型}
+    给定结构\(\mathcal{M}\)，对于公式\(\varphi\)，如果所有满足赋值均有\((\mathcal{M}, s) \vDash \varphi\)，就称\(\mathcal{M}\)是\(\varphi\)的\uline{模型}(model)，记作\(\mathcal{M} \vDash \varphi\). 
+\end{definition}
+
+\section{公理化的集合论}
+
+% \subsection{公理化思想概述}
+
+% 假如你去查查词典，随便查某个词语的意思，词典都会用一句或一段话来解释它，而这句或这段话中出现的每个字词，你再去查询它们的意思，又会得到更多的句子分别解释. 如此下去，总会碰到之前遇到的有待解释的词，即出现了循环解释. 而数学大厦从底层构建起来，绝不允许出现几个概念相互定义的情况，但这就会出现另一种困境，那就是有的概念没有办法被其它更基本的概念所定义，我们称这样的概念为\uline{原始观念}(primitive notion)，在集合论中，“集合”和“属于”是原始观念，其他的概念都可以被这两个概念定义（当然，除去数理逻辑中的原始观念，例如“存在”、“推出”等）.
+
+% 有了原始观念以后，我们需要一系列命题来描述这些原始观念，这一些命题是人为设定的，称之为\uline{公理}(axiom)，我们还要有一系列\uline{推导法则}(implication rule)，来说明这些命题可以如何导出其他命题，推导法则也是人为选取的，不同推导法则的选取直接反映了人的哲学立场. 如果一个命题能被公理经由推导法则导出，但它不是公理，那么就称它为\uline{定理}(theorem)，当然，定理出现在不同的地方可能扮演不同的角色，称呼也可能变为\uline{引理}(lemma)、\uline{推论}(corollary)等，但本质上并无差别. 
+
+% 如果一个变量\uline{出现}(occur)在“存在”和“任意”之后，称为\uline{受限变量}(bound variable)，否则称为\uline{自由变量} (free variable)，一般来说公理中出现的自由变量是\uline{常量}(constant)，它们是公理描述的具体的原始观念.
+
+% 原始观念、常量、公理、推导法则和基于它们导出的所有定理统称为\uline{理论}(theory). 无论如何选取公理和推导法则，我们都不希望它们能导出一个形如\(A \wedge \neg A\)的命题出来，否则我们就说这个理论是\uline{不一致的} (inconsistent)，根据经典逻辑中的爆炸原理\footnote{爆炸原理(ex falso quodlibet)：假命题能导出一切命题.}，不一致的理论会导出很多克苏鲁般的东西，这是我们不希望的. 此外，我们希望选取的公理都是\uline{独立的}(independent)，即公理之间不能相互导出. 
+
+\subsection{\textsf{ZFC}集合论}
+
+策梅洛-弗兰克尔集合论(Zermelo-Frankel set theory, \textsf{ZFC})是一个关于集合的理论，它建立在一阶逻辑之上，使用希尔伯特风格的推演系统（也可以是自然推演系统，总之是形式主义的），谓词只有\(\in\)，读作“属于”，没有常量和函数，也没有等于号（有时为了方便可以有），\(\mathcal{L}_1 = \langle \in \rangle\)，或\(\mathcal{L}_1 = \langle \in,= \rangle\). 每个变量在直觉上具有“集合”的类型. 它的公理集有7条公理，以下逐条叙述，正文给出最原始的形式，具体的意思之后阐述. 在书写上，暂时使用大写字母表示集合，小写字母表示元素，尽管实际上这两者其实是无法区分的，并且为了可读性，我们使用中括号承担与小括号相同的职能.
+
+\begin{itemize}
+
+    \item[(1)] 外延公理(axiom of extensionality).
+    \[\forall X \forall Y[\forall x(x \in X \wedge x \in Y) \rightarrow X=Y]\]
+    \begin{note}
+        两个集合是否相等取决于元素是否相同，你有我也有，我有你也有，你我就相等了. 这条命题与其说是公理，不如说是补充了“等于”这个谓词的定义. 其逆命题为\(\forall X \forall Y[X=Y \rightarrow \forall x(x \in X \wedge x \in Y)]\)，是一阶逻辑希尔伯特系统的内定理. 
+
+        如果一阶语言没有等于号，那这个公理就是等于号的定义.
+    \end{note}
+
+    \item[(2)] 并集公理(axiom of union).
+    \[\forall X \exists Y \forall u[u \in Y \leftrightarrow \exists v(u \in v \wedge v \in X)]\]
+    \begin{note}
+        并集公理可以改写为\(\displaystyle{\forall X \exists Y(Y=\bigcup X)}\)，即任意集合的并集都存在.
+    \end{note}
+
+    \item[(3)] 幂集公理(axiom of power set).
+    \[\forall X \exists Y \forall x\forall z[(x \in z \rightarrow x \in X) \leftrightarrow z \in Y]\]
+    \begin{note}
+        幂集公理可改写为\(\forall X \exists Y[Y=\mathcal{P}(X)]\)，即任意集合的幂集都存在. 将来我们可以看到，幂集公理形式上虽然很简单，但正是它赋予了\textsf{ZFC}极大的证明论强度.
+    \end{note}
+
+    \item[(4)] 正规公理(axiom of regularity).
+    \[\forall X \exists x[x \in X \rightarrow \neg\exists u(u \in x \wedge u \in X)]\]
+    \begin{note}
+        这个公理说的是“任意集合\(X\)中都存在这样一个元素\(x\)，使得\(x \cap X=\emptyset\)”，你一定会觉得这个公理很莫名其妙，但它实际上非常巧妙地断言了“\(\in\)”的反自反性、反对称性和良基性，从而规避了罗素悖论. 如果我们允许\(x \in x\)，那么\(\{x\}\)这个集合就不满足正规公理了，因为它唯一的元素\(x \cap \{x\} \neq \emptyset\)；同理，如果我们允许\(x \in y \in x\)，那么\(\{x,y\}\)这个集合就不满足正规公理了；同理，如果我们允许\(x_0 \in x_1 \in \cdots \in x_\alpha \in x_0\)，那么\(\{x_0,x_1,\cdots,x_\alpha\}\)这个集合就不满足正规公理了.
+
+        正规公理还告诉我们，\(\mathbb{ON}\)不是一个集合，因为如果它是一个集合，那么\(\langle \mathbb{ON}, \in \rangle\)将是一个良序集，而且任意序数\(\alpha=\{\beta|\beta < \alpha\} \subset \mathbb{ON}\)，意味着\(\mathbb{ON}\)也是传递集，所以\(\mathbb{ON}\)是一个序数，所以有\(\mathbb{ON} \in \mathbb{ON}\)，违背了正规公理. 
+
+        同理，包含所有集合的集合也是不存在的，即\(\mathbb{V}\)不是一个集合，因为如果是的话，就有\(\mathbb{V}\in\mathbb{V}\)，违背正规公理.
+    \end{note}
+    
+    \item[(5)] 替换公理模式(axiom scheme of replacement).
+    \[\forall X [\forall x(x \in X \wedge \exists y \forall z[\phi \leftrightarrow z=y]) \rightarrow \exists Y \forall x(x \in X \rightarrow \exists y[y \in Y \wedge \phi])]\]
+    其中\(\phi\)是一阶合式公式.
+    \begin{note}
+        之所以称为“公理模式”是因为其中的合式公式\(\phi\)可以任选，但在一阶逻辑中全称量词不能约束公式，所以不能将其写入公理中. 将该合式公式写成\(\phi(x,y)\)，式中的\(\exists y \forall z[\phi \leftrightarrow z=y]\)说的是“存在\(y\)使\(\phi(x,y)\)成立，如果另外有\(z\)也能使得\(\phi(x,z)\)成立，那么\(y\)和\(z\)是同一个对象”，意味着使得\(\phi\)成立的对象是唯一的，但由于\(\phi\)成立与否由\(x,y\)共同确定，所以这个唯一的\(y\)由\(x\)确定. 
+
+        你可能突然发现这个\(\phi\)好像确定了一个函数\(y=f(x)\)，将\(\forall x(x \in X \wedge \exists y \forall z[\phi \leftrightarrow z=y])\)改写为\(\forall x(x \in X \wedge \exists! y [y=f(x)])\)，其中\(\exists!\)表示“唯一存在”的意思，你就会意识到这个\(X \subseteq \trm{dom}(f)\).
+        
+        往后看，\(\exists Y \forall x(x \in X \rightarrow \exists y[y \in Y \wedge \phi])\)改写为\(\exists Y \forall x(x \in X \rightarrow \exists y[y \in Y \wedge y=f(x)])\)，你又发现这个\(Y\subseteq \trm{ran}(f)\). 所以这个公理说的是：“如果\(f\)是一个函数关系，\(X\)是一个集合，那么\(f[X]\)也是一个集合”.
+
+        当然有的资料上将替换公理模式开头的“\(\forall X\)”写成“\(\forall X \forall \vec{w}\)”，其实就相当于用了一次一阶逻辑的概括公理. 两者区别不大.
+    \end{note}
+
+    \item[(6)] 无穷公理(axiom of infinity).
+    \[\exists X[ \exists x(\neg \exists y[y \in x] \wedge x \in X) \wedge \forall x[x \in X \rightarrow \exists y (y \in X \wedge \forall u[u \in y \leftrightarrow (u=x \vee u \in x)])]\]
+    \begin{note}
+        这条公理又臭又长，是因为把它严格按照一阶逻辑语言写出来了而已. \(\exists x(\neg \exists y[y \in x] \wedge x \in X)\)中的\(x\)不含元素，这说的是\(\emptyset \in X\)，\(\forall u[u \in y \leftrightarrow (u=x \vee u \in x)]\)表示\(y\)的元素只能是\(x\)或\(x\)的元素，即\(y=x \cup \{x\}\)，如果把\(x\)当作序数看的话那么\(y=x^+\).
+
+        所以这条公理可以改写为\(\exists X[0 \in X \wedge \forall x(x \in X \rightarrow x^+ \in X)]\)，属于\(X\)的元素，要么是0（即空集），要么是某个已属于\(X\)的序数的后继数——这说的不就是自然数嘛！所以无穷公理实际上断言了\(\mathbb{N}\)的存在性.
+
+        如果联合正规公理一起看，那么无穷公理还可以写作\(\mathbb{N} \neq \mathbb{ON}\)，有的集合论书上就是这么表述无穷公理的.
+    \end{note}
+\end{itemize}
+
+\vspace{1cm}
+
+以上便是\textsf{ZF}集合论的公理，一般我们会加上选择公理，形成\textsf{ZFC}集合论.
+
+\begin{itemize}
+    \item  [(7)] 选择公理(axiom of choice).
+    \[\forall X [\forall x \forall y([x \in X \wedge y \in X] \rightarrow [x \neq y \leftrightarrow \neg \exists z(z \in x \wedge z \in y)]) \rightarrow \exists Y \forall x(x \in X \rightarrow \exists! z[z \in x \wedge z \in Y])]\]
+\end{itemize}
+
+\begin{note}
+    这条公理更长了，我们一点点来拆解它. \([x \in X \wedge y \in X] \rightarrow [x \neq y \leftrightarrow \neg \exists z(z \in x \wedge z \in y)]\)说的是\(X\)中的两个不同的元素没有共同的元素，即两两不交. \(\forall x(x \in X \rightarrow \exists! z[z \in x \wedge z \in Y])\)意思是\(X\)中的每一个元素与\(Y\)只有一个共同元素. 如果将集合\(X\)写作\(\{x_i\}_{i \in I}\)，那么选择公理可以翻译成一句话：“给定一系列两两不相交的集合\(\{x_i\}_{i \in I}\)，存在一个集合\(Y\)，每个\(x_i\)与\(Y\)恰好共享一个元素”.
+
+    不说完全理解，这句话至少让我们看懂了选择公理，但还是没有体现出“选择”的意思. 回忆你去商店买衣服的过程，你要从众多的衣服中挑出一件称心的，而挑出的衣服是商店里有的（废话）. 如果记商店里的衣服集合为\(X\)，用函数\(f\)表示你挑衣服的过程，你挑选出的衣服为\(f(X)\)，自然有\(f(X) \in X\). 对于\(S=\{x_i\}\)中的每个\(x_i\)，满足\(f(x_i) \in x_i\)的函数称为\(S\)的\uline{选择函数}(choice function)，选择公理断言，每个非空集合都有其选择函数. 用买衣服的例子来理解，\(S\)是一家大商场，\(x_i\)是其中的每个商店，\(f(x_i)\)是你在商店\(x_i\)中挑出的那件衣服，选择公理断言你总能在每一家店里都挑出一件衣服，最后出商场时买下的所有衣服能构成一个集合. 这样解释起来就自然多了.
+\end{note}
+
+\vspace{1cm}
+
+\textsf{ZFC}原本还有以下几条公理，不过它们是多余的，能被上面那几条公理推出来. 
+\begin{itemize}
+    \item  空集公理(axiom of empty set).
+    \[\exists X[\neg x(x \in X)]\]
+    \begin{note}
+        这条公理断言空集的存在性，可以被证明：无穷公理断言了\(\mathbb{N}\)的存在性，根据正规公理和下面的概括公理模式，有
+        \[\emptyset = \{x \in \mathbb{N}|x \in x\}\]
+    \end{note}
+    \item  概括公理模式/子集公理模式/分离公理模式/分类公理模式(axiom of comprehension / subset / separation / specification)
+    \[\forall X \exists Y \forall x \forall \vec{w}[(x \in X \wedge \phi) \leftrightarrow x \in Y]\]
+    其中\(\phi\)是合式公式.
+    \begin{note}
+        这条公理是朴素集合论中概括原则的削弱版本，概括原则断言形如\(\{x|\phi\}\)的是集合，概括公理模式则需要先准备好一个集合\(X\)，然后才断言\(Y = \{x \in X|\phi\}\)是一个集合. 它可以被证明：在替换公理模式中，令合式公式
+        \[\phi(x,y,w) : x=y \wedge x \in w \wedge \psi\]
+        立即知道这个公式对参数\(y\)有外延性. 替换公理模式断言\(\{y|\phi(x,y,X), x \in X\}\)是一个集合，稍微改写一下，这个集合就是\(\{x \in X| \psi\}\).
+    \end{note}
+    \item  无序对公理(axiom of pairing).
+    \[\forall x \forall y \exists z[\forall w(w \in z \leftrightarrow [w=x \vee w=y])]\]
+    \begin{note}
+        这条公理说的是：“对于任意集合\(x,y\)，\(\{x,y\}\)是一个集合”，看起来有点无厘头，也可以被证明：首先空集是一个集合，根据幂集公理，\(\mathcal{P}(\mathcal{P}(\emptyset)) = \{\emptyset,\{\emptyset\}\}\)也是一个集合. 对于任意集合\(u,v\)，在替换公理模式中，令
+        \[\phi(x,y,u,v) := (x = \emptyset \wedge y = u) \vee (\neg (x =\emptyset) \wedge y = v)\]
+        可以注意到这个公式对\(y\)有外延性. 替换公理模式断言\(\{y | \phi(x,y,u,v), x \in \{\emptyset,\{\emptyset\}\}\}\)是一个集合，稍微整理一下，这个集合就是\(\{u,v\}\).
+    \end{note}
+\end{itemize}
+
+我们之所以选择公理集合论，是因为朴素集合论出现了瑕疵，于是使用公理化的方法扬弃朴素集合论的内容. 但不少教材并没有提到公理化的集合论，一个重要的原因是\textsf{ZFC}抛弃掉的朴素的那一部分，在大多数数学对象的构造中并不会触碰到. 相反，\textsf{ZFC}下集合的行为仍然是相当自由的，以下证明一个命题来刻画这种自由.
+
+\begin{theorem}{}
+    对于两个集合\(A,B\)，\(A \cup B, A \cap B, A-B, B-A, A \triangle B, (A,B), A \times B\)都是存在的.
+\end{theorem}
+\begin{proof}
+    \(A \cup B = \bigcup\{A,B\}\)，由并集公理和无序对公理保证其存在性.
+    \newline
+    \(A \cap B = \{x \in A|x \in B\}\)，由分离公理模式保证其存在性.
+    \newline
+    \(A-B = \{x \in A | x \not \in B\}\)，由分离公理模式保证其存在性，\(B-A\)类似，而\(A \triangle B = (A-B) \cup (B-A)\)，额外需要并集公理.
+    \newline
+    \((A,B) = \{\{A\},\{A,B\}\} \subset \mathcal{P}(\mathcal{P}(A \cup B))\)，由并集公理和无序对公理保证其存在性.
+    \newline
+    对于\(A \times B\)，任选\(a \in A, b \in B\)，由于\(\{a\} \subseteq A\)，所以\(\{a\} \in \mathcal{P}(A)\). 同理，由于\(\{a,b\} \subseteq A\cup B\)，所以\(\{a,b\} \in \mathcal{P}(A \cup B)\). 因此\(\{\{a\},\{a,b\}\} \subset \mathcal{P}(A \cup B)\)，得到\((a,b) = \{\{a\},\{a,b\}\} \in \mathcal{P}(\mathcal{P}(A \cup B))\). 最终我们有\(A \times B = \{p\in \mathcal{P}(\mathcal{P}(A \cup B))|\exists a \exists b(a \in A \wedge b \in B \wedge p = (a,b))\}\)，这由并集公理、幂集公理、分离公理模式保证其存在性.
+\end{proof}
+
+% \section{归纳和递归}
+
+% 我们以前学过数学归纳法，它的具体内容是这样：
+% \begin{reference}
+%     如果一个命题对\(0\)成立，而且只要它对自然数\(n\)成立就对\(n+1\)也成立，那么这个命题对任意自然数都成立.
+% \end{reference}
+% 这种方法适用于所有关于自然数的命题，甚至许多命题在证明的时候只能用数学归纳法. 实际上数学归纳法有两种形式：
+% \begin{theorem}{数学归纳定理(mathematical induction)}
+%     \begin{itemize}
+%         \item  第一形式
+%         \[[\phi(0) \wedge (\forall n \in \mathbb{N})(\phi(n) \rightarrow \phi(n^+))] \rightarrow [(\forall n \in \mathbb{N})(\phi(n))] \]
+%         \(\phi\)是一个命题，如果
+%         \begin{itemize}
+%             \item [(1)] 零情况：\(\phi(0)\)成立；
+%             \item [(2)] 后继情况：\(\phi(n)\)蕴含\(\phi(n+1)\).
+%         \end{itemize}
+%         那么\(\phi\)对任意自然数都成立.
+%         \item  第二形式
+%         \[(\forall n \in \mathbb{N})[(\forall k < n)\phi(k) \rightarrow \phi(n)] \rightarrow (\forall n \in \mathbb{N})\phi(n)\]
+%         \(\phi\)是一个命题，如果对于任意自然数\(n\)：
+%         \[\mbox{对所有}k<n\mbox{均有}\phi(k)\mbox{，则}\phi(n)\]
+%         那么\(\phi\)对任意自然数都成立.
+%     \end{itemize}
+% \end{theorem}
+
+% 将自然数扩展到序数上，我们有超穷归纳定理
+% \begin{theorem}{超穷归纳定理(transfinite induction)}
+%     \begin{itemize}
+%         \item  第一形式
+%         \newline
+%         \(\phi\)是一个命题，如果
+%         \begin{itemize}
+%             \item [(1)] 零情况：\(\phi(0)\)成立；
+%             \item [(2)] 后继情况：\(\phi(\alpha)\)蕴含\(\phi(\alpha^+)\)；
+%             \item [(3)] 极限情况：对所有非零极限序数\(\alpha\)，如果对所有\(\beta<\alpha\)，\(\phi(\beta)\)成立，则\(\phi(\alpha)\)成立.
+%         \end{itemize}
+%         那么\(\phi\)对任意序数都成立.
+%         \item  第二形式
+%         \[(\forall \alpha \in \mathbb{ON})[(\forall \beta < \alpha)\phi(\beta) \rightarrow \phi(\alpha)] \rightarrow (\forall \alpha \in \mathbb{ON})\phi(\alpha)\]
+%         \(\phi\)是一个命题，如果对于任意序数\(\alpha\)：
+%         \[\mbox{对所有}\beta<\alpha\mbox{均有}\phi(\beta)\mbox{，则}\phi(\alpha)\]
+%         那么\(\phi\)对任意序数都成立.
+%     \end{itemize}
+% \end{theorem}
+
+% 第一形式多出了一种情况，而第二形式仍像原来那样简洁，所以一般情况下第二形式会用得更多.
+
+% \vspace{1cm}
+
+% \uline{递归}是比归纳更抽象的概念，我们可以从以前学过的数列来理解. 你一定遇到过这样的题目：给出数列的递推公式，求出它的通项公式. 这种题目根据通项公式的形式有不同的解题方法，把你学过的全列出来，那叫一个五花八门. 但实际上递推公式只要稍微复杂一些，就不一定能求出它的通项公式了，例如\(\frac{1}{n}a_{n+1}=a_n^2+2n\)，它的通项公式没有初等形式. “没有初等形式”和“没有通项公式”的区别很大，尽管没有初等形式，但递归定理保证了通项公式（加上初值）可以唯一确定通项公式，即完整地刻画这个数列.
+
+% 上面这个例子中的递推公式整理一下，得到\(a_{n+1}=na_n^2+2n^2\)，其中涉及的变量只有\(a_n\)和\(n\)\footnote{当然你认为变量只有\(n\)也没问题，因为我们要证明的命题就是“映射\(f\)是唯一确定的”，确定的映射将会把\(n\)映射为确定的值，即\(f(n)\)是\(n\)的因变量，真正的自变量只有\(n\)，但是现在尚未证明，所以可将\(f(n)\)也认为是自变量.}，记\(f(n)=a_n\)，\(g(x,y)=xy^2+2x^2\)，那么断言“数列\(\{a_n\}_{n \in \mathbb{N}}\)有通项公式”等价为“已知\(f(0)\)和函数\(g(f(n),n)\)，\(f(n)\)可被唯一确定”，这个命题的一般形式即为第一形式的递归定理.
+
+% 斐波那契数列则是另外一种情况，它的递推公式为\(a_n=a_{n-1}+a_{n-2}\)，涉及到前两项，在这种情况下仅根据\(a_0\)不能唯一确定通项公式，还需要\(a_1\)才行；同理，如果递推公式涉及到更多之前的项，则可能需要更多的初值. 在最极端的情况下，\(a_n\)需要\(a_0\)到\(a_{n-1}\)所有这\(n\)项才能求出来，这好办，我们将递归定理推广至第二形式即可，即让函数\(g\)的自变量为\(\{f(0),f(1),\cdots,f(n)\}=\{f(k)|k<n\}=f\upharpoonright n\)这个集合即可.
+
+% \begin{theorem}{递归定理(recursion theorem)}
+%     \begin{itemize}
+%         \item  第一形式
+%         \newline
+%         对于任意集合\(A\)、任意\(a \in A\)，以及\(g:A \times \mathbb{N} \to A\)，存在唯一的函数\(f:\mathbb{N} \to A\)，使得
+%         \begin{itemize}
+%             \item [(1)] 零情况：\(f(0)=a\)；
+%             \item [(2)] 后继情况：\(f(n+1)=g(f(n),n)\).
+%         \end{itemize}
+%         \item  第二形式
+%         \newline
+%         对于任意集合\(A\)以及\(g:\mathbb{V} \to A\)，存在唯一的函数\(f:\mathbb{N} \to A\)，使得
+%         \[f(n)=g(f \upharpoonright n)\]
+%     \end{itemize}
+% \end{theorem}
+
+% \textit{
+%     这个定理乍一看觉得证明起来无从下手，但实际上证明起来其实非常简单，以至于可以把它归入“这也需要证？”的命题. 假设除了\(f\)以外还有另一个函数\(h\)也满足\(h(0)=a\)，\(h(n+1)=g(h(n),n)\)，那么\(f(0)=h(0)\)，而假如\(f(n)=h(n)\)，那么\(f(n+1)=g(f(n),n)=g(h(n),n)=h(n+1)\)，根据数学归纳法的第一形式，可得到\(\forall n:f(n)=h(n)\)，再由外延公理，\(f\)和\(h\)其实是同一个函数.
+% }
+
+% 将递归定理推广到序数上，就得到了超穷递归定理.
+% \begin{theorem}{超穷递归定理(transfinite recursion theorem)}
+%     \begin{itemize}
+%         \item  第一形式
+%         \newline
+%         对于任意集合\(a\)和函数\(g_1, g_2\)，存在唯一的函数\(f:\mathbb{ON} \to \mathbb{V}\)，使得
+%         \begin{itemize}
+%             \item [(1)] 零情况：\(f(0)=a\)；
+%             \item [(2)] 后继情况：\(f(\alpha^+)=g_1(f(\alpha))\)；
+%             \item [(3)] 极限情况：\(f(\alpha)=g_2(f[\alpha])\).
+%         \end{itemize}
+%         \item  第二形式
+%         \newline
+%         对于任意函数\(g:\mathbb{V} \to \mathbb{V}\)，存在唯一的函数\(f:\mathbb{ON} \to \mathbb{V}\)，使得
+%         \[f(\alpha)=g(f \upharpoonright \alpha)\]
+%     \end{itemize}
+% \end{theorem}
+
+% 归纳定理可以再次推广，得到终极形式，不局限于具体的关系\(<\)或\(\in\)，而是任意良基关系.
+% \begin{theorem}{良基归纳定理(well-founded induction)}
+%     \(\phi\)是一个命题，对于良序集\(\langle A; R \rangle\)，如果对于任意\(x \in A\)：
+%     \[\mbox{对所有满足}yRx\mbox{的元素}y\mbox{均有}\phi(y)\mbox{，则}\phi(x)\]
+%     那么\(\phi\)对于所有\(x \in A\)成立.
+% \end{theorem}
+
+\section{再次讨论正规公理}
+
+\subsection{冯·诺伊曼层垒谱系}
+
+一个集合是怎么得到的？历史上最初引入集合论，就是为了将某些具有相同性质的对象集中讨论，这些对象不一定是一个集合. 我们把所有不是集合但可以属于某个集合的东西称为\uline{原子}(atmo)，以表示这些对象不宜使用集合论的语言再次分割，比如样本空间中的样本点、向量空间中的向量等. 
+
+把所有原子的集合记作\(V_0\)，把目光看向\(V_1 = \mathcal{P}(V_0)\)这个集合上，它以\(V_0\)的子集作为元素，而\(V_0\)的子集要么是空集，要么以赤裸裸的原子作为元素，所以\(V_1\)的元素可以理解为“给若干原子穿上一层集合的衣服”的所有可能情况. 同理，\(V_2 = \mathcal{P}(\mathcal{P}(V_0))\)的元素为“给若干原子穿上两层集合的衣服”的所有可能情况，由此归纳下去，\(V_n\)即“给若干原子穿上\(n\)层集合的衣服”的所有可能情况. 举个例子，假如一共有2个原子，记作\(1,2\)，那么
+\[V_0 = \{1,2\}\]
+是赤裸裸的原子.
+\[V_1 = \{\emptyset,\{1\},\{2\},\{1,2\}\}\]
+是“给若干原子穿上一层集合的衣服”的所有可能情况.
+\begin{align*}
+    V_2 = \{& \\
+    &\emptyset,\\
+    &\{\emptyset\},\{\{1\}\},\{\{2\}\},\{\{1,2\}\},\\
+    &\{\emptyset,\{1\}\},\{\emptyset,\{2\}\},\{\emptyset,\{1,2\}\},\{\{1\},\{2\}\},\{\{1\},\{1,2\}\},\{\{2\},\{1,2\}\},\\
+    &\{\emptyset,\{1\},\{2\}\},\{\emptyset,\{1\},\{1,2\}\},\{\emptyset,\{2\},\{1,2\}\},\{\{1\},\{2\},\{1,2\}\},\\
+    &\{\emptyset,\{1\},\{2\},\{1,2\}\}\\
+    \}
+\end{align*}
+是“给若干原子穿上两层集合的衣服”的所有可能情况（不要在意空集）.
+
+经过以上恐怖的列举，你也许会有一种模模糊糊的想法：既然正规公理断言了“属于”关系的反自反性、反对称性和良基性，那么任意一个集合，无论它的结构有多复杂，把它的衣服层层脱去（可以用并集实现这个过程），最终都会得到原子. 这个想法很好，在理论上也能得到肯定，集合论是研究无穷的数学分支，之前讨论过的超穷递归也说明了无穷多次操作的可行性，所以我们允许“脱去”的次数为任意序数多次. 基于这个模糊的想法，我们定义\uline{层垒谱系}(cumulative hierarchy).
+
+\begin{definition}{层垒谱系}
+    层垒谱系由超穷递归的形式定义.
+    \[
+        \begin{aligned}
+            V_0 &= \mbox{所有原子的集合} \\
+            V_{\alpha^+} &= \mathcal{P}(V_\alpha) \\
+            V_{\alpha} &= \bigcup_{\beta < \alpha}V_\beta
+        \end{aligned}
+    \]
+    定义\uline{良基宇宙}(well-founded universe)或\uline{冯·诺伊曼宇宙}(von Neumann universe)
+    \[\mathbb{WF} = \bigcup_{\alpha \in \mathbb{ON}}V_{\alpha}\]
+\end{definition}
+
+你一定有一种强烈的直觉：既然任意集合中元素的“集合衣服的层数”至多超穷多，而这正是\(\mathbb{WF}\)所允许的，那么所有的集合都应该属于\(\mathbb{WF}\)，即\(\mathbb{V}=\mathbb{WF}\)才对. 接下来我们就会发现这个结论是正确的，并证明一个更加优美的定理.
+
+首先定义集合的\uline{秩}(rank).
+
+\begin{definition}{集合的秩}
+    对于任意\(x \in \mathbb{WF}\)，如果\(x \subseteq V_\alpha\)，而且对于任意\(\beta < \alpha\)，都有\(x \not \subseteq V_\beta\)，那么序数\(\alpha\)称为\(x\)的\uline{秩}(rank)，记作\(\trm{rank}(x) = \alpha\).
+\end{definition}
+
+注意在\(\mathbb{WF}\)中，\(\trm{rank}(x)\)是一定存在的. 这样定义集合的秩有一个优点：对于任意序数\(\alpha\)，都有\(\trm{rank}(\alpha) = \alpha\)，这一点可以用超穷归纳法来证明，只要注意到\(\alpha^+\)和\(\mathcal{P}(\alpha)\)的秩都恰好比\(\alpha\)的秩多1即可.
+
+这一小节的标题是“再次讨论正规公理”，这暗示了\(\mathbb{V}=\mathbb{WF}\)能由正规公理导出，现在我们来证明这个命题.
+\begin{proof}
+    在承认正规公理的前提下，假设\(\mathbb{V}\neq\mathbb{WF}\)，即某些集合没有秩，选取一个没有秩的集合，记作\(c\)，接下来把目光聚焦在\(A = \{x \in \trm{TC}(\{c\}) | x\mbox{没有秩}\}\)这个集合上. 根据正规公理，存在\(a \in A\)使得\(a \cap A = \emptyset\)，这时对于\(a\)的任一元素\(x\)，立即有\(x \not \in A\)，然而由于\(\trm{TC}(\{c\})\)是传递集，根据传递集的性质\(x \in \trm{TC}(\{c\})\)，这说明\(x\)有秩. \(a\)中的每个元素都有秩，根据秩的性质，得到\(a\)有秩，所以\(a \not \in A\)，和题设矛盾了. 因此这个没有秩的集合\(c\)是不存在的，每个集合都有秩，即\(\mathbb{V}=\mathbb{WF}\).
+\end{proof}
+
+然而当我们将充分必要条件反过来，可以发现也成立.
+\begin{proof}
+    如果\(\mathbb{V}=\mathbb{WF}\)，即每个集合都有秩，那么对于任意集合\(A\)，我们可以选出秩最小的元素\(a\)，这时候对于任意集合\(x\)，如果\(x \in a\)，根据秩的性质，有\(\trm{rank}(x) < \trm{rank}(a)\)，但由于\(a\)已经是秩最小的元素了，所以\(x\)不可能也是是\(A\)的元素，所以\(a \cap A = \emptyset\)，这就导出了正规公理.
+\end{proof}
+
+经过以上推导，我们得到了这样一个结论：
+\begin{theorem}{}
+    正规公理与\(\mathbb{V}=\mathbb{WF}\)等价，每个集合都有秩.
+\end{theorem}
+
+回忆传递集，传递集\(A\)是这样一种集合，它的结构足够特殊，以至于\(x \in A\)和\(x \subset A\)等价. 序数就是典型的传递集. 但对于任意集合，我们是否能构造出关于它的传递集呢？
+\begin{definition}{传递闭包}
+    递归定义一个序列\(\{\trm{TC}_n(x)\}_{n \in \mathbb{N}}\)：
+    \[
+        \begin{aligned}
+            \trm{TC}_0(x) &= x \\
+            \trm{TC}_{n+1}(x) &= \bigcup \trm{TC}_n(x)
+        \end{aligned}
+    \]
+    而\(x\)的\uline{传递闭包}(transitive closure)就是该序列取并集：
+    \[\trm{TC}(x) = \bigcup_{n \in \mathbb{N}}\trm{TC}_n(x)\]
+\end{definition}
+
+\(\trm{TC}(A)\)一定是包含\(A\)的最小传递集. 这句话包含了四个命题：对于任意集合\(A\)，\(\trm{TC}(A)\)一定存在；\(A \subseteq \trm{TC}(A)\)；\(\trm{TC}(A)\)是传递集；只要\(B\)是传递集且\(A \subseteq B\)，则\(\trm{TC}(A) \subseteq B\).
+
+\begin{proof}
+    首先证明存在性. \(A\)是一个集合，那么\(\trm{TC}_0(A)\)也是集合，根据并集公理，\(\trm{TC}_{n+1}(A)\)也是集合，再根据数学归纳定理，所有的\(\trm{TC}_{n}(A)\)都是集合，再根据并集公理即可证明\(\trm{TC}(A)\)是集合.
+
+    第二个命题只要注意到\(A = \trm{TC}_0(A) \subset \trm{TC}(A)\)即可.
+
+    至于传递性，首先任选\(x \in \trm{TC}(A)\)，根据并集的定义，必然存在\(n\)使得\(x \in \trm{TC}_n(x)\)，即\(x \subseteq \trm{TC}_{n+1}(A)\). 此时对于任意\(y \in x\)，必然有\(y \in \trm{TC}_{n+1}(A)\)，根据并集定义，\(y \in \trm{TC}(A)\)，所以\(\trm{TC}(A)\)是传递集.
+
+    第四个命题比较有意思，接下来用数学归纳法证明. 首先\(\trm{TC}_0(A) = A \subseteq B\)；只要\(\trm{TC}_n(A) \subseteq B\)，就有\(\trm{TC}_{n+1}(A) = \bigcup \trm{TC}_n(A) \subseteq \bigcup B\)，由于\(B\)是传递集，有\(\bigcup B \subseteq B\)，所以\(\trm{TC}_{n+1}(A) \subseteq B\)；因此所有的\(\trm{TC}_{n}(A) \subseteq B\)，所以\(\trm{TC}(A) \subseteq B\).
+\end{proof}
+
+\subsection{推广的归纳和递归}
+
+\section{选择公理的另一面}
+
+回顾选择公理，它断言每个非空集族都有选择函数. 具体说来，非空集族指的是集合\(X = \{x_i\}_{i \in I}\)，其中每个\(x_i\)都是非空的. 而它的选择函数指的是函数\(f:X \to \bigcup X\)，使得\(f(x_i) \in x_i\). 在上文已经使用逛商场买衣服的例子通俗介绍了选择公理. 就像很晦涩的正规公理都能推出\(\mathbb{V} = \mathbb{WF}\)这个优美的等价命题一样，我们也希望选择公理能推出更优美的等价命题.
+
+数学家们经常把选择公理单独拿出来，不让它和\textsf{ZF}的其他公理放一起讨论，是因为选择公理似乎并没有其他公理那么“自然”. 选择公理断言了某个集合（选择函数）存在，却没有告诉我们该集合（选择函数）如何构造，这是与\textsf{ZFC}其他公理相异的一点. 这种“管杀不管埋”的特点让很多数学家不喜欢它. 不过就像数学分析中的中值定理一样，“断言某事物存在但不明确构造”的命题也是很有研究价值的. 
+
+\subsection{良序定理}
+
+选择公理是策梅洛首先提出来的，不过当时提出的是选择公理的等价命题：“任意集合都可以被良序化”. 不少集合存在“自然的”良序，例如自然数的大小关系就是\(\mathbb{N}\)上的良序. 对于\(\mathbb{Z}\)，我们可以规定任意两个整数\(a,b\)，若\(|a|<|b|\)则\(a \prec b\)，若\(|a| = |b|\)且\(a < 0\)且\(b>0\)则\(a \prec b\)，此时“\(\prec\)”就是\(\mathbb{Z}\)上的良序. 而对于\(\mathbb{R}\)来说就没那么简单了，不但你想不出怎样构造良序，数学家们也想不出. 
+
+但是有了选择公理，情况就不一样了. 联想选择函数的定义，对于任意一个集合\(A\)，如果存在某个函数使得\(f(A) \in A\)，我们可以记\(a_0 = f(A)\)，然后将此元素取出，剩下的集合就是是\(A-\{a_0\}\)，如果这时候这个选择函数还能发挥作用，即\(f(A-\{a_1\}) \in A-\{a_0\}\)，那么我们又可以记\(a_1 = f(A-\{a_1\})\)，将此元素拿走，剩下的集合就是\(A - \{a_0,a_1\}\). 如此循环往复下去直至超穷次，所有元素都会被取光，然后取出来的元素就组成了一条序列\(\{a_\xi\}_{\xi < \theta}\)，借助序数的大小比较法则我们可以规定\(a_\xi \prec a_\eta \leftrightarrow \xi < \eta\)，此时“\(\prec\)”就是\(A\)上的良序.
+
+为了避免“取出超穷多次”这种定义模糊的语句，接下来给出完整证明过程.
+
+\begin{proof}
+    令\(S\)为\(A\)的非空子集组成的集合（这个\(S\)存在性是毫无疑问的，因为\(S \subset \mathcal{P}(A)\)，由幂集公理和子集公理模式断言存在），根据选择公理，\(S\)上存在选择函数\(f\)使得对于任意\(X \in S\)有\(f(X) \in X\). 接下来令
+    \[a_\xi = f(A-\{a_\eta | \eta < \xi\}) \qquad (A-\{a_\eta | \eta < \xi\} \neq \emptyset)\]
+    由此得到一个序列\(\{a_\xi\}_{\xi < \theta}\)枚举了\(A\)的所有元素，此时序列的先后顺序即为\(A\)的良序.
+\end{proof}
+
+刚才我们为了把\(A\)排好序，构造出了一个集合\(S\)包含\(A\)的所有非空子集，然后选择公理断言了\(S\)有选择函数. 现在反过来，如果\(A\)的内部已经被良序关系“\(\prec\)”排好了，那么对于\(A\)的每个非空子集\(X\)，其内部也被“\(\prec\)”排好了，并且容易证明这个“\(\prec\)”也是\(X\)上的良序——也就是说有最小元\(\min(X)\). 此时如果定义一个函数\(f\)，满足\(f(X)=\min(X)\)，咦，这不就是\(S\)上的选择函数嘛，这不就推出了选择公理嘛. 现在我们把这个过程严格地表述一遍.
+
+\begin{proof}
+    设\(S\)为任意非空集族，根据并集公理，\(\bigcup S\)存在. 根据良序定理，存在序关系“\(\prec\)”使得\(\langle \bigcup S; \prec \rangle\)为良序集. 对于\(X \in S\)，有\(X \subseteq \bigcup S\)，此时“\(\prec \upharpoonright X\)”是\(X\)上的良序关系，定义函数\(f: S \to \bigcup S\)满足\(f(X) = \min(X)\)，那么\(f\)即为\(S\)的选择函数.
+\end{proof}
+
+\begin{theorem}{良序定理(well-ordering theorem)}
+    对于任意集合\(A\)，均存在序关系“\(\prec\)”使得\(\langle A; \prec \rangle\)为良序集. \newline
+    良序定理是选择公理的等价命题.
+\end{theorem}
+
+\subsection{佐恩引理}
+
+直接上命题.
+\begin{itemize}
+    \item [(1)] \uline{选择公理}(axiom of choice, AC)：非空集组均有选择函数.
+    \item [(2)] 两个非空集合的直积非空.
+    \begin{proof}
+        说得更明白一些，若\(\{x_i\}_{i \in I}\)是非空集族，则\(\prod_{i \in I}x_i \neq \emptyset\). 证明思路很简单，考察\(\prod_{i \in I}x_i\)的元素，都是有序组\((a_i)_{i \in I}\)，而且\(a_i \in x_i\). 这个有序组恰好枚举了某个选择函数的值域！由此确定的选择函数就是\(f = \{(i,a_i)|i \in I\}\). 有序组和选择函数一一对应，因此只要直积非空，选择函数就存在，反之亦然.
+    \end{proof}
+    \item [(3)] \uline{良序定理}(well-ordering theorem, by Zermelo)：任意集合均可建立良序.
+    \begin{proof}
+        要想建立\(A\)上的良序，只要构造一个序列\(\{x_\xi\}_{\xi <\alpha}\)枚举\(A\)，然后定义二元关系\(\leq\)：\(x_\alpha \leq x_\beta \Leftrightarrow \alpha \leq \beta\)，此即为\(A\)上的良序关系，因此重点是映射\(f:\xi \mapsto x_\xi\)的构造. 
+
+        令\(P = \mathcal{P}(A) - \{\emptyset\}\)，即\(A\)的非空子集的集合. 该映射就是\(x_\xi = f(A - \{a_\eta\}_{\eta<\xi})\)
+    \end{proof}
+    \item [(4)] \uline{佐恩引理}(Zorn's Lemma)：若偏序集\(\langle A; \leq \rangle\)所有连通的子集都有上界，那么\(A\)有最大元.
+    \item [(5)] 对于任意两个集合，存在一个映射，以一方为定义域，并射满另一方.
+\end{itemize}
+
+
+\subsection{基数运算的遗留问题}
+
+\section{自然数、整数和有理数的构造}
+
+\subsection{自然数的性质}
+
+历史上刻画自然数大多从皮亚诺公理开始，但如之前所述，自然数就是有限的序数，无穷公理断言了它们的存在性，序数运算法则把加法、乘法和乘方定义好了，集合论从更一般的角度刻画了自然数，因此我们不必再引入皮亚诺公理，而可以直接讨论自然数及其运算的性质.
+
+\begin{itemize}
+    \item [(1)] 加法交换律：\(a+b = b+a\).
+    \item [(2)] 加法结合律：\((a+b)+c = a+(b+c)\).
+    \item [(3)] 加法消去律：若\(a+c = b+c\)，则\(a=b\)，反之成立.
+    \item [(4)] 加法保序性：若\(a+c>b+c\)，则\(a>b\)，反之成立.
+    \item [(5)] 乘法交换律：\(a \cdot b = b \cdot a\).
+    \item [(6)] 乘法结合律：\((a \cdot b) \cdot c = a \cdot (b \cdot c)\).
+    \item [(7)] 乘法对加法的分配律：\((a+b) \cdot c = a \cdot c + b \cdot c\).
+    \item [(8)] 乘法消去律：若\(a \cdot c = b \cdot c\)且\(c \neq 0\)，则\(a=b\)，反之成立.
+    \item [(9)] 乘法保序性：若\(a \cdot c > b \cdot c\)且\(c \neq 0\)，则\(a>b\)，反之成立.
+    \item [(10)] \uline{欧几里得定理}(Euclidean theorem)：设\(n\geq 0\)且\(q >0\)，则存在\(m \geq 0\)和\(0 \leq r < q\)使得\(n = mq+r\).
+    \item [(11)] 0是零元：若\(a \cdot b = 0\)，则\(a=0\)或\(b=0\)，反之成立.
+\end{itemize}
+
+\subsection{整数和有理数的构造}
+
+这一节我们要构造整数集\(\mathbb{Z}\)和有理数集\(\mathbb{Q}\). 这里有一个非常重要的问题，在初等数学中\(1\)既是自然数，又是整数，也是实数和复数，无论是什么数，\(1=1\)都是成立的. 然而在集合论中，作为自然数的\(1\)和作为整数的\(1\)是两个不同的集合，后者甚至是一个无穷集合\footnote{这一点使得初等数学的底层细节多了很多不必要的细节，提高了研究难度，所以某些数学家对集合论构造数系嗤之以鼻，更倾向于使用公理规定它们的性质.}，为了区分这几者，作为自然数的\(1\)写作\(1_{\mathbb{N}}\)，整数则为\(1_{\mathbb{Z}}\)，其它数字类似，这种表示方法将在定义完成之后抛弃.
+
+之所以会出现整数，是因为减法运算把自然数捅出了漏洞，为了使减法封闭，我们引入了负数，并把负数和自然数统称为整数. 这话说得轻巧，想要严格地定义构造出整数集，工作量比想象中的要大一些（尽管这些工作的细节大多都是“为满足我们心目中的整数所具有的性质不得不做的矫揉造作的体力活”）.
+在初等数学的语境中，随便拿出一个整数，例如\(-1\)，有\(-1 = 0-1 = 1-2 = 2-3 = \cdots\)，可以说这些式子涉及的可以都是自然数，但它刻画了\(-1\)这个负数. 回到集合论语境，将这些减数和被减数依次放入有序对中，得到\((0_{\mathbb{N}},1_{\mathbb{N}}),(1_{\mathbb{N}},2_{\mathbb{N}}),(2_{\mathbb{N}},3_{\mathbb{N}}),\cdots\)，我们可以将这些有序对的集合作为整数的集合论构造. 
+
+对于同一个整数，任意选两个有序对\((m_{\mathbb{N}},n_{\mathbb{N}}),(p_{\mathbb{N}},q_{\mathbb{N}})\)，根据定义有\(m_{\mathbb{N}}-n_{\mathbb{N}} = p_{\mathbb{N}}-q_{\mathbb{N}}\)，即\(m_{\mathbb{N}}+q_{\mathbb{N}}=n_{\mathbb{N}}+p_{\mathbb{N}}\). 我们可以由此定义出一个等价关系.
+
+\begin{definition}{整数}
+    定义\(\mathbb{N}^2\)上的等价关系“\(\equiv\)”：
+    \[(m_{\mathbb{N}},n_{\mathbb{N}}) \equiv (p_{\mathbb{N}},q_{\mathbb{N}}) \Leftrightarrow m_{\mathbb{N}}+q_{\mathbb{N}}=n_{\mathbb{N}}+p_{\mathbb{N}}\]
+    \uline{整数}(integer)是“\(\equiv\)”的一个等价类，整数集是\(\mathbb{N}^2\)中所有的等价类的集合，即
+    \[\mathbb{Z} := \mathbb{N}^2/\equiv\]
+    \begin{itemize}
+        \item  对于整数\(A = [(m_{\mathbb{N}},n_{\mathbb{N}})]_{\equiv}, B = [(p_{\mathbb{N}},q_{\mathbb{N}})]_{\equiv}\)，定义其加法、乘法、\uline{相反数}(negation)和\uline{减法}(subtraction)为
+        \[
+            \begin{aligned}
+                \relax A+B &:= [(m_{\mathbb{N}}+p_{\mathbb{N}},n_{\mathbb{N}}+q_{\mathbb{N}})]_{\equiv}\\
+                A \cdot B &:= [(m_{\mathbb{N}} \cdot p_{\mathbb{N}} + n_{\mathbb{N}} \cdot q_{\mathbb{N}}, m_{\mathbb{N}} \cdot q_{\mathbb{N}} + n_{\mathbb{N}} \cdot p_{\mathbb{N}})]_\equiv \\
+                -A &:= [(n_{\mathbb{N}},m_{\mathbb{N}})]_{\equiv} \\
+                A-B &:= A + (-B)
+            \end{aligned}
+        \]
+        \item  \(\mathbb{N}\)可作为\(\mathbb{Z}\)的子结构，其同态映射\(\mu\)为
+        \[\mu(n) := [(n_{\mathbb{N}},0_{\mathbb{N}})]_{\equiv}\]
+        \(\mu(n)\)姑且称为“在整数意义下的自然数\(n\)”，今后不再区分\(n\)和\(\mu(n)\)，除非讨论其集合论意义的差别.
+        \item  对于整数\(p,q\)，若存在自然数\(n\)，使得\(p+n=q\)，则记\(p\leq q\)，若\(n \neq 0\)，则记\(p < q\).
+    \end{itemize}
+\end{definition}
+
+整数的加法同样是交换、结合、消去、保序的，乘法也是交换、结合、消去、分配的，但相对于自然数，整数有了以下这些性质：
+\begin{itemize}
+    \item 整数的乘法不保序，进一步地，若\(c<0\)且\(a>b\)，则\(ac<bc\).
+    \item 减法在整数集中是封闭的，即若\(a,b \in \mathbb{Z}\)，则\(a-b \in \mathbb{Z}\).
+    \item 自然数和自然数的相反数恰好构成了整数，即对于一个整数\(p\)，一定存在一个自然数\(n\)，\(p=n\)、\(p=-n\)两者至少成立其一；进一步地，当两者都成立时，\(p=0\).
+    \item 序关系“<”在\(\mathbb{Z}\)中是全序但不是良序，即对于任意整数\(n\)，都存在另外的整数\(p,q\)，使得\(p<n<q\).
+\end{itemize}
+
+有理数集的构造类似，我们之所以对整数不够满意，是因为除法可以把整数集捅出漏洞. 在初等数学中，能够写成两个整数相除形式的都是有理数，反之成立. 然而对于同一个有理数，存在无穷多对整数相除得到，例如\(1/2=2/4=4/8=\cdots\). 因此我们可以像构造整数那样构造有理数，即定义一个等价类，当\(m/n=p/q\)即\(mq=pn\)时属于同一类.
+
+\begin{definition}{有理数}
+    定义\(\mathbb{Z}^2\)上的等价关系“\(\equiv\)”：
+    \[(m_{\mathbb{Z}},n_{\mathbb{Z}}) \equiv (p_{\mathbb{Z}},q_{\mathbb{Z}}) \Leftrightarrow m_{\mathbb{Z}} \cdot q_{\mathbb{Z}}=n_{\mathbb{Z}} \cdot p_{\mathbb{Z}}\]
+    \uline{有理数}(rational number)是“\(\equiv\)”的一个等价类，有理数集是\(\mathbb{Z}^2\)中所有等价类的集合，即
+    \[\mathbb{Q} := \mathbb{Z}^2/\equiv\]
+    \begin{itemize}
+        \item 对于有理数\(A = [(m_{\mathbb{Z}},n_{\mathbb{Z}})]_{\equiv}, B = [(p_{\mathbb{Z}},q_{\mathbb{Z}})]_{\equiv}\)，定义有理数加法、乘法、相反数、减法、\uline{倒数}(reciprocal)和\uline{除法}(division)为
+        \[
+            \begin{aligned}
+                \relax A+B &:= [(m_{\mathbb{Z}} \cdot q_{\mathbb{Z}} + p_{\mathbb{Z}} \cdot n_{\mathbb{Z}},n_{\mathbb{Z}} \cdot q_{\mathbb{Z}})]_{\equiv}\\
+                A \cdot B &:= [(m_{\mathbb{Z}} \cdot p_{\mathbb{Z}}, n_{\mathbb{N}} \cdot q_{\mathbb{N}}]_\equiv \\
+                -A &:= [(-m_{\mathbb{Z}},n_{\mathbb{Z}})]_\equiv \\
+                A - B &:= A + (-B) \\ 
+                A^{-1} &:= [(n_{\mathbb{Z}},m_{\mathbb{Z}})]_\equiv \\
+                A/B &:= A \cdot B^{-1}
+            \end{aligned}
+        \]
+        \item \(\mathbb{Z}\)可作为\(\mathbb{Q}\)的子结构，其同态映射\(\mu\)为
+        \[\mu(n) := [(n_{\mathbb{Z}},1_{\mathbb{Z}})]_{\equiv}\]
+        \(\mu(n)\)姑且称为“在有理数意义下的整数\(n\)”，今后不再区分\(n_{\mathbb{Z}}\)和\(\mu(n)_{\mathbb{Q}}\)，除非讨论其集合论意义的差别.
+        \item 若存在\(m_{\mathbb{Z}},n_{\mathbb{Z}}>0\)使得\(p_{\mathbb{Q}} = m_{\mathbb{Z}}/n_{\mathbb{Z}}\)，则称\(p\)是正有理数，其相反数是负有理数. 对于两个有理数\(p,q\)，若存在正有理数\(n\)使得\(p+n=q\)，则记\(p<q\).
+        
+    \end{itemize}
+\end{definition}
+
+相比于整数，有理数系多了一些性质
+\begin{itemize}
+    \item [(1)] \(<\)是\(\mathbb{Q}\)上的稠密序关系，即任意两个不同的有理数之间都存在其他的有理数.
+    \begin{proof}
+        设\(p,q\)是有理数且\(p\neq q,q \neq 0\). 考察表达式\(\frac{p+q}{2}\). 首先这是有理数. 不妨设\(p<q\)，那么\(p = \frac{p+p}{2} < \frac{p+q}{2} < \frac{q+q}{2} = q\)，由此体现“\(<\)”是稠密的.
+    \end{proof}
+    \item [(2)] \(x \cdot x^{-1} = 1\)，\(1\)是有理数中的乘法逆元.
+\end{itemize}
+
 \section{标准实数集的结构}
 
 这里强调接下来构造的实数集是“标准”实数集，即构造的实数集遵从牛顿/莱布尼兹-柯西-魏尔斯特拉斯的路线，其拓扑结构采用标准拓扑，有别于鲁滨逊非标准分析的构造，此时\textbf{假设有理数集已经构造好了}，而每个有理数都形如\(p/q\)（\(p,q\)为整数且\(q \neq 0\)）. 从有理数构造实数有几种方法，例如柯西数列、戴德金分割和公理化定义，接下来使用柯西数列构造，因为完整地定义实数的十进制表示法需要用到柯西数列.
@@ -12,8 +1758,12 @@
 
 有理数集\(\mathbb{Q}\)上的大小关系（序关系）是稠密的，这是自然数集\(\mathbb{N}\)和整数集\(\mathbb{Z}\)都不具备的性质.
 
-\begin{definition}{序关系的稠密性}
-    设\(\leq\)为定义在集合\(U\)上的序关系，在\(U\)任取两个元素\(a,b\)，若存在另外一个元素\(c\)，使得\(a\leq c \leq b\)，则称该序关系是\uline{稠密的}(dense).
+\begin{definition}{稠密性和完备性}
+    设\(\langle A; < \rangle\)为全序集，
+    \newline
+    若对于任意两个元素\(a,b\)，只要\(a<b\)，就存在\(c \in A\)，使得\(a<c<b\)，则称该序关系是\uline{稠密的}(dense)；若\(D \subseteq A\)，对于任意\(a,b \in A\)且\(a<b\)，都存在\(d \in D\)使得\(a<d<b\)，则称\(D\)是\(A\)的稠密的子集.
+    \newline
+    若\(A\)的有界子集都有确界，则称\(\langle A; < \rangle\)是\uline{序完备的}(order-complete).
 \end{definition}
 
 有理数集上的序关系就是稠密的，也就是说任取两个有理数，无论它们相差多小，只要不相等，都可以在它们之间找到有理数，它们的算术平均就是一个例子. 接下来任取两个不等的有理数\(a,b\)，然后取它们之间的有理数\(b_1\)，再取\(a\)和\(b_1\)之间的有理数\(b_2\)，再取\(a\)和\(b_2\)之间的有理数\(b_3\)……如此操作下去，有理数列\(\{b_n\}\)必然会收敛于某一点（柯西审敛原理），而这一点不一定是有理数，比如构造两个有理数列\(\{a_n\}_{n=0}^{\infty}\)和\(\{b_n\}_{n=0}^{\infty}\)：
@@ -24,46 +1774,41 @@
 两个数列一个有界严格递增，一个有界严格递减，可以列出前几项：
 \newline
 \begin{align*}
-a_0 &= 1 & b_1 &= 2 & a_1^2 &= 1 & b_1^2 &= 4; \\
-a_1 &= 1.4 & b_2 &= 1.5 & a_2^2 &= 1.96 & b_2^2 &= 2.25; \\
-a_2 &= 1.41 & b_3 &= 1.42 & a_3^2 &= 1.9881 & b_3^2 &= 2.0164; \\
-a_3 &= 1.414 & b_4 &= 1.415 & a_4^2 &= 1.99396 & b_4^2 &= 2.002225; \\
-a_4 &= 1.4142 & b_5 &= 1.4143 & a_5^2 &= 1.99996164 & b_5^2 &= 2.00024449; \\
+    a_0 &= 1 & b_1 &= 2 & a_1^2 &= 1 & b_1^2 &= 4; \\
+    a_1 &= 1.4 & b_2 &= 1.5 & a_2^2 &= 1.96 & b_2^2 &= 2.25; \\
+    a_2 &= 1.41 & b_3 &= 1.42 & a_3^2 &= 1.9881 & b_3^2 &= 2.0164; \\
+    a_3 &= 1.414 & b_4 &= 1.415 & a_4^2 &= 1.99396 & b_4^2 &= 2.002225; \\
+    a_4 &= 1.4142 & b_5 &= 1.4143 & a_5^2 &= 1.99996164 & b_5^2 &= 2.00024449; \\
 \cdots & & \cdots && \cdots && \cdots
 \end{align*}
 
-首先说明几个概念
-\begin{definition}{上界、下界、上确界、下确界}
-    设\(\leq\)为定义在集合\(U\)上的序关系，\(S\)是\(U\)的子集，对于\(x \in U\)，若\(\forall y\in S: y\leq x\)，则称\(x\)是\(S\)的\uline{上界}，\(S\)的最小上界称为\uline{上确界}(supremum)，记作\(\sup(S)\)；
-    \par
-    同理，若对于\(x \in U\)，若\(\forall y\in S: x\leq y\)，则称\(x\)是\(S\)的\uline{下界}，\(S\)的最大下界称为\uline{下确界}(infimum)，记作\(\inf(S)\).
-\end{definition}
+随着\(n\)的增加，\(a_n^2\)和\(b_n^2\)都越来越接近\(2\)，而且精确程度可以任意高，但\(a_n^2\)总是不足的，\(b_n^2\)总是过剩的，因此数列\(\{b_n\}\)中的每一项都可以作为数列\(\{a_n\}\)的上界. 然而：
 
-回到构造好的两个数列，随着\(n\)的增加，\(a_n^2\)和\(b_n^2\)都越来越接近\(2\)，而且精确程度可以任意高，但\(a_n^2\)总是不足的，\(b_n^2\)总是过剩的，因此数列\(\{b_n\}\)中的每一项都可以作为数列\(\{a_n\}\)的上界. 可麻烦就在于\(\{b_n\}\)没有最小值（可以用数论的方法证明\(\sqrt{2}\)不是有理数），即\(\{a_n\}\)的上确界不存在，或者说\(\trm{sup}\{a_n\}\not \in \mathbb{Q}\)，有理数集被\(\trm{sup},\trm{inf}\)运算捅出了漏洞.
+\begin{itemize}
+    \item 不存在\(x \in \mathbb{Q}\)，使得\(x^2 = 2\).
+    \begin{proof}
+        反证法，若存在\(x \in \mathbb{Q}\)使得\(x^2 = 2\)，那么可以找到两个互质的整数\(p,q\)使得\(x = p/q\)，此时有\(2 = p^2/q^2\)，即\(p^2 = 2q^2\). 因为\(q^2\)是整数，所以\(p^2\)为偶数，数论进一步告诉我们，\(p\)也为偶数，因此可以设\(p=2k\)，其中\(k\)也是整数. 根据互质的要求，\(q\)不能为偶数. 然而\(q^2 = p^2/2 = (2k)^2/2 = 2k^2\)，这意味着\(q^2\)也是偶数，所以\(q\)也是偶数，矛盾了. 因此这样的\(x\)是不存在的.
+    \end{proof}
+\end{itemize}
+
+我们考察一下\(\sup\{a_n\}\)，肯定不是任意一个\(b_n\)，因为\(\{b_n\}\)递减但没有最小值，如果哪个\(b_n\)敢说自己是\(\sup\{a_n\}\)，\(b_{n+1}\)肯定不服，所以只能是那个神秘的\(\sqrt{2}\)了，这意味着\(\sup\{a_n\}\not \in \mathbb{Q}\)，有理数集被\(\trm{sup},\trm{inf}\)运算捅出了漏洞.
 
 以上构造的两个数列有非常明显的特征，它们不一定需要后一项与前一项之差越来越小，但必须控制在一个范围内，更近一步说，任意两项之差都必须控制在一个范围内，这一类数列就是\uline{柯西数列}.
 \begin{definition}{柯西数列}
-    在度量空间\((S,d)\)中定义序列\(\{a_n\}_{n=0}^{\infty}\)，若对于任意的\(\varepsilon \in \mathbb{Q}^+\)，都存在正整数\(N\)，使得任意\(m,n>N\)，都有\(d(a_{m},a_{n}) < \varepsilon\)，则称该序列为\uline{柯西序列}(Cauchy sequence).
-    用有理数域上的语言来叙述：
-        对于有理数列\(\{a_n\}_{n=0}^{\infty}\)，若对于任意的\(\varepsilon \mathbb{Q}^+\)，都存在正整数\(N\)，使得任意\(m,n>N\)，都有\(|a_{m}-a_{n}| < \varepsilon\)，则称数列\(\{a_n\}\)为有理数域上的柯西数列.
-\end{definition}
-需要强调，以上构造的两个数列定义在有理数的范围内，现在也可以说，有理数集被柯西数列捅出了漏洞. 构造实数的关键一步在于把这些漏洞补上，使得无论怎么构造柯西数列，都不会收敛到集合外面，即所谓“柯西完备性”.
-
-\begin{definition}{完备性}
-    若定义了序关系的集合\(U\)的每个有界子集都有上确界，则称该序关系是\uline{序完备的}(order-complete)；
-    \par
-    若定义了序关系的集合\(U\)上的每个柯西数列都收敛于\(U\)内，则称该序关系是\uline{柯西完备的}(Cauchy-complete).
-\end{definition}
-
-在将要构造的实数域内，序完备和柯西完备是等价的.
-
-尽管\(\{a_n\}\)和\(\{b_n\}\)不收敛于有理数，但随着\(n\)的增大，它们的差距越来越小，用有理数的\(\varepsilon-N\)语言来说：\(\forall \varepsilon > 0\)，\(\exists N\in \mathbb{N}\)，当\(n > N\)时，有\(|a_n-b_n|<\varepsilon\). 直观理解，尽管它们不收敛到有理数，但似乎收敛于同一个东西。我们称满足这个关系的两个柯西数列\(\{a_n\}\)和\(\{b_n\}\)为\uline{等价的}，并记做\(\{a_n\} \equiv \{b_n\}\)，然后将和\(\{a_n\}\)等价的全体柯西数列的集合记作\([\{a_n\}]_{\equiv}\)，称为\uline{柯西等价类}，并把全体有理数柯西数列的集合记作\(\mathcal{C}\).
-
-每一个柯西等价类中的柯西数列都收敛于同一个目标，这个“目标”可能是有理数，也可能不是，但至少可以知道，这些“目标”组成的集合可以使得有理数的大小关系扩充为一个完备的序关系，这样的“目标”，在直觉上可以理解为实数，但严谨起见，我们不能把一个模糊而抽象的“目标”当做被定义的对象，所以干脆用等价类本身算了，因此其大小关系和相等关系也需要重新定义.
-\begin{definition}{实数}
-    有理数集的柯西等价类称为\uline{实数}(real number)，全体实数的集合记为\(\mathbb{R}\)，即
-    \[\mathbb{R} = \{[\{a_n\}]_{\equiv} | \{a_n\}\in \mathcal{C}\}\]
+    在度量空间\((S,d)\)中定义序列\(\{a_n\}_{n\in \mathbb{N}}\)，若对于任意的\(\varepsilon \in \mathbb{Q}^+\)，都存在正整数\(N\)，使得任意\(m,n>N\)，都有\(d(a_{m},a_{n}) < \varepsilon\)，则称该序列为\uline{柯西序列}(Cauchy sequence).
     \newline
+    用有理数域上的语言来叙述：
+        对于有理数列\(\{a_n\}_{n=0}^{\infty}\)，若对于任意的\(\varepsilon \in \mathbb{Q}^+\)，都存在正整数\(N\)，使得任意\(m,n>N\)，都有\(|a_{m}-a_{n}| < \varepsilon\)，则称数列\(\{a_n\}\)为有理数域上的柯西数列.
+\end{definition}
+需要强调，以上构造的两个数列定义在有理数的范围内，现在也可以说，有理数集被柯西数列捅出了漏洞. 构造实数的关键一步在于把这些漏洞补上，使得无论怎么构造柯西数列，都不会收敛到集合外面，即所谓\uline{柯西完备性}(Cauchy-complete). 在将要构造的实数域内，序完备和柯西完备是等价的.
+
+尽管\(\{a_n\}\)和\(\{b_n\}\)不收敛于有理数，但随着\(n\)的增大，它们的差距越来越小，用有理数的\(\varepsilon-N\)语言来说：\(\forall \varepsilon > 0\)，\(\exists N\in \mathbb{N}\)，当\(n > N\)时，有\(|a_n-b_n|<\varepsilon\). 直观理解，尽管它们不收敛到有理数，但似乎收敛于同一个目标，这个“目标”可能是有理数，也可能不是，但至少可以知道，这些“目标”组成的集合可以使得有理数的大小关系扩充为一个完备的序关系，这样的“目标”，在直觉上可以理解为实数，但严谨起见，我们不能把一个模糊而抽象的“目标”当做被定义的对象，所以干脆用等价类本身算了，因此其大小关系和相等关系也需要重新定义.
+
+\begin{definition}{实数}
+    定义\(\mathbb{Q}\)上柯西数列\(\{a_n\}_{n=0}^{\infty}\)和\(\{a_n\}_{n=0}^{\infty}\)之间的等价关系：
+    \[\{a_n\}_{n \in \mathbb{N}} \equiv \{b_n\}_{n \in \mathbb{N}} \Leftrightarrow (\forall \varepsilon \in \mathbb{Q}^+)(\exists N \in \mathbb{N})(\forall n \in \mathbb{N}^+)(n > N \rightarrow |a_n-b_n|<\varepsilon)\]
+    \uline{实数}(real number)是“\(\equiv\)”的等价类，实数集是\(\mathbb{Q}^\omega\)中所有等价类的集合，即
+    \[\mathbb{R} := \mathbb{Q}^\omega / \equiv\]
     对于两个实数\(a,b\)，从其中分别任意抽出一个柯西数列\(\{a_n\}\)和\(\{b_n\}\)，若存在\(N\)，使得对于任意\(n>N\)，都有\(a_n \geq b_n\)，则记\(a \geq b\).
     \newline
     对于两个实数\(a,b\)，从其中分别任意抽出一个柯西数列\(\{a_n\}\)和\(\{b_n\}\)，若\(\{a_n\} \equiv \{b_n\}\)，则记\(a=b\).
@@ -126,73 +1871,7 @@ a_4 &= 1.4142 & b_5 &= 1.4143 & a_5^2 &= 1.99996164 & b_5^2 &= 2.00024449; \\
 
 \subsection{可数与不可数}
 
-以前提到过“可数/可列”与“不可数/不可列”的概念，比如概率的可列可加性，却没有详细解释“可列”是什么意思，这里给出详细的讨论.
-
-首先区分一下潜无穷和实无穷. 以前我们说的“数列/函数的极限是无穷”中的“无穷”是潜在的无穷，通俗地说，数列/函数的取值随着某个条件“逐渐被满足”就可以超越任意有限的对象. 把无穷当做变化着成长着被不断产生出来的东西来解释，就是所谓的“潜在的无穷”，简称“\uline{潜无穷}”(potential infinity). 而\uline{实无穷}(actual infinity)是一种已经构造出来的、完成了的无穷实体，不需要用一个过程来解释，比如自然数集\(\mathbb{N}\)、整数集\(\mathbb{Z}\)、复数集\(\mathbb{C}\)都是实无穷的典型代表.
-
-无穷是可以比较大小的，潜无穷大小的比较往往看的是“过程的速度”，高阶无穷小就是基于此提出来的. 而实无穷（含有无穷元素的集合）大小的比较则是比较谁的元素更多，这就涉及到“多”的定义. 一般比较多少有两种方法，一种是直接数个数；另一种是一一对应，谁剩谁就多. 有穷集合两种都可以用，无穷集合只能用后者.
-
-严格来说，这种一一对应就是所谓“双射”，现在给出形式定义\footnote{card是cardinal（基数）的简写，该定义有助于理解\(\trm{card}(A)\)想表达的意思，但实际上这并不是严格定义，而有穷集合的基数等于集合元素的个数也依赖于冯·诺依曼的序数定义. 在承认选择公理的基础上，\(\trm{card}(A)\)定义为能与该集合建立双射的最小序数.}
-\begin{definition}{集合的势（集合的基数）}
-    如果能建立单射\(f:A \to B\)，则记\(\trm{card}(A) \leq \trm{card}(B)\)；
-    \newline
-    如果该单射能射满\(B\)，就称\(A\)和\(B\)是\uline{等势的}(equinumerous)，记作\(\trm{card}(A)=\trm{card}(B)\)；
-    \newline
-    如果该单射不能射满\(B\)，那么说明\(B\)的元素“更多”，记作\(\trm{card}(A)<\trm{card}(B)\)；
-    \newline
-    对于有穷集合\(A\)，\(\trm{card}(A)\)表示其元素的个数.
-\end{definition}
-
-在承认选择公理的条件下\footnote{不承认选择公理的话就会出现一些非常混乱的集合，比如六种戴德金无穷，测度论将会遭受毁灭性的打击，数学分析也将难以进行.}，自然数集\(\mathbb{N}\)是最小的无穷，也就是说如果\(X\)为无穷集合，就必有\(\trm{card}(X)\geq\trm{card}(\mathbb{N})\). 如果无穷集合元素的个数与自然数“一样多”，就会存在一个序列\(\{a_n\}_{n\in\mathbb{N}}\)能把\(X\)中的元素一一枚举出来，这便是所谓“可数”或者“可列”.
-
-\begin{definition}{可数/可列与不可数/不可列}
-    若存在自然数\(n\)，使得\(\trm{card}(X)=n\)，则称\(X\)是有穷的(finite).
-    \par
-    若\(\trm{card}(X)=\trm{card}(\mathbb{N})\)，则称\(X\)是\uline{可数的}(countable)或\uline{可列的}(enumerable). 
-    \par
-    若\(\trm{card}(X)>\trm{card}(\mathbb{N})\)，那么\(X\)就是\uline{不可数的}(uncountable)或\uline{不可列的}(denumerable).
-    \par
-    有限集和可数无穷集合称\uline{至多可数集}.
-\end{definition}
-
-关于基数的定义，有以下几个命题符合我们心目中关于“集合元素的个数”的直觉：
 \begin{itemize}
-    \item [(1)] 若\(\trm{card}(A)=\trm{card}(B), \trm{card}(B)=\trm{card}(C)\)，则\(\trm{card}(A)=\trm{card}(C)\).
-    \item [(2)] 若\(A \subseteq B\)，则\(\trm{card}(A) \leq \trm{card}(B)\).
-    \item [(3)] 若\(A,B\)都是有穷集合，则\(\trm{card}(A \times B) = \trm{card}(A) \cdot \trm{card}(B)\).
-    \item [(4)] （依赖于选择公理）任意不可数无穷集合都存在可数无穷子集.
-    \item [(5)] \uline{康托尔-伯恩斯坦-施罗德定理}(Cantor-Bernstein-Schröder theorem)：
-    \newline
-    若\(\trm{card}(X) \leq \trm{card}(Y)\)且\(\trm{card}(X) \geq \trm{card}(Y)\)，则\(\trm{card}(X) = \trm{card}(Y)\)，即基数的大小关系具有反自反性.
-\end{itemize}
-
-在有限集合上，“数个数”和“配对”的方法得出的结果都是符合直觉的，然而涉及到了无穷，情况就有些违反直觉.
-\begin{itemize}
-    \item [(1)] 对于无穷集合\(A\)，有\(\trm{card}(A \times A) = \trm{card}(A)\).
-    \newline
-    \textit{
-        证明：完整的证明需要用到超限归纳法，所以这里来证个弱化的版本：若\(A\)为可数无穷，则\(\trm{card}(A \times A) = \trm{card}(A)\).
-        \newline
-        \(f(x) = \langle x, x \rangle: A \to (A \times A)\)明显是单射，所以\(\trm{card}(A) \leq \trm{card}(A \times A)\). 接下来证明\(\trm{card}(A) \geq \trm{card}(A \times A)\). 由于\(A\)可数，所以它的元素可以被序列\(\{a_n\}_{n \in \mathbb{N}}\)枚举，所以\(A \times A = \{\langle a_i, a_j \rangle\}_{i,j \in \mathbb{N}}\).这时候定义映射\(f(a_i,a_j) = a_{2^i 3^j}\)，根据算数基本定理\footnote{算数基本定理(fundamental theorem of arithmetic)：每个大于\(1\)的自然数可以唯一地分解为有限个素数的乘积.}，\(2^i3^j\)对于不同的\(i,j\)值得到不同的自然数，因此\(f\)是一个单射，即\(\trm{card}(A) \geq \trm{card}(A \times A)\)，最终得到\(\trm{card}(A) = \trm{card}(A \times A)\).
-    }
-    根据这个结果，\(\trm{card}(\mathbb{N})=\trm{card}(\mathbb{Q})\)，而\(\mathbb{Z} \subset \mathbb{Q}\)，所以\(\trm{card}(\mathbb{N})=\trm{card}(\mathbb{Z})=\trm{card}(\mathbb{Q})\). 此外，\(n\)维空间中的有理点、奇数集、偶数集、素数集都可数；
-
-    \item [(2)] \uline{康托尔定理}(Cantor's theorem)：
-    \newline
-    定义\(\mathcal{P}(A):=\{x | x \subseteq A\}\)，称为\(A\)的\uline{幂集}(power set)，则\(\trm{card}(\mathcal{P}(A)) > \trm{card}(A)\).
-    \newline
-    \textit{
-        证明：\(\trm{card}(\mathcal{P}(A)) \geq \trm{card}(A)\)是显然的，因为\(f(x)=\{x\}: A \to \mathcal{P}(A)\)是单射，重点在于证明\(\trm{card}(\mathcal{P}(A)) \neq \trm{card}(A)\). 反证法，假设存在双射\(g:A \to \mathcal{P}(A)\)，构造\(A\)的子集\(B=\{x \in A | x \not \in g(x)\}\)，\(B \in \mathcal{P}(A)\)，所以存在\(x \in A\)使得\(f(x)=B\)，然后矛盾就出来了：
-        \[x \in B \Longleftrightarrow x \not \in g(x) \Longleftrightarrow x \not \in B\]
-        因此该双射是不存在的，\(\trm{card}(\mathcal{P}(A)) > \trm{card}(A)\).
-    }
-
-    \item [(3)] 记\(X^Y=\{f|f:Y \to X\}\)，则\(\trm{card}\left(\{0,1\}^A\right) = \trm{card}(\mathcal{P}(A))\).
-    \newline
-    \textit{
-        证明：利用示性函数. 定义\(f(S) = \chi_S:\mathcal{P}(A) \to \{f | f: A \to \{0,1\}\}\). 易验证\(f\)是双射. 因为从\(\mathcal{P}(A)\)中挑出任意子集，得到的示性函数\(\chi_S\)也不同.
-    }
-
     \item [(4)] \(\trm{card}(\mathbb{R}) = \trm{card}(\mathcal{P}(\mathbb{N})) \)
     \newline
     \textit{
@@ -209,73 +1888,102 @@ a_4 &= 1.4142 & b_5 &= 1.4143 & a_5^2 &= 1.99996164 & b_5^2 &= 2.00024449; \\
 
 \subsection{实数完备性定理}
 
-可以用以下几个命题描述实数完备性：
-\begin{theorem}{确界存在性/戴德金完备性}
-    \begin{itemize}
-        \item [\(\bullet\)] \uline{戴德金完备性}(Dedekind completeness)：
-        \par 对有序域\(S,\leq\)作划分\(\mathfrak{P} = \{A,B\}\)，则\((\forall a \in A)(\forall b \in B):[a \leq b \Longrightarrow \exists c \in S:(a \leq c \leq b)]\)
-        \item [\(\bullet\)] 在实数域中叙述为：
-        \par 对于\(\mathbb{R}\)的任意非空子集，只要有上界，就有上确界；
-        \par 把\(\mathbb{R}\)的元素分到两个集合\(A,B\)中，并使\(A\)中的任意数小于\(B\)中的任意数，那么一定存在实数\(c\)，对于\(A\)中的元素\(a\)和\(b\)中的元素\(b\)，都满足\(a\leq c\leq b\).
-    \end{itemize}
-\end{theorem}
+初学数学分析时，书上都会提到所谓“关于实数完备性的六大基本定理”，当然不一定是“六大”. 不少教材只是讨论了这几大定理如何相互推导，由此刻画了实数的完备性，却没有说清楚“实数”为何物. 现在说清楚其定义了，接下来证明就显得较为“自然”. 可以用以下几个命题描述实数完备性：
 
-\textit{戴德金完备性通俗解释就是用一把刀把数轴砍成两段，无论刀刃有多薄，都会砍中一个实数}.
+\begin{itemize}
+    \item \uline{柯西完备性}(Cauchy completeness) \newline
+    \(\mathbb{R}\)上的数列\(\{a_n\}_{n=0}^{\infty}\)收敛的充要条件是对于任意实数\(\varepsilon>0\)，存在\(N\)使得\(m,n>N\)时，\(|a_n-a_m| < \varepsilon\).
 
-\begin{theorem}{柯西完备性}
-    \begin{itemize}
-        \item [\(\bullet\)]\uline{柯西完备性}(Cauchy completeness)：
-        \par 对于距离空间\((S,d)\)中的任意柯西序列\(\{a_n\}_{n=0}^{\infty}\)，都存在\(a \in S\)，对于任意\(\varepsilon>0\)，存在自然数\(N\)，使得\(n>N\)时，\(d(a,a_n) < \varepsilon\).
-        \item [\(\bullet\)] 在实数域中叙述为：
-        \par \(\mathbb{R}\)上的数列\(\{a_n\}_{n=0}^{\infty}\)收敛的充要条件是对于任意\(\varepsilon>0\)，存在\(N\)使得\(m,n>N\)时，\(|a_n-a_m| < \varepsilon\).
-        \item [\(\bullet\)] 推论：\uline{单调有界定理/分析学基本定理}
-        \par 单调递增且有上界的数列必然收敛.
-    \end{itemize}
-\end{theorem}
+    \begin{note}
+        这点是显然的，因为每一个实数都是有理数的柯西数列.
+    \end{note}
+    
+    \item \uline{康托尔交集定理}(Cantor intersection theorem) \newline
+    对于一系列闭区间\(\{[a_n,b_n]\}_{n=0}^{\infty}\)，若\([a_n,b_n]\supseteq [a_{n+1},b_{n+1}]\)， 而且\(\lim \limits_{\substack{n \to \infty}}a_n-b_n=0\)，则存在唯一实数\(L\)，使得\(\lim \limits_{\substack{n\to\infty}}a_n=\lim \limits_{\substack{n\to\infty}}b_n=L\).
 
-\begin{theorem}{闭区间套定理}
-    \begin{itemize}
-        \item [\(\bullet\)] \uline{康托尔交集定理}(Cantor intersection theorem)：
-        \par 在拓扑空间中定义非空有界闭集合列\(\{S_n\}_{n=0}^{\infty}\)，并使\(S_n \supseteq S_{n+1}\)，则\(\bigcap_{n=0}^{\infty}S_n \neq \emptyset\)；当且仅当该拓扑空间为柯西完备的距离空间时，存在唯一的元素\(a\)，使得\(\bigcap_{n=0}^{\infty}S_n =\{a\}\).
-        \item [\(\bullet\)] 在实数域中叙述为：
-        \par 对于一系列闭区间\(\{[a_n,b_n]\}_{n=0}^{\infty}\)，若\([a_n,b_n]\supseteq [a_{n+1},b_{n+1}]\)， 而且\(\lim \limits_{\substack{n \to \infty}}a_n-b_n=0\)，则存在唯一实数\(L\)，使得\(\lim \limits_{\substack{n\to\infty}}a_n=\lim \limits_{\substack{n\to\infty}}b_n=L\).
-    \end{itemize}   
-\end{theorem}
+    \item \uline{戴德金完备性}(Dedekind completeness) \newline
+    把\(\mathbb{R}\)的元素分到两个集合\(A,B\)中，并使\(A\)中的任意数小于\(B\)中的任意数，那么一定存在实数\(c\)，对于\(A\)中的元素\(a\)和\(b\)中的元素\(b\)，都满足\(a\leq c\leq b\).
+    
+    \item \uline{海涅-波莱尔定理}(Heine-Borel theorem) \newline
+    如果有一系列开区间\(S=\{(a_\xi,b_\xi)\}_{\xi < \alpha}\)覆盖了一个闭区间\([a,b]\)，即\([a,b] \subseteq \bigcup S\)，那么可以从这个系列中选出有限个开区间覆盖这个闭区间，即存在\(S\)的有限子集\(S'\)使得\([a,b] \subseteq \bigcup S'\)
 
-\textit{这一系列前一个包住后一个的闭区间就称为\uline{闭区间套}，这个定理说的是，即使闭区间的长度趋于\(0\)，依然存在一个实数，属于这一系列所有的闭区间}.
+    \item \uline{波尔查诺-魏尔斯特拉斯定理}(Bolzano-Weierstrass theorem) \newline
+    \(\mathbb{R}\)有界数列必有收敛子列. 即对于任意数列\(\{a_n\}_{n=1}^{\infty}\)，如果存在某个常数\(M\)使数列每一项\(|a_n|<M\)，
 
-\begin{theorem}{有界紧性质/有限覆盖定理}
-    \begin{itemize}
-        \item [\(\bullet\)] \uline{海涅-波莱尔定理}(Heine-Borel theorem)：
-        \par 欧氏空间\(\mathbb{R}^n\)中有界闭集与紧集等价.
-        \item [\(\bullet\)] 在实数域中叙述为：
-        \par 如果有一系列开区间覆盖了一个闭区间，那么可以从这个系列中选出有限个开区间覆盖这个闭区间.
-    \end{itemize}
-\end{theorem}
-
-\begin{theorem}{列紧性质/聚点定理}
-    \begin{itemize}
-        \item [\(\bullet\)] \uline{波尔查诺-魏尔斯特拉斯定理}(Bolzano-Weierstrass theorem)：
-        \par 欧氏空间\(\mathbb{R}^n\)中每一个有界序列必有收敛子列.
-        \item [\(\bullet\)] 在实数域中叙述为：
-        \par \(\mathbb{R}\)有界数列必有收敛子列；
-        \par \(\mathbb{R}\)上的无穷有界集含有至少一个聚点.
-    \end{itemize}
-\end{theorem}
-
-\begin{theorem}{介值定理(intermediate value theorem)}
+    \item \uline{介值定理}(intermediate value theorem) \newline
     \(\mathbb{R}\)上定义的连续函数，若能取到两个不同的值\(a,b\)，则可以取到闭区间\([a,b]\)内的所有实数.
-\end{theorem}
 
-\textit{
-    函数的连续性是拓扑性质，不依赖实数的完备性. 设函数\(f:X \to Y\)，其中\(X,Y\)为度量空间，距离函数为\(d_X,d_Y\)，若\(f\)在\(x_0 \in X\)处有定义，且对于任意\(\varepsilon > 0\)，都存在\(\delta > 0\)，当\(d_X(x,x_0)<\delta\)时，有\(d_Y(f(x),f(x_0))<\varepsilon\)，就称函数\(f\)在\(x_0\)处连续.
-}
-
-\begin{theorem}{苏斯林性质(Suslin property)}
+    \item \uline{苏斯林性质}(Suslin property) \newline
     若有一系列开区间两两不相交，则这些开区间至多是可数的.
-\end{theorem}
 
-\textit{这条性质实际上是“有理数在实数集中稠密”的另一种表述，由于每个开区间至少要包含一个有理数，所以这一系列开区间不能“多于”有理数.}
+\end{itemize}
+
+% \begin{theorem}{/戴德金完备性}
+%     \begin{itemize}
+%         \item  \uline{戴德金完备性}：
+%         \par 对有序域\(S,\leq\)作划分\(\mathfrak{P} = \{A,B\}\)，则\((\forall a \in A)(\forall b \in B):[a \leq b \Longrightarrow \exists c \in S:(a \leq c \leq b)]\)
+%         \item  在实数域中叙述为：
+%         \par 对于\(\mathbb{R}\)的任意非空子集，只要有上界，就有上确界；
+%         \par 把\(\mathbb{R}\)的元素分到两个集合\(A,B\)中，并使\(A\)中的任意数小于\(B\)中的任意数，那么一定存在实数\(c\)，对于\(A\)中的元素\(a\)和\(b\)中的元素\(b\)，都满足\(a\leq c\leq b\).
+%     \end{itemize}
+% \end{theorem}
+
+% \textit{戴德金完备性通俗解释就是用一把刀把数轴砍成两段，无论刀刃有多薄，都会砍中一个实数}.
+
+% \begin{theorem}{柯西完备性}
+%     \begin{itemize}
+%         \item \uline{柯西完备性}(Cauchy completeness)：
+%         \par 对于距离空间\((S,d)\)中的任意柯西序列\(\{a_n\}_{n=0}^{\infty}\)，都存在\(a \in S\)，对于任意\(\varepsilon>0\)，存在自然数\(N\)，使得\(n>N\)时，\(d(a,a_n) < \varepsilon\).
+%         \item  在实数域中叙述为：
+%         \par \(\mathbb{R}\)上的数列\(\{a_n\}_{n=0}^{\infty}\)收敛的充要条件是对于任意\(\varepsilon>0\)，存在\(N\)使得\(m,n>N\)时，\(|a_n-a_m| < \varepsilon\).
+%         \item  推论：\uline{单调有界定理/分析学基本定理}
+%         \par 单调递增且有上界的数列必然收敛.
+%     \end{itemize}
+% \end{theorem}
+
+% \begin{theorem}{闭区间套定理}
+%     \begin{itemize}
+%         \item  \uline{康托尔交集定理}：
+%         \par 在拓扑空间中定义非空有界闭集合列\(\{S_n\}_{n=0}^{\infty}\)，并使\(S_n \supseteq S_{n+1}\)，则\(\bigcap_{n=0}^{\infty}S_n \neq \emptyset\)；当且仅当该拓扑空间为柯西完备的距离空间时，存在唯一的元素\(a\)，使得\(\bigcap_{n=0}^{\infty}S_n =\{a\}\).
+%         \item  在实数域中叙述为：
+%         \par 对于一系列闭区间\(\{[a_n,b_n]\}_{n=0}^{\infty}\)，若\([a_n,b_n]\supseteq [a_{n+1},b_{n+1}]\)， 而且\(\lim \limits_{\substack{n \to \infty}}a_n-b_n=0\)，则存在唯一实数\(L\)，使得\(\lim \limits_{\substack{n\to\infty}}a_n=\lim \limits_{\substack{n\to\infty}}b_n=L\).
+%     \end{itemize}   
+% \end{theorem}
+
+% \textit{这一系列前一个包住后一个的闭区间就称为\uline{闭区间套}，这个定理说的是，即使闭区间的长度趋于\(0\)，依然存在一个实数，属于这一系列所有的闭区间}.
+
+% \begin{theorem}{有界紧性质/有限覆盖定理}
+%     \begin{itemize}
+%         \item  \uline{海涅-波莱尔定理}(Heine-Borel theorem)：
+%         \par 欧氏空间\(\mathbb{R}^n\)中有界闭集与紧集等价.
+%         \item  在实数域中叙述为：
+%         \par 如果有一系列开区间覆盖了一个闭区间，那么可以从这个系列中选出有限个开区间覆盖这个闭区间.
+%     \end{itemize}
+% \end{theorem}
+
+% \begin{theorem}{列紧性质/聚点定理}
+%     \begin{itemize}
+%         \item  \uline{波尔查诺-魏尔斯特拉斯定理}(Bolzano-Weierstrass theorem)：
+%         \par 欧氏空间\(\mathbb{R}^n\)中每一个有界序列必有收敛子列.
+%         \item  在实数域中叙述为：
+%         \par \(\mathbb{R}\)有界数列必有收敛子列；
+%         \par \(\mathbb{R}\)上的无穷有界集含有至少一个聚点.
+%     \end{itemize}
+% \end{theorem}
+
+% \begin{theorem}{介值定理(intermediate value theorem)}
+%     \(\mathbb{R}\)上定义的连续函数，若能取到两个不同的值\(a,b\)，则可以取到闭区间\([a,b]\)内的所有实数.
+% \end{theorem}
+
+% \textit{
+%     函数的连续性是拓扑性质，不依赖实数的完备性. 设函数\(f:X \to Y\)，其中\(X,Y\)为度量空间，距离函数为\(d_X,d_Y\)，若\(f\)在\(x_0 \in X\)处有定义，且对于任意\(\varepsilon > 0\)，都存在\(\delta > 0\)，当\(d_X(x,x_0)<\delta\)时，有\(d_Y(f(x),f(x_0))<\varepsilon\)，就称函数\(f\)在\(x_0\)处连续.
+% }
+
+% \begin{theorem}{苏斯林性质(Suslin property)}
+%     若有一系列开区间两两不相交，则这些开区间至多是可数的.
+% \end{theorem}
+
+% \textit{这条性质实际上是“有理数在实数集中稠密”的另一种表述，由于每个开区间至少要包含一个有理数，所以这一系列开区间不能“多于”有理数.}
 
 \subsection{关于实数认识的局限性}
 
@@ -322,5 +2030,66 @@ a_4 &= 1.4142 & b_5 &= 1.4143 & a_5^2 &= 1.99996164 & b_5^2 &= 2.00024449; \\
 \end{itemize}
 
 假设有一个集合\(A\)，对于一个实数，如果我们能证明它是无理数，就把它加入集合\(A\)，由于“证明”的过程也是一个长度有限的字符序列，所以可以得到\(A\cup\mathbb{Q}\neq \mathbb{R}\)，并且\(\trm{card}(A\cup\mathbb{Q})<\trm{card}(\mathbb{R})\). 若往现有的公理体系中加入更多更强的公理，就可以扩充\(A\)，但并不会改变它的势，我们完全可以找到一个实数，在现有公理体系的某个模型下证明它是无理数，在另一个模型下证明它是无理数. 说到底，有理和无理的性质已经触及到了数学大厦的总体面貌，非常依赖于讨论时定下的哲学纲领，关于它的研究目前是一个较为热门的方向.
+
+\subsection{复数域的构造}
+
+回顾抽象代数中关于“域”的定义：
+\begin{reference}
+    集合\(F\)连同定义在其上的两种运算\((+,\cdot)\)，如果满足以下这5条规则，则称\(\langle F; +, \cdot \rangle\)为一个\uline{域}：
+    \begin{itemize}
+        \item [(1)] 交换律：\(a+b=b+a; \quad a \cdot b = b \cdot a\).
+        \item [(2)] 结合律：\(a+(b+c) = (a+b)+c; \quad a \cdot (b \cdot c) = (a \cdot b) \cdot c\).
+        \item [(3)] 存在唯一且不同的单位元：\(\exists!\theta: a+\theta=a, \quad \exists!\tau: a\cdot \tau = a, \quad \theta\neq\tau\)
+        \item [(4)] 存在逆元：\(\forall a\exists b: a+b=\theta, \quad \forall a\neq \theta \exists b: a\cdot b = \tau\)
+        \item [(5)] 分配律：\((a+b)\cdot c = (a \cdot c)+(b \cdot c)\).
+    \end{itemize}
+    在两个代数结构建立映射\(h: \langle \mathbb{F}; \vec{\mu}_\mathbb{F} \rangle \mapsto \langle \mathbb{G}; \vec{\mu}_\mathbb{G} \rangle\)，如果\(h\)能保持每个运算\(\mu^k\)，即\(h(\mu_\mathbb{F}^k(\vec{a})) = \mu_{\mathbb{G}}^k(h(\vec{a}))\)，则该映射\(h\)称为这两个代数结构的同态映射，如果\(h\)为双射，则称为同构映射.
+\end{reference}
+
+实数集连同其上定义的加法和乘法\(\langle \mathbb{R}; +, \cdot \rangle\)显然是一个域，交换律、结合律和分配律的证明略去，任意实数\(a\)的加法逆元是\(-a\)，乘法逆元是\(1/a\)，加法单位元是\(0\)，乘法单位元是\(1\).
+
+现在推广一下. 在\(\mathbb{R}^2\)平面上定义坐标之间的两种运算：
+\begin{align*}
+    (a,b) + (c,d) &:= (a+b, c+d) \\
+    (a,b) \cdot (c,d) &:= (ac-bd, bc+ad)
+\end{align*}
+容易验证\(\langle \mathbb{R}^2; +, \cdot \rangle\)也是一个域，交换律、结合律、分配律证明略，加法的单位元是\((0,0)\)，乘法的单位元是\((1,0)\)，任意坐标\((a,b)\)的加法逆元是\((-a,-b)\)，乘法逆元是\(\left(\dfrac{a}{a^2+b^2}, \dfrac{-b}{a^2+b^2}\right)\).
+
+更进一步地，映射\(\lambda a. (a,0) : \langle \mathbb{R}; +, \cdot \rangle \mapsto \langle \mathbb{R}^2; +, \cdot \rangle\)是一个同构映射. 考虑到\((a,b)=a\cdot(1,0)+b\cdot(0,1)\)，而\(h(1) = (1,0)\)，是乘法的单位元，所以我们可以记\(i=(0,1)\)，这样\((a,b)\)就可以写作\(a+b\cdot i\)，再简写为\(a+bi\)，现在我们已经把所有的符号都约定好了，接下来给出正式定义.
+
+\begin{definition}{复数域}
+    复数集定义为\(\mathbb{C} = \{(a,b)|a,b \in \mathbb{R}\}\)，
+    \newline
+    复数的加法定义为\((a,b) + (c,d) := (a+b, c+d)\)，乘法定义为\((a,b) \cdot (c,d) := (ac-bd, bc+ad)\).
+    \newline
+    \((a,b)\)简写为\(a+bi\)，\(i=(0,1)\)称为\uline{虚数单位}(imaginery unit).
+\end{definition}
+
+回到最初的起点，我们在\(\mathbb{R}^2\)平面上定义了加法和乘法，然后才导出了复数的概念. 众所周知，想在\(\mathbb{R}^2\)平面上确定一个点，除了使用直角坐标以外，还可以使用极坐标，直角坐标\((x,y)\)和极坐标\((\rho, \theta)\)的转换关系如下：
+\[\left\{\begin{aligned} x &= \rho\cos\theta \\ y &= \rho\sin\theta \end{aligned} \right. \Longleftrightarrow \left\{\begin{aligned} \rho &= \sqrt{x^2+y^2} \\ \theta &= \trm{atan2}(x,y) \end{aligned}\right. \]
+其中\(\rho\)称为极径，\(\theta = \trm{atan2}(x,y)\)称为极角，定义为
+\[{\rm atan2}(x,y) = \left\{
+    \begin{aligned}  
+        & \arctan\frac{y}{x}, & x > 0 \\
+        & \arctan\frac{y}{x} + \pi, & x < 0, y \geq 0 \\
+        & \arctan\frac{y}{x} - \pi, & x < 0, y < 0 \\
+        & \frac{\pi}{2}, & x =0, y > 0 \\ 
+        & -\frac{\pi}{2}, & x = 0, y < 0  \\ 
+        & \mbox{无定义}, & x=0, y=0
+    \end{aligned}
+    \right.
+\]
+\(\trm{atan2}\)函数尽管是分段定义的，但它却是连续函数. 根据该定义，可见该极角的范围是\((-\pi, \pi]\). 对于复数，我们也有类似定义.
+
+\begin{definition}{复数的极坐标形式}
+    令\(z=a+bi\)，则\(z=\rho\angle{\rm Arg}(z)\)，其中\(\rho=\sqrt{a^2+b^2}\)是复数的\uline{模}(modulo)；\({\rm Arg}(z) = \trm{atan2}(a,b)\)称为复数的\uline{辐角}(argument).
+\end{definition}
+这只是暂时的一种记法，接下来介绍完指数函数以后，将使用更好的指数形式来代替极坐标形式.
+
+我们还注意到，复数和\(\mathbb{R}^2\)上向量的加法规则是相同的，如果把“数量”仅限于实数，那么数量乘法的规则也是相同的. 因此复数也有所谓“三角形法则”和“平行四边形法则”. 还可以进一步注意到，如果把\(i=i \cdot 1\)中等号左边的\(i\)和右边的\(1\)写成列向量的形式，就是
+\[\begin{bmatrix} 0 \\ 1 \end{bmatrix} = i \cdot \begin{bmatrix} 1 \\ 0 \end{bmatrix}\]
+同时对比向量的线性变换式：
+\[\begin{bmatrix} 0 \\ 1 \end{bmatrix} =  \begin{bmatrix} 0 & -1 \\1 & 0 \end{bmatrix} \begin{bmatrix} 1 \\ 0 \end{bmatrix}\]
+可以发现虚数单位\(i\)和顺时针旋转\(90\)度的矩阵作用是相似的，接下来我们将会发现更多这种相似.
 
 \end{document}

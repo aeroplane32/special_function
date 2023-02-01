@@ -78,26 +78,75 @@
 
 \subsection{为什么会有这个函数？}
 
-贝塞尔函数是贝塞尔方程的解，贝塞尔方程指的是
-\[x^2y″ + xy′ + (x^2-\alpha^2)y = 0\]
-这个方程常常伴随着柱坐标系出现，以下列举两种情况.
+回顾线性代数的知识：
+\begin{reference}
+    在线性空间\(\langle S;+,\cdot \rangle\)中定义一个映射\(f\)，对于任意常数\(a,b\)，如果该变换满足
+    \[f(ax+by)=af(x)+bf(y)\]
+    就称该映射具有\uline{线性}。更进一步地，如果存在向量\(x\)，使得存在常数\(\lambda\)，满足\(f(x)=\lambda x\)，则称该\(\lambda\)为该映射的\uline{特征值}，\(x\)称为该映射对应于\(\lambda\)的\uline{特征向量}.
+\end{reference}
 
-\begin{itemize}
-    \item[(1)] 拉普拉斯方程为\(\nabla^2 u =0\)，根据柱坐标系与直角坐标系的关系：
-    \[\rho = \sqrt{x^2+y^2} \qquad \theta = \arg(x+iy) \qquad z = z\]
-    在三维柱坐标系下展开得到
-    \[\frac{1}{\rho}\frac{\partial}{\partial \rho}\left(\rho\frac{\partial u}{\partial \rho}\right) + \frac{1}{\rho^2}\frac{\partial^2 u}{\partial \theta^2} + \frac{\partial^2 u}{\partial z^2} = 0\]
-    分离变量，令\(u(\rho,\theta,z)=f(\rho)g(\theta)h(z)\)，回代并在等号两边同时乘以\(\displaystyle{\frac{r^2}{f(\rho)g(\theta)h(z)}}\)，得到
-    \[\frac{\rho}{f(\rho)}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) + \frac{g''(\theta)}{g(\theta)} + \rho^2\frac{h''(z)}{h(z)} = 0\]
-    左边是三个单项式相加的形式，其中参数\(\theta\)只与第二个单项式\(\displaystyle{\frac{g''(\theta)}{g(\theta)}}\)有关，然而右边为常数\(0\)，这说明\(\displaystyle{\frac{g''(\theta)}{g(\theta)}}\)必须是一个常数，否则当\(\theta\)发生变化后，左边的值就会发生变化，而这种变化是与\(\theta\)无关的参数\(\rho,z\)所无法抵消的. 所以设\(\displaystyle{\frac{g''(\theta)}{g(\theta)}} = -n^2\)，回代的同时两边同除\(r^2\)，得到
-    \[\frac{1}{\rho f(\rho)}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) -\frac{n^2}{r^2} + \frac{h''(z)}{h(z)} = 0\]
-    对\(\displaystyle{\frac{h''(z)}{h(z)}}\)使用相同的手法，令其为\(k_z^2\)，回代的同时两边再同乘\(f(\rho)\)，得到
-    \[\frac{1}{\rho}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) + \left(k_z^2-\frac{n^2}{\rho^2}\right)f(\rho) = 0\]
-    两边同乘\(r^2\)整理得到
-    \[\rho^2f''(\rho)+rf'(\rho)+[(k_z\rho)^2-n^2]f(\rho) = 0\]
-    这就得到了贝塞尔方程.
-    \item[(2)] 热传导方程为\(\displaystyle{\frac{\partial u}{\partial t} = a^2\nabla^2 u}\)，在二维
-\end{itemize}
+我们知道二维平面上的拉普拉斯算子\(\displaystyle{\nabla^2 =\frac{\partial^2}{\partial x^2}+\frac{\partial^2 }{\partial y^2}}\)是\(\mathbb{R}^3\)上的线性映射（不信你自己验证）.自然地，二维向量的特征值就应该满足
+\[\nabla^2 f(x,y)=\lambda f(x,y)\]
+这个式子称为\uline{亥姆霍兹方程}(Helmholtz equation). 亥姆霍兹方程在物理学中经常用到，它的解（也就是特征值）有无数多个. 换个坐标系，根据极坐标系和直角坐标系的关系：
+\[\rho = \sqrt{x^2+y^2} \qquad \theta = \arg(x+iy)\]
+将拉普拉斯算子改写为极坐标的形式：
+\[\nabla^2 = \frac{1}{\rho}\frac{\partial}{\partial \rho}\left(\rho\frac{\partial}{\partial \rho}\right) + \frac{1}{\rho^2}\frac{\partial^2}{\partial \theta^2} = \rho\frac{\partial^2}{\partial \rho^2} + \frac{1}{\rho}\frac{\partial}{\partial \rho^2} + \frac{1}{\rho^2}\frac{\partial^2}{\partial \theta^2}\]
+根据\uline{分离变量}(separation of variables)的思想，假设函数\(f(\rho,\theta)\)能被写成两个单变量函数的乘积：\(f(\rho,\theta)\equiv R(\rho)T(\theta)\)，亥姆霍兹方程就可以改写成这个形式（将\(R(\rho)\)简写为\(R\)，\(T(\theta)\)简写为\(T\)）：
+\[R''T+\frac{1}{\rho}R'T+\frac{1}{\rho^2}RT''=\lambda RT\]
+两边乘以\(\rho^2\)，再除以\(RT\)，得到
+\[\rho^2\frac{R''}{R}+\rho\frac{R'}{R}+\frac{T''}{T}=\lambda\rho^2\]
+左边是三个单项式相加的形式，其中参数\(\theta\)只与第三个单项式\(\displaystyle{\frac{T''(\theta)}{T(\theta)}}\)有关，然而右边却与\(\theta\)无关，这说明\(\displaystyle{\frac{T''(\theta)}{T(\theta)}}\)必须是一个常数，否则当\(\theta\)发生变化后，左边的值就会发生变化，而这种变化是与\(\theta\)无关的参数\(\rho\)所无法抵消的. 所以设\(\displaystyle{\frac{T''(\theta)}{T(\theta)} = \mu}\)，这是一个很好解的常微分方程，再看另外一边：
+\[\rho^2\frac{R''}{R}+\rho\frac{R'}{R}+\mu=\lambda\rho^2\]
+两边乘\(R\)，整理一下得到
+\[\rho^2 R''+\rho R'+ (\mu-\lambda\rho^2)R = 0\]
+这个微分方程称为\uline{贝塞尔方程}，它的解不一定能表示为初等形式，由其隐式定义的函数称为\uline{贝塞尔函数}(Bessel function).
+
+\begin{definition}{贝塞尔函数}
+    微分方程
+    \[x^2y″ + xy′ + (x^2-\alpha^2)y = 0\]
+    的解称为\(\alpha\)阶的贝塞尔函数，记作\(J_\alpha(x)\)，其中\(x\)称为\uline{宗量}，阶数和宗量的范围为复数集.
+\end{definition}
+
+再换一种坐标系. 在三维空间，拉普拉斯算子为\(\displaystyle{\nabla^2 = \frac{\partial^2}{\partial x^2}+\frac{\partial^2}{\partial y^2}+\frac{\partial^2}{\partial z^2}}\). 根据球坐标系与直角坐标系的关系：
+\[r = \sqrt{x^2+y^2+z^2} \qquad \theta = \arg(x+iy) \qquad \varphi = \arccos(z/r)\]
+将拉普拉斯算子改写为球坐标的形式，得到一个非常难看的式子：
+\[\nabla^2 = \frac{1}{r^2}\frac{\partial}{\partial r}\left(r^2 \frac{\partial}{\partial r}\right)+\frac{1}{r^2\sin^2\theta}\frac{\partial}{\partial \theta}\left(\sin\theta \frac{\partial}{\partial \theta}\right)+\frac{1}{r^2\sin^2\theta}\frac{\partial^2}{\partial \varphi^2}\]
+就像上面那样，根据分离变量的思想，假设函数\(f(r,\theta, \varphi)=R(r)T(\theta)P(\varphi)\)，代入亥姆霍兹方程：
+\[\frac{TP}{r^2}\left(r^2 R'\right)'+\frac{RP}{r^2\sin^2\theta}\left(T'\sin\theta\right)'+\frac{RT}{r^2\sin^2\theta}P''=\lambda RTP\]
+两边同除\(RTP\)，再乘以\(r^2\)，得到
+\[\frac{\left(r^2 R'\right)'}{R}+\frac{\left(T'\sin\theta\right)'}{T\sin^2\theta}+\frac{P''}{P\sin^2\theta} = \lambda r^2\]
+左侧是三个单项式，注意其中的第二、第三个单项式与\(r\)无关，基于相同理由，我们又可以把它设为常数\(\mu\)，于是这就出来了一个单变量的微分方程，将括号展开：
+\[r^2R''+2rR'+(\mu-\lambda r^2)R = 0\]
+这个微分方程称为\uline{球贝塞尔方程}，它的解不一定能表示为初等形式，由其隐式定义的函数称为\uline{球贝塞尔函数}(spherical Bessel function).
+
+\begin{definition}{球贝塞尔函数}
+    微分方程
+    \[x^2y″ + xy′ + (x^2-\alpha^2)y = 0\]
+    的解称为\(\alpha\)阶的贝塞尔函数，记作\(J_\alpha(x)\)，其中\(x\)称为\uline{宗量}，阶数和宗量的范围为复数集.
+\end{definition}
+
+\subsection{解贝塞尔方程：Frobenius法}
+
+我们知道二阶、线性、齐次、常系数的微分方程怎么解，但是把“常系数”去掉呢？就会解出一大堆特殊函数，可以说博物馆中的所有特殊函数都可以通过解这样的方程得到.
+
+% \begin{itemize}
+%     \item[(1)] 拉普拉斯方程为\(\nabla^2 u =0\)，根据柱坐标系与直角坐标系的关系：
+%     \[\rho = \sqrt{x^2+y^2} \qquad \theta = \arg(x+iy) \qquad z = z\]
+%     在三维柱坐标系下展开得到
+%     \[\frac{1}{\rho}\frac{\partial}{\partial \rho}\left(\rho\frac{\partial u}{\partial \rho}\right) + \frac{1}{\rho^2}\frac{\partial^2 u}{\partial \theta^2} + \frac{\partial^2 u}{\partial z^2} = 0\]
+%     分离变量，令\(u(\rho,\theta,z)=f(\rho)g(\theta)h(z)\)，回代并在等号两边同时乘以\(\displaystyle{\frac{r^2}{f(\rho)g(\theta)h(z)}}\)，得到
+%     \[\frac{\rho}{f(\rho)}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) + \frac{g''(\theta)}{g(\theta)} + \rho^2\frac{h''(z)}{h(z)} = 0\]
+%     左边是三个单项式相加的形式，其中参数\(\theta\)只与第二个单项式\(\displaystyle{\frac{g''(\theta)}{g(\theta)}}\)有关，然而右边为常数\(0\)，这说明\(\displaystyle{\frac{g''(\theta)}{g(\theta)}}\)必须是一个常数，否则当\(\theta\)发生变化后，左边的值就会发生变化，而这种变化是与\(\theta\)无关的参数\(\rho,z\)所无法抵消的. 所以设\(\displaystyle{\frac{g''(\theta)}{g(\theta)}} = -n^2\)，回代的同时两边同除\(r^2\)，得到
+%     \[\frac{1}{\rho f(\rho)}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) -\frac{n^2}{r^2} + \frac{h''(z)}{h(z)} = 0\]
+%     对\(\displaystyle{\frac{h''(z)}{h(z)}}\)使用相同的手法，令其为\(k_z^2\)，回代的同时两边再同乘\(f(\rho)\)，得到
+%     \[\frac{1}{\rho}\frac{\partial}{\partial \rho}\left(\rho f'(\rho)\right) + \left(k_z^2-\frac{n^2}{\rho^2}\right)f(\rho) = 0\]
+%     两边同乘\(r^2\)整理得到
+%     \[\rho^2f''(\rho)+rf'(\rho)+[(k_z\rho)^2-n^2]f(\rho) = 0\]
+%     这就得到了贝塞尔方程.
+
+%     \item[(2)] 热传导方程为\(\displaystyle{\frac{\partial u}{\partial t} = a^2\nabla^2 u}\)，在二维
+%     \item[] 
+% \end{itemize}
 
 \begin{definition}{贝塞尔函数}
     第一类贝塞尔函数

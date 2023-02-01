@@ -3,67 +3,36 @@
 
 \begin{document}
 
-\section{函数的展开}
+\section{幂级数专题}
 
-如何刻画一个函数？解析式直接表达当然是其中一种方法，但未必是唯一的一种. 例如\(n\)次多项式函数在复数域有\(n\)个零点，这\(n\)个零点就唯一地刻画了一个高次多项式函数；若一个函数在某个区间内有任意高阶导数，则区间内内任意一点的高阶导数值就唯一地刻画了一个这样的函数. 函数展开的目的就在于把满足某些条件的函数（无论它有多复杂）表示为有限或无穷多个简单部分的基本运算，展开的思路有很多种，其思想大多都是找到一个数列\(\{a_n\}_{n=0}^{\infty}\)，使得该数列能承载被展开的函数的全部信息.
+\subsection{形式幂级数}
 
-\subsection{正交展开}
+为什么是“形式”幂级数？幂级数的重点在于级数，而级数是要求收敛的. 形式幂级数具有幂级数的结构，但是不要求其收敛，例如
+\[f(x) = 1-3x+5x^2-7x^4+9x^6-11x^8+\cdots\]
+从幂级数的角度来说，该级数的收敛半径是\(1\)，而且收敛到某个超几何函数上. 但形式幂级数可不管这么多，它就是抽象出来的、可以进行某些运算的结构，可以把上式写作\([1,-3,5,-7,\cdots]\)，以强调只关注形式幂级数的系数. 又例如\([1,1,2,6,24, \cdots, n!, \cdots]\)，如果从幂级数的角度来关注它，就会发现它在\(x=0\)意外的地方都不收敛，但是这没关系，它照样可以进行某些运算. 把幂级数放开到“形式”幂级数，可为接下来讨论拉格朗日反演定理带来便利.
 
-正交展开不是某种特殊的展开定理，而是一种重要的展开思想，首先回顾一下线性代数的知识.
-
-\begin{reference}
-    \(n\)维向量空间中只要确定了一组基底\(\mathcal{A} = \{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)，则空间中的所有向量都可以用基底的线性组合表示出来：
-    \[\bm{\alpha} = k_1\bm{e}_1+k_2\bm{e}_2+\cdots+k_n\bm{e}_n\]
-    其中\(k_i\)是数，可以是实数、复数或其他无向的量.
-    \newline
-    如果空间中还定义了\textbf{内积}，则称该向量空间为\textbf{内积空间}，内积是一种运算，其结果为一个数量（实数或复数），两个向量的内积记为\(\langle \bm{\alpha},\bm{\beta} \rangle\)，满足
+严格来说，形式幂级数只定义了3种运算：取系数、加法和乘法. 但是我们可以推导出它的减法、除法和复合.
+\begin{definition}{形式幂级数的运算公理}
+    给定两个形式幂级数：\(\displaystyle{A(x)=\sum_{n=0}^{\infty}a_nx^n, \quad B(x)=\sum_{n=0}^{\infty}b_nx^n}\)，定义：
     \begin{itemize}
-        \item [(1)] \(\langle \bm{\alpha},\bm{\beta} \rangle = \overline{\langle \bm{\beta},\bm{\alpha} \rangle}\)，如果内积运算定义在实数域上，则可推出\(\langle \bm{\alpha},\bm{\beta} \rangle = \langle \bm{\beta},\bm{\alpha} \rangle\).
-        \item [(2)] \(\langle m\bm{\alpha}+n\bm{\beta},\bm{\gamma} \rangle = m\langle \bm{\alpha},\bm{\gamma} \rangle + n\langle \bm{\beta},\bm{\gamma} \rangle\)，其中\(m,n\)是数量.
-        \item [(3)] \(\langle \bm{\alpha},\bm{\alpha} \rangle \geq 0\)，当且仅当\(\bm{\alpha}=\bm{0}\)时等号成立.
+        \item [] 加法：\(\displaystyle{A(x)+B(x) := \sum_{n=0}^{\infty}(a_n+b_n)x^n}\)
+        \item [] 乘法：\(\displaystyle{A(x) \cdot B(x) := \sum_{n=0}^{\infty}\left(\sum_{m=0}^{n}a_mb_{n-m}\right)x^n}\)
+        \item [] 取系数：\(\displaystyle{[x^n]A(x) := a_n}\)
     \end{itemize}
-    定义了内积之后，向量的\textbf{模长}便可定义为\(\|\bm{\alpha}\|=\sqrt{\langle \bm{\alpha},\bm{\alpha} \rangle}\)，易知\(\|\bm{\alpha}\| \geq 0\)；
-    \newline
-    向量的\textbf{正交}则表示\(\langle \bm{\alpha},\bm{\beta} \rangle=0\)这种情况，可简记为\(\bm{\alpha} \perp \bm{\beta}\).
-    \newline
-    假设\(\mathcal{A}=\{\bm{e}_1, \bm{e}_2, \cdots, \bm{e}_n\}\)是自然基，即两两正交且\(\|\bm{e}_i\|=1\)，则立即可以确定线性组合的系数：\(k_i = \langle\bm{\alpha},\bm{e}_i\rangle\)，而模也可以立即确定为\(\|\bm{\alpha}\| = \sqrt{k_1^2+k_2^2+\cdots+k_n^2} = \sqrt{\langle\bm{\alpha},\bm{e}_1\rangle^2+\langle\bm{\alpha},\bm{e}_2\rangle^2+\cdots+\langle\bm{\alpha},\bm{e}_n\rangle^2}\)
-\end{reference}
-
-正交展开的核心就是这些，但以上只给了抽象的框架，具体操作起来大有可为. 如果将函数看做向量，那么它的内积需要仔细考虑.
-
-\textit{
-线性代数告诉我们，实区间\([a,b]\)上的连续实变函数构成了一个线性空间，但函数空间不像向量空间那么直观，它的内积并没有那么容易定义出来。假设函数\(f\)在实区间\([a,b]\)上等距抽样，例如间隔\(\dfrac{1}{n}\)取值，然后用一个向量\(\vec{\bm{u}}_f\)来记录这些值：
-\[\vec{\bm{u}}_f = \left[f(a), f(a+\frac{b-a}{n}), f(a+\frac{2(b-a)}{n}), f(a+\frac{3(b-a)}{n}), \cdots, f(a+\frac{(n-1)(b-a)}{n}), f(b)\right]\]
-对于另一个在区间\([a,b]\)上连续的函数\(g(x)\)，也采用相同的操作：
-\[\vec{\bm{u}}_g = \left[g(a), g(a+\frac{b-a}{n}), g(a+\frac{2(b-a)}{n}), g(a+\frac{3(b-a)}{n}), \cdots, g(a+\frac{(n-1)(b-a)}{n}), g(b)\right]\]
-此时对两个向量求内积：
-\[\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = f(a)g(a)+f(a+\frac{b-a}{n})g(a+\frac{b-a}{n})+f(a+\frac{2(b-a)}{n})g(a+\frac{2(b-a)}{n})+\cdots+f(b)g(b)\]
-现在令\(n \to \infty\)，意味着抽样间隔\(\dfrac{1}{n} \to 0\)，由于两个函数都是连续函数，不会发生跳跃，因此可以认为\(\vec{\bm{u}}_f\)和\(\vec{\bm{u}}_g\)这两个向量记录了函数的所有信息. 但是这样的内积往往会趋近于无穷大. 由于是等距抽样，每个样本的权重相等，所以在每个单项式上乘以权重\(1/n\)，然后奇迹般地凑出了积分的定义式
-\[\lim_{n \to \infty}\frac{1}{n}\langle\vec{\bm{u}}_f,\vec{\bm{u}}_g\rangle = \lim_{n \to \infty}\frac{1}{n}\sum_{k=0}^{n}f(a+\frac{k(b-a)}{n})g(a+\frac{k(b-a)}{n}) := \int_{a}^{b} f(x)g(x)\trm{d}x\]
-以上是实变函数的情况，在这种情况下，才满足\([f(x)]^2\equiv|f(x)|^2\)，根据定积分的保号性，这样才能满足线性空间中\(\|f\|\leq 0\)的要求. 如果扩展到复变函数，由于两个复数的乘积还是复数，复变函数作定积分以后也是复数，不一定能与\(0\)比大小，所以为了符合模长的定义，需要将被积函数由\([f(z)]^2\)改为\(|f(z)|^2\)，而后者等价于\(f(z)\overline{f(z)}\)，这就得到了复变函数空间的内积.
-}
-\begin{definition}{函数空间的内积}
-    对于在复连通域\(D\)上定义的连续函数\(f(z),g(z)\)，规定其\uline{内积}(inner product)为
-    \[ \langle f,g \rangle := \int_{D} f(z)\overline{g(z)}\trm{d}z\]
-    若\(\langle f,g \rangle=0\)，则称这两个函数是\uline{正交的}(orthonormal). 函数的模定义为
-    \[ \|f\| := \sqrt{\int_{D}f(z)\overline{f(z)}\trm{d}z}\]
-    当复连通域定退化为区间\([a,b]\)时，复变函数退化为实变函数时，其内积便退化为
-    \[ \langle f,g \rangle := \int_{a}^{b} f(x)g(x)\trm{d}x\]
-    模长退化为
-    \[ \|f\| := \sqrt{\int_{a}^{b}[f(x)]^2\trm{d}x}\]
 \end{definition}
 
-定义好函数空间的内积之后，便可以尝试在空间中寻找一组函数作为基底\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)，然后把空间中的任意都写成它们的线性组合的形式，
-\[f(z) = c_1\varphi_1(z)+c_2\varphi_2(z)+c_3\varphi_3(z)+\cdots\]
-如果基底\(\mathcal{A}\)是正交基底，则可以进一步得到
-\[c_n=\frac{\langle f,\varphi_n \rangle}{\langle \varphi_n,\varphi_n \rangle} = \frac{\displaystyle{\int_{D} f(z)\overline{\varphi_n(z)}\trm{d}z}}{\displaystyle{\int_{D}\varphi_n(z)\overline{\varphi_n(z)}\trm{d}z}}\]
-这便是正交展开的基本思路，由于这个思路最早应用在傅里叶级数上，所以又称这种展开方式为广义傅里叶展开.
+接下来推导形式幂级数的倒数. 令\(\displaystyle{A(x) = \sum_{n=0}^{\infty}a_nx^n}\)，假设\(A(x)\)的倒数也能展开成形式幂级数，即\(\displaystyle{A(x)^{-1}= \sum_{n=0}^{\infty}b_nx^n}\)，自然有\(A(x)A(x)^{-1}=1\)，然而根据形式幂级数的乘法：
+\[A(x)A(x)^{-1} = \left(\sum_{n=0}^{\infty}a_nx^n\right)\left(\sum_{n=0}^{\infty}b_nx^n\right) = \sum_{n=0}^{\infty}\left(\sum_{m=0}^{n}a_mb_{n-m}\right)x^n\]
+对比右侧\(x^n\)的系数，得到\([x^0]\left[A(x)A(x)^{-1}\right]=1, [x^n]\left[A(x)A(x)^{-1}\right]=0\)，因此
+\begin{align*}
+    a_0b_0=1 & \Longrightarrow b_0=\frac{1}{a_0} \\
+    a_0b_1+a_1b_0=0 & \Longrightarrow b_1=-\frac{a_1b_0}{a_0} \\
+    a_0b_2+a_1b_1+a_2b_0=0 & \Longrightarrow b_2=-\frac{a_1b_1+a_2b_0}{a_0} \\
+\end{align*}
+最后得到
+\[b_n = -\frac{1}{a_0}\sum_{i+j=n}a_ib_j\]
 
-\textit{
-    以上有个细节需要注意，函数空间的基底写成\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots\}\)而不是\(\mathcal{A}=\{\varphi_1,\varphi_2,\varphi_3,\cdots,\varphi_n\}\)，是因为基向量的个数可能是无限的，甚至可能是不可数无穷多的. 如果是不可数无穷多个的基向量\(\mathcal{A}=\{\varphi_s\}_{s \in I}\)，那么每个基向量的分量\(c_n\)中的下标取值也不再可数，此时\(f(z)\)就不能简单地展开成基向量线性组合的形式，而是像上面那样间隔取样，缩小间隔，最后凑出积分的形式，即
-    \[f(z)=\int_{I}c_s\varphi_s(z)\trm{d}s\]
-    这实际上就是傅里叶反变换公式的意义.
-}
+如何刻画一个函数？解析式直接表达当然是其中一种方法，但未必是唯一的一种. 例如\(n\)次多项式函数在复数域有\(n\)个零点，这\(n\)个零点就唯一地刻画了一个高次多项式函数；若一个函数在某个区间内有任意高阶导数，则区间内内任意一点的高阶导数值就唯一地刻画了一个这样的函数. 函数展开的目的就在于把满足某些条件的函数（无论它有多复杂）表示为有限或无穷多个简单部分的基本运算，展开的思路有很多种，其思想大多都是找到一个数列\(\{a_n\}_{n=0}^{\infty}\)，使得该数列能承载被展开的函数的全部信息.
 
 % 更一般地，如果在内积的定义中加入一个\uline{权函数}\(\rho\)，使得
 % \[ \left.\langle f,g \rangle\right|_{\rho} := \int_{a}^{b} \rho(x)f(x)g(x)\trm{d}x = 0\]
@@ -98,19 +67,16 @@
     若\(f(z)\)是在区间\([a,b]\)上连续的复函数，则存在一个多项式序列\(\{P_n\}_{n=1}^{\infty}\)，使得\(\lim \limits_{\substack{n \to \infty}} P_n(z)\)一致收敛于\(f(z)\).
 \end{theorem}
 
-假设可能实现这样的逼近，那么对于任意一个连续函数\(f(x)\)，取它定义域内的一点\(x_0\)，按照渐进展开的思想，设高次多项式\(p_n(x)=a_0+a_1x+a_2x^2+\cdots+a_nx_n\)，使得当\(x \to x_0\)时\(f(x)=p_n(x)+o(x^n)\). 为了顺带求出\(p_{n+1}(x)\)的系数，直接令\(o(x^n)=p_{n+1}(x)\)，此时式子就可以改写为
-\[\lim_{x \to x_0}\frac{f(x)-p_n(x)}{p_{n+1}(x)} = 1 \]
+假设可能实现这样的逼近，那么对于任意一个连续函数\(f(x)\)，取它定义域内的一点\(x_0\)，设高次多项式\(p_n(x)=a_0+a_1x+a_2x^2+\cdots+a_nx^n\)，按照渐进展开的思想，当\(x \to x_0\)时，我们希望\(f(x) - p_n(x) = o(p_n(x))\)，如果能达成\(f(x) - p_n(x) = a_{n+1}x^{n+1}\)就更好了，这样此时式子就可以改写为
+\[\lim_{x \to x_0}\frac{f(x)-p_n(x)}{a_{n+1}x^{n+1}} = 1 \]
 不必讨论\(p_n(x)\)的唯一性，毕竟我们的目标只是找到这样一个实用的高次多项式。
-
-当\(n=0\)时，\(p_0(x)=a_0\)，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)}{a_0}=1\)，自然有\(a_0=f(x_0)\).
-
-当\(n=1\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0}{a_0+a_1x}=1\)，运用洛必达法则，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'(x)}{a_1}=1\)，所以\(a_1=f'(x_0)\).
-
-当\(n=2\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x}{a_0+a_1x+a_2x^2}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f''(x)}{2a_2}=1\)，所以\(a_2=\dfrac{f''(x_0)}{2}\).
-
-当\(n=3\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x-a_2x^2}{a_0+a_1x+a_2x^2+a_3x^3}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'''(x)}{6a_2}=1\)，所以\(a_3=\dfrac{f'''(x_0)}{6}\).
-
-由此推广到更大的\(n\)值，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-p_n(x)}{p_{n+1}(x)}=1\)，运用\(n\)次洛必达法则，洛到函数祖坟上，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f^{(n)}(x)}{n!a_n}=1\)，即\(a_n=\dfrac{f^{(n)}(x_0)}{n!}\)，这样就得到了
+\begin{itemize}
+    \item[\(\bullet\)] 当\(n=0\)时，\(p_0(x)=a_0\)，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)}{a_0}=1\)，自然有\(a_0=f(x_0)\).
+    \item[\(\bullet\)] 当\(n=1\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0}{a_1x}=1\)，运用洛必达法则，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'(x)}{a_1}=1\)，所以\(a_1=f'(x_0)\).
+    \item[\(\bullet\)] 当\(n=2\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x}{a_2x^2}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f''(x)}{2a_2}=1\)，所以\(a_2=\dfrac{f''(x_0)}{2}\).
+    \item[\(\bullet\)] 当\(n=3\)时，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-a_0-a_1x-a_2x^2}{a_3x^3}=1\)，洛！得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f'''(x)}{6a_2}=1\)，所以\(a_3=\dfrac{f'''(x_0)}{6}\).
+    \item[\(\bullet\)] 由此推广到更大的\(n\)值，为了使\(\lim \limits_{\substack{x\to x_0}}\dfrac{f(x)-p_n(x)}{a_{n+1}x^{n+1}}=1\)，运用\(n+1\)次洛必达法则，洛到函数祖坟上，得到\(\lim \limits_{\substack{x\to x_0}}\dfrac{f^{(n)}(x)}{n!a_n}=1\)，即\(a_n=\dfrac{f^{(n)}(x_0)}{n!}\)，这样就得到了
+\end{itemize}
 
 \begin{theorem}{一元函数的泰勒定理(Taylor's theorem)}
     若函数在\(x_0\)处解析，且存在\(n\)阶导数，则
@@ -177,8 +143,12 @@
 \subsubsection{泰勒级数}
 
 泰勒定理是用有限高次的多项式来逼近连续函数，泰勒级数则是让连续函数严格地等于某个幂级数，即把余项\(R_n\)改成省略号:
-\[f(x) ~ \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n = f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+\cdots\]
-从有限扩展到无限的过程可能会丧失一些好的性质，泰勒定理的适用条件是函数在某邻域内有若干阶导数，但是想把函数展成泰勒级数，不但要保证有任意高阶导数，还要保证\(\lim \limits_{\substack{x \to x_0}}R_n(x) \to 0\)才行，这就需要考虑收敛域。
+\begin{align*}
+    f(x) &\sim e^{(x-x_0)\frac{\partial}{\partial x}}f(x_0) = \sum_{n=0}^{\infty} \frac{f^{(n)}(x_0)}{n!}(x-x_0)^n \\
+    &= f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+\cdots
+\end{align*}
+从有限扩展到无限的过程可能会丧失一些好的性质，泰勒定理的适用条件是函数在某邻域内有若干阶导数，但是想把函数展成泰勒级数，不但要保证有任意高阶导数，还要保证\(\lim \limits_{\substack{x \to x_0}}R_n(x) \to 0\)才行，这就需要考虑收敛域.
+当\(x_0=0\)时，泰勒级数又称为\uline{麦克劳林级数}(Maclaurin series)，此时\(f(x) \sim e^{x\frac{\partial}{\partial x}}f(0)\).
 
 \newpage
 \subsubsection{快查表：常用的麦克劳林级数}
@@ -189,17 +159,17 @@
     \ln(1+z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{(n+1)!}z^{n+1} &=&\quad z-\frac{1}{2}z^2+\frac{1}{3}z^3-\frac{1}{4}z^4+\cdots & |z|<1\mbox{或}z=1
 \end{align*}
 
-\((1+x)^{\alpha}\)的展开也很有来头，将通式以及常用的几个\(\alpha\)列举如下，为了查阅方便，一并给出洛朗级数. 其中牛顿二项式系数\(\begin{pmatrix}n\\m\end{pmatrix}\)是组合数\(C_n^m\)的推广，它允许\(n\)不是整数. \((1+x)^{\alpha}\)展开式的特点就是它的麦克劳林级数和洛朗级数的适用范围恰好覆盖整个定义域（除了\(x=1\)处）
+\((1+x)^{\alpha}\)的展开也很有来头，将通式以及常用的几个\(\alpha\)列举如下，为了查阅方便，一并给出洛朗级数. 其中牛顿二项式系数\(C_\alpha^m\)是组合数\(C_n^m\)的推广，它允许\(n\)不是整数. \((1+x)^{\alpha}\)展开式的特点就是它的麦克劳林级数和洛朗级数的适用范围恰好覆盖整个定义域（除了\(x=1\)处）
 
 \begin{align*}
-    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} \begin{pmatrix}\alpha\\n\end{pmatrix}z^n &=&\quad 1+\alpha z+\begin{pmatrix}\alpha\\2\end{pmatrix}z^2+\begin{pmatrix}\alpha\\3\end{pmatrix}z^3+\cdots & |z|<1 \\
-    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} \begin{pmatrix}\alpha\\n\end{pmatrix}z^{n+\alpha} &=&\quad z^{\alpha}+\alpha z^{1+\alpha}+\begin{pmatrix}\alpha\\2\end{pmatrix}z^{2+\alpha}+\begin{pmatrix}\alpha\\3\end{pmatrix}z^{3+\alpha}+\cdots & {\color{red}|z|>1} \\
+    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} C_\alpha^nz^n &=&\quad 1+\alpha z+C_\alpha^2z^2+C_\alpha^3z^3+\cdots & |z|<1 \\
+    (1+z)^{\alpha} \quad&=\quad \sum_{n=0}^{\infty} C_\alpha^nz^{n+\alpha} &=&\quad z^{\alpha}+\alpha z^{1+\alpha}+C_\alpha^2z^{2+\alpha}+C_\alpha^3z^{3+\alpha}+\cdots & {\color{red}|z|>1} \\
     \frac{1}{1+z} \quad&=\quad \sum_{n=0}^{\infty}(-1)^nz^n &=&\quad 1-z+z^2-z^3+\cdots & |z|<1 \\
     \frac{1}{1+z} \quad&=\quad \sum_{n=0}^{\infty}(-1)^nz^{-n-1} &=&\quad z^{-1}+z^{-2}-z^{-3}+z^{-4}-\cdots & {\color{red}|z|>1} \\
     \frac{1}{1-z} \quad&=\quad \sum_{n=0}^{\infty}z^n &=&\quad 1+z+z^2+z^3+\cdots & |z|<1 \\
-    \frac{1}{1-z} \quad&=\quad \sum_{n=0}^{\infty}-z^{-n-1} &=&\quad -z^{-1}-z^{-2}-z^{-3}-z^{-4}-\cdots & {\color{red}|z|>1} \\
-    \sqrt{1+z} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}1/2\\n\end{pmatrix}z^n &=&\quad 1+\frac{1}{2}z-\frac{1}{8}z^2+\frac{1}{16}z^3-\cdots & |z|<1\\
-    \frac{1}{\sqrt{1+z}} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}-1/2\\n\end{pmatrix}z^n &=&\quad 1-\frac{1}{2}z+\frac{3}{8}z^2-\frac{5}{16}z^3+\cdots & |z|<1
+    \frac{1}{1-z} \quad&=\quad \sum_{n=0}^{\infty}-z^{-n-1} &=&\quad -z^{-1}-z^{-2}-z^{-3}-z^{-4}-\cdots & {\color{red}|z|>1} %\\
+    % \sqrt{1+z} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}1/2\\n\end{pmatrix}z^n &=&\quad 1+\frac{1}{2}z-\frac{1}{8}z^2+\frac{1}{16}z^3-\cdots & |z|<1\\
+    % \frac{1}{\sqrt{1+z}} \quad&=\quad \sum_{n=0}^{\infty}\begin{pmatrix}-1/2\\n\end{pmatrix}z^n &=&\quad 1-\frac{1}{2}z+\frac{3}{8}z^2-\frac{5}{16}z^3+\cdots & |z|<1
 \end{align*}
 
 接下来是6个三角函数的麦克劳林级数或洛朗级数，其中\(B_n\)表示第\(n\)个伯努利数，\(E_n\)表示第\(n\)个欧拉数，后面将会介绍. 不同于\((1+x)^{\alpha}\)的展开式，由于\(\tan,\cot,\sec,\csc\)具有周期性，而且有无穷多个极点，所以麦克劳林级数和洛朗级数都只能在一个连续区间内生效，后面将要介绍的极点展开就很好地解决了这个问题.
@@ -231,6 +201,15 @@
     \trm{artanh}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{1}{2n+1}z^{2n+1} &=&\quad z+\frac{1}{3}z^3+\frac{1}{5}z^5+\frac{1}{7}z^7+\cdots & |z|\leq 1 \mbox{且} z \neq \pm 1
 \end{align*}
 
+接下来是一些特殊函数：朗博W函数的主值、归一化的误差函数、0阶第一类贝塞尔函数和第一类完全椭圆积分.
+\begin{align*}
+    W_0(z) \quad&=\quad \sum_{n=1}^{\infty} (-n)^{n-1}\frac{z^n}{n!} &=& \quad z - z^2 + \frac{3}{2}z^3 - \frac{8}{3}z^4 +\cdots & |z| < e^{-1} \\
+    \frac{\sqrt{\pi}}{2}\trm{erf}(z) \quad&=\quad \sum_{n=0}^{\infty}\frac {(-1)^{n}z^{2n+1}}{n!(2n+1)} &=&\quad z-\frac{1}{3}z^3+ \frac{1}{10}z^5 - \frac{1}{42}z^7 +\cdots & |z|<1 \\
+    J_0(z) \quad&=\quad \sum_{n=0}^{\infty}\frac{(-1)^n}{4^n(n!)^2}z^{2n} &=&\quad 1 - \frac{1}{4}z^2 + \frac{1}{64}z^4 - \frac{1}{2304}z^6 +\cdots & |z| \in \mathbb{C} \\
+    K(z) \quad&=\quad \frac{\pi}{2}\sum_{n=0}^{\infty}\left(\frac{(2n)!}{2^{2n}(n!)^2}\right)^{2}z^{2n} &=&\quad \frac{\pi}{2} + \frac{\pi z}{8} + \frac{9\pi z^2}{128} + \frac{25\pi z^3}{512} + \cdots & |z|\leq 1 
+\end{align*}
+
+\newpage
 
 \subsection{洛朗级数}
 
@@ -323,18 +302,55 @@
     \[\frac{1}{2\pi i}\oint_{C}\varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \sum_{i}n_i\varphi(z_i) - \sum_{j}n_j\varphi(p_j)\]
 \end{theorem}
 
-\textit{
 如果在区域\(C\)内\(f(z)\)处处解析，且只有\(1\)个一级零点\(z_0\)，则可以令\(f(z)=\psi(z)-\psi(z_0)\)，易知\(\psi(z)\)在\(C\)内解析且无零点. 此时
 \[\frac{\trm{d}}{\trm{d}z}\ln f(z) = \frac{f'(z)}{f(z)}=\frac{\psi'(z)}{\psi(z)-\psi(z_0)}\]
 代入对数留数定理，得到
-\[\varphi(z) = \frac{1}{2\pi i}\oint_C \varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \frac{1}{2\pi i}\oint_C\frac{\varphi(z)\psi'(z)}{\psi(z)-\psi(z_0)}\trm{d}z\]
+\[\varphi(z_0) = \frac{1}{2\pi i}\oint_C \varphi(z)\frac{f'(z)}{f(z)}\trm{d}z = \frac{1}{2\pi i}\oint_C\frac{\varphi(z)\psi'(z)}{\psi(z)-\psi(z_0)}\trm{d}z\]
 此即为
-}
+
 \begin{theorem}{扩展的柯西积分公式}
-    设\(\psi(z)\)在区域\(C\)内解析且没有零点，\(\varphi(z)\)在\(C\)内解析，则
-    \[\varphi(z)=\frac{1}{2 \pi i}\oint_C\frac{\varphi(\xi)\psi'(\xi)}{\psi(\xi)-\psi(z)}\trm{d}\xi\]
+    设\(f(z)\)在区域\(C\)内解析且没有零点，\(\varphi(z)\)在\(C\)内解析，则
+    \[f(z)=\frac{1}{2 \pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi(\xi)-\varphi(z)}\trm{d}\xi\]
 \end{theorem}
 令\(\psi(z)=z\)得到的就是常见的柯西积分公式.
+
+泰勒公式和柯西积分公式告诉我们解析函数总可以展成次数为正的幂级数：
+\[f(z) = \sum_{n=0}^{\infty} a_nz^n = a_0 + a_1z + a_2z^2 + a_3z^3\cdots\]
+之前推广的对数留数定理和柯西积分公式都有一个共同的特征，那就是把一个具体的函数，比如\(\varphi(z) \equiv 1\)或\(\varphi(z) = z\)，推广到了任意的\(\varphi(z)\)，接下来推广的目标也是这样，即把泰勒级数推广成这个形式.
+\[f(z) = \sum_{n=0}^{\infty} a_n\varphi^n(z) = a_0 + a_1\varphi(z) + a_2\varphi^2(z) + a_3\varphi^3(z) + \cdots\]
+回忆用柯西积分公式导出解析函数的幂级数的过程，现在我们用推广的柯西积分公式来导出推广的幂级数. 首先改写推广的柯西积分公式.
+
+\begin{align*}
+    f(z) &= \frac{1}{2 \pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi(\xi)-\varphi(z)}\trm{d}\xi
+    = \frac{1}{2\pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi(\xi)}\cdot\frac{1}{1-\frac{\varphi(z)}{\varphi(\xi)}}\trm{d}\xi \\
+    &= \frac{1}{2\pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi(\xi)}\left(\frac{\varphi(z)}{\varphi(\xi)}\right)^n\trm{d}\xi 
+    = \left[{\color{red} \frac{1}{2\pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi^{n+1}(\xi)}\trm{d}\xi}\right]\varphi^n(z)
+\end{align*}
+因此系数就出来了，然后根据分部积分法和留数定理
+\[a_n = \frac{1}{2\pi i}\oint_C\frac{f(\xi)\varphi'(\xi)}{\varphi^{n+1}(\xi)}\trm{d}\xi = \frac{1}{2n\pi i}\oint_C\frac{f'(\xi)}{\varphi^{n}(\xi)}\trm{d}\xi = \frac{1}{n!}\lim_{z \to z_0}\frac{\trm{d}^{n-1}}{\trm{d}z^{n-1}}\left[f'(z)\left(\frac{z-z_0}{\varphi(z)}\right)^n\right]\]
+以上便是\uline{拉格朗日-布尔曼公式}(Lagrange-Bürmann formula). 当\(\varphi(z)=z\)时，公式退化为泰勒级数.
+
+\begin{theorem}{拉格朗日-布尔曼公式}
+    设\(f(z)\)和\(\varphi(z)\)在\(B(0,\delta)\)内解析，且\(f'(0) \neq 0, \varphi(\xi_0) = 0\)，则
+    \[f(z) = \sum_{n=1}^{\infty}\left[\lim_{\xi \to \xi_0}\frac{\trm{d}^{n-1}}{\trm{d}\xi^{n-1}}\left(f'(\xi)\left(\frac{\xi-\xi_0}{\varphi(\xi)}\right)^n\right)\right]\frac{\varphi^n(z)}{n!}\]
+    特别地，当\(\xi_0=0\)时，有
+    \[f(z) = \sum_{n=1}^{\infty}\left[\lim_{\xi \to 0}\frac{\trm{d}^{n-1}}{\trm{d}\xi^{n-1}}\frac{\xi^nf'(\xi)}{\varphi^n(\xi)} \right]\frac{\varphi^n(z)}{n!}\]
+\end{theorem}
+
+令\(f(z)=z\)，带入拉格朗日-布尔曼公式的特殊情况，得到
+\[z = \sum_{n=1}^{\infty}\left[\lim_{\xi \to 0}\frac{\trm{d}^{n-1}}{\trm{d}\xi^{n-1}}\left(\frac{\xi}{\varphi(\xi)}\right)^n \right]\frac{\varphi^n(z)}{n!}\]
+如果恰好有\(\varphi^{-1}(w)=z\)，则\(\varphi(z)=w\)，此时
+\[\varphi^{-1}(w) = \sum_{n=1}^{\infty}\left[\lim_{\xi \to 0}\frac{\trm{d}^{n-1}}{\trm{d}\xi^{n-1}}\left(\frac{\xi}{\varphi(\xi)}\right)^n \right]\frac{w^n}{n!}\]
+这就是反函数的幂级数展开公式.
+
+\begin{corollary}{反函数的幂级数展开公式}
+    若\(f(z)\)在\(B(0,\delta)\)内解析且有反函数且\(f(0)=0\)，则\(f(z)\)和\(f^{-1}(z)\)可分别做幂级数展开：
+    \begin{align*}
+        f(z) &= \sum_{n=1}^{\infty} a_nz^n = a_1z + a_2z^2 + a_3z^3\cdots \\
+        f^{-1}(z) &= \sum_{n=1}^{\infty} b_nz^n = b_1z + b_2z^2 + b_3z^3\cdots
+    \end{align*}
+    其中\(\displaystyle{b_n = \frac{1}{n!}\lim_{\xi \to 0}\frac{\trm{d}^{n-1}}{\trm{d}\xi^{n-1}}\left(\frac{\xi}{f(\xi)}\right)^n}\)
+\end{corollary}
 
 \subsubsection{拉格朗日级数}
 
