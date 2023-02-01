@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.subplot(131)
+x=np.linspace(-2,2,1000)
+F=lambda x,n: np.sinc(n*x)*n
+y1=F(x,2)
+y2=F(x,4)
+y3=F(x,8)
+plt.plot(x,y1,x,y2,x,y3)
+plt.legend(['n=2','n=4','n=8'])
+plt.grid(axis='both',linewidth=0.5)
+plt.xlim((-2,2))
+plt.ylabel('fn(x)')
+plt.title('sinc')
+
+plt.subplot(132)
+x=np.linspace(-2,2,1000)
+F=lambda x,n: np.sqrt(n/np.pi)*np.exp(-x*x*n)
+y1=F(x,2)
+y2=F(x,20)
+y3=F(x,200)
+plt.plot(x,y1,x,y2,x,y3)
+plt.legend(['n=2','n=20','n=200'])
+plt.grid(axis='both',linewidth=0.5)
+plt.xlim((-2,2))
+plt.ylabel('fn(x)')
+plt.title('normal density function')
+
+plt.subplot(133)
+x=np.linspace(-2,2,1000)
+F=lambda x,n: 1/np.pi*n/(x*x*n*n+1)
+y1=F(x,2)
+y2=F(x,4)
+y3=F(x,8)
+plt.plot(x,y1,x,y2,x,y3)
+plt.legend(['n=2','n=4','n=8'])
+plt.grid(axis='both',linewidth=0.5)
+plt.xlim((-2,2))
+plt.ylabel('fn(x)')
+plt.title('Poisson kernel')
+
+plt.show()
