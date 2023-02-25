@@ -1,0 +1,2390 @@
+\documentclass[main.tex]{subfiles}
+
+\begin{document}
+
+\part{线性代数(remake，预计至少45页)}
+
+线性代数研究的对象是向量和线性变换. 这句话非常笼统，但这也意味着线性代数的覆盖范围其实非常广泛. 如果从历史的角度来看，线性代数是向量运算的形而上学，向量在线性代数中有至关重要的地位. 
+
+什么是向量？在初等数学中，向量是一个有限长的数字列表，例如\((2,3,1)\)，和坐标的写法相同. 按照形式主义的观点来看，“写起来完全相同”意味着“是同一个东西”，而真正不同的地方在于向量能进行各种运算（不过接下来会经常混淆两者）. 当我们秉持着数形结合的思想引入坐标系后，坐标往往表示坐标系中的一个点，箭头表示坐标系中的有向线段，也可以描述坐标系中某种有限长直线运动的过程. 
+
+经过了初等数学的洗礼之后，我们可以很自然地理解“坐标系”“坐标系中的点”“有向线段”等概念表达的意思，这当然是好事，但这同时也意味着我们容易对这些概念产生固有印象，认为某个名词必须要这么理解. 这一章将逐步破除这些桎梏，但请注意，将自己从思想牢笼中解放出来不代表完全抛弃牢笼中的思想，而是在其之上推广和进步，利用其来帮助理解推广后的概念. 
+
+不过我们首先还是要全面回顾一下“牢笼中的思想”：向量代数.
+
+\section{回顾：最基础的向量}
+
+如前言所述，狭义的\uline{向量}(vector)是一个有限长的数字列表，向量的元数就是列表的项数，在集合论的层面上可以诠释为有序组. 很多教科书里都把一般的\(n\)元的向量写成\((a_1,a_2,\cdots,a_n)\)，我们可以从集合论里借鉴一些表达得更明确的写法，比如\((a_i)_{i=1}^{n}\)，如果不确定或不强调有\(n\)元，那么可以简写成\((a_i)_i\)，使用加粗的希腊字母\(\bm{\alpha},\bm{\beta},\bm{\gamma},\cdots\)来表示向量. 
+
+特别地，如果\(i = 1\)，即只有一元的向量\((a_i)\)，可以认为它就是一个数\(a_i\)，不必再当作向量看待（你会发现此时向量的运算法则和数量的运算法则是兼容的）.
+
+向量可以进行加法运算，定义为\((a_i)_i + (b_i)_i := (a_i + b_i)_i\)，在几何上表现为：如果将\((a_i)_i\)和\((b_i)_i\)首尾相接，那么加法得到的向量的起点是\((a_i)_i\)的起点、终点是\((b_i)_i\)的终点，这称为向量相加的\uline{三角形法则}. 你可以进一步发现，\((a_i)_i\)和\((b_i)_i\)谁的首接谁的尾并不影响结果，对于多个向量相加的时候也是如此，此即为向量相加的\uline{多边形法则}，这说明向量的加法是良定义的.
+
+就像实数可以取相反数一样，向量\(\bm{\alpha}\)也可以取“相反向量”\(-\bm{\alpha}\)，相反向量在几何上表现为头尾调换的原向量. 有了相反向量的概念，我们可以定义向量的减法\(\bm{\alpha} - \bm{\beta} := \bm{\alpha} + (-\bm{\beta})\). 在几何上，把两个向量的尾部靠在一起，从减向量的终点指向被减向量的终点即为结果.
+
+向量还可以进行数乘运算，用一个数量\(c\)乘以向量\(\bm{\alpha}\)的结果\(c \cdot \bm{\alpha}\)是一个向量，在几何上相当于把向量的长度改为原来的\(c\)倍，仅做了伸缩而没有旋转. 如果将\(\bm{\alpha}\)和\(c\bm{\alpha}\)的起点放在一起，那么你可以画一条直线将这两个向量完全覆盖，对于这种情况，我们说这两个向量是\uline{共线的}(colinear)或\uline{平行的}(parallel).
+
+我们还可以计算向量的\uline{内积}(inner product)：
+\[\langle (a_i)_{i=1}^n, (b_i)_{i=1}^n \rangle := \sum_{i=1}^{n}a_ib_i\]
+即两个向量对应的元相乘后求和，结果是一个数量，根据乘法的交换律和分配律，内积也满足交换律和分配律. 内积在几何上表现为两个向量（有向线段）的长度和它们之间的夹角余弦值三者相乘. 由于非零向量和自己的夹角是\(0\)，所以自己和自己做内积的结果是自身长度的平方，由此正式定义出向量的\uline{模}(modulo)：\(\|\bm{\alpha}\| := \sqrt{\langle \bm{\alpha},\bm{\alpha}\rangle}\)，这时向量\uline{夹角}(angle)的余弦值就可以定义为
+\[\cos\angle(\bm{\alpha},\bm{\beta}) := \frac{\langle \bm{\alpha},\bm{\beta} \rangle}{\|\bm{\alpha}\|\|\bm{\beta}\|}\]
+
+有两个（类）值得注意的向量，零向量\(\bm{0}\)是一个特殊的向量，它的模是\(0\)，它与其他向量的夹角不可计算，所以我们说零向量没有方向，或者任意一个方向都是它的方向. \uline{单位向量}(unit vector)则是模长为\(1\)的向量，往往起着“指向”的作用. 向量除以自身的模长之后得到的就是与同方向的单位向量，记作\(\bm{\hat{\alpha}} := \dfrac{\bm{\alpha}}{\|\bm{\alpha}\|}\)，这个过程称为\uline{归一化}(normalization). 此时原本的向量就可以写作\(\|\bm{\alpha}\|\bm{\hat{\alpha}}\)，体现向量具有方向和大小这两个属性，这是一个非常重要的技巧，在接下来很多地方都会用到.
+
+当两向量夹角为\(\pi/2\)时，余弦值为\(0\)，因此内积也为\(0\)，此时称这两个向量是\uline{正交的}(orthogonal)，在几何上画出来确实如此. 同理，当夹角为\(0\)时，\(\langle \bm{\alpha},\bm{\beta}\rangle = \|\bm{\alpha}\|\|\bm{\beta}\|\)，即共线时两个向量的内积即为模长相乘，夹角为\(\pi\)则变成相反数. 
+
+如果用夹角来表示内积，则有\(\langle \bm{\alpha},\bm{\beta} \rangle = \|\bm{\alpha}\|{\color{red}\|\bm{\beta}\|\cos\angle(\bm{\alpha},\bm{\beta})}\). 注意红色部分，在几何上它表示向量\(\bm{\beta}\)投影在向量\(\bm{\alpha}\)上的长度，投影后的向量与\(\bm{\alpha}\)同向，所以应该乘以\(\bm{\hat{\alpha}}\)，据此我们可以定义\uline{投影}(projection)：
+\[
+    \begin{aligned}
+        \trm{proj}_{\bm{\alpha}}(\bm{\beta}) &:= \|\bm{\beta}\|\cos\angle(\bm{\alpha},\bm{\beta})\bm{\hat{\alpha}} \\
+        & = \|\bm{\beta}\|\frac{\langle \bm{\alpha},\bm{\beta} \rangle}{\|\bm{\alpha}\|\|\bm{\beta}\|}\frac{\bm{\alpha}}{\|\bm{\alpha}\|} \\
+        & = \frac{\langle\bm{\alpha},\bm{\beta}\rangle}{\langle\bm{\alpha},\bm{\alpha}\rangle}\bm{\alpha}
+    \end{aligned}
+\]
+投影也是一个很重要的概念，接下来讨论到基底的时候会经常用到. 
+
+\vspace{1cm}
+
+基底是一个神奇的东西. 以空间直角坐标系为例，某个向量\(\bm{\alpha}\)的表达式\((2,4,3)\)究竟代表着什么？如果我们规定三个向量\(\bm{\hat{i}} = (1,0,0), \bm{\hat{j}} = (0,1,0), \bm{\hat{k}} = (0,0,1)\)，那么显然有
+\[\bm\alpha = (2,4,3) \Longleftrightarrow \bm\alpha = 2\bm i + 4\bm j + 3\bm k\]
+两个式子究竟哪个更本质？左边的式子将向量看作一个坐标，右边的式子将则先给出基底，然后让向量分解为基底向量的加权和. 如果认为左边的式子更本质，那么可以进入离散数学的世界，如果认为右边的式子更本质，那么走进的才是线性代数的世界. 
+
+\section{向量空间}
+
+\subsection{公理化的向量}
+
+公理集合论没有解释“集合是什么”，而直接把集合当作不可被更基本的概念定义的原始观念. 同理，在公理化的系统下“向量”这个概念也被当作原始观念. 更进一步地，通过对集合论公理的演绎以及对集合运算的诠释，我们在印象中大概会将“集合”的概念同现实中的“袋子”“盒子”等容器联系起来，即认为“集合”就是一个从各种容器中抽象出来的概念，“元素”则是“容器”中装的物品；麻烦的是向量公理比集合论更不直观：在上一节中，我们将“向量”同几何中“有向线段”的概念联系起来，而向量公理则抛弃了这种联系，凡是能进行某种运算的对象都能称为向量. 尽管公理层面的“向量”比“集合”更难理解，但托集合论的福，向量公理叙述起来更为方便. 
+
+\begin{definition}{线性空间}
+    设\(\mathbb F\)是一个数域，\(S\)是一个集合；\(\mathbb{F}\)中的元素使用正常字体表示，\(S\)中的元素使用加粗字体表示；\(\mathbb{F}\)中的单位元记作\(1\)，\(S\)中存在常量\(\bm 0\)；\(S\)上装备了两种运算“\(+:S \times S \to S\)”和“\(\cdot: \mathbb F \times S \to S\)”，这两种运算满足以下8条向量公理
+    \[
+        \begin{aligned}
+            & \forall \bm\alpha,\bm\beta: &&\bm\alpha + \bm\beta = \bm\beta + \bm\alpha & \mbox{“}+\mbox{”的交换律} \\
+            & \forall \bm\alpha,\bm\beta,\bm\gamma: &&(\bm\alpha + \bm\beta) + \bm\gamma = \bm\alpha + (\bm\beta + \bm\gamma) & \mbox{“}+\mbox{”的结合律} \\
+            & \forall \bm\alpha: &&\bm\alpha + \bm 0 = \bm\alpha & \mbox{“}+\mbox{”存在零元} \\
+            & \forall \bm\alpha \exists \bm\beta: &&\bm\alpha + \bm\beta = \bm 0 & \mbox{“}+\mbox{”存在逆元} \\
+            & \forall a,b,\bm\alpha: &&(ab) \cdot \bm\alpha = a \cdot (b \cdot \bm\alpha) & \mbox{“}\cdot\mbox{”的结合律} \\
+            & \forall \bm\alpha: &&1 \cdot \bm\alpha = \bm\alpha & \mbox{“}\cdot\mbox{”存在单位元} \\
+            & \forall a,b,\bm\alpha: &&(a+b)\cdot\bm\alpha = a \cdot \bm\alpha + b \cdot \bm\alpha & \mbox{数量分配律} \\
+            & \forall a,\bm\alpha,\bm\beta: &&a\cdot(\bm\alpha+\bm\beta) = a \cdot \bm\alpha + a \cdot \bm\beta & \mbox{向量分配律}
+        \end{aligned}
+    \]
+    那么\(\langle \mathbb{F}, S;+,\cdot;1,\bm 0\rangle\)统称为\uline{线性空间}(linear space)，其中的元素称为\uline{向量}(vector).
+\end{definition}
+
+这里要注意：
+\begin{itemize}
+    \item [(1)] 线性空间并没有规定数量\(0\)和向量\(\bm\alpha\)相乘后一定是某个向量\(\bm 0\)，但在大多数情况下我们都会这么规定，即
+    \begin{reference}
+        \(\mathbb{F}\)中的零元记作\(0\)，对于任意\(\bm\alpha\)，有\(0\cdot \alpha = \bm 0\)；对于任意\(c\)，有\(c\cdot\bm 0 = \bm 0\).
+    \end{reference}
+    \item [(2)] 书写时常常省略“\(\cdot\)”符号；
+    \item [(3)] 与其说\(\langle \mathbb{F}, S;+,\cdot;1,\bm 0\rangle\)是一个向量空间，一般更倾向于直接简称\(S\)是线性空间.
+    \item [(4)] 线性空间的“线性”究竟是什么意思，将在接下来讨论线性变换时详细说明. 而“空间”一词则没有什么可说的，定义在某个集合上的运算，只要运算的结果跳不出这个集合，那么这个集合都可以称为“空间”. 线性空间中，向量经过加法和数乘运算的结果仍在定义域中，所以称为“空间”.
+\end{itemize}
+
+就像集合有子集，线性空间也有线性子空间. 对象如其名，看到“子”这个字，你应当立即意识到子空间是原空间的子集. 但除了“是原空间的子集”以外，它还是“空间”，应当满足以上这8条公理.
+
+\begin{definition}{线性子空间}
+    设\(\langle \mathbb{F}, S;+,\cdot;1,\bm 0\rangle\)是一个线性空间，而\(T \subseteq S\)且\(\bm 0 \in T\)，此外“\(+\)”和“\(\cdot\)”在\(T\)中封闭，则\(T\)是\(S\)的\uline{线性子空间}(linear subspace).
+\end{definition}
+
+\subsection{线性相关性}
+
+有了公理化的向量，我们来回顾本章开始时定义的狭义的向量，它是一个数字列表，在空间直角坐标系中，\(\bm\alpha = (2,4,3)\)意味着\(\bm{\alpha} = 2\bm{\hat i} + 4\bm{\hat j} + 3\bm{\hat k}\)，在这里，向量\(\bm\alpha\)被向量\(\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\)使用加法数量乘法表示出来了. 问题来了，一定需要\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)这三个向量吗？就不能去掉一个吗？
+
+我们可以这么理解，\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)之中的每一个向量都引入了独特的方向. \(\bm{\hat i}\)向量数乘以后得到的向量只能分布在一条直线上，\(\bm{\hat j}\)也是如此，但\(\bm{\hat i}\)和\(\bm{\hat j}\)得到的直线并不重叠或平行；\(\{\bm{\hat i},\bm{\hat j}\}\)数乘后求和得到的向量可以分布在一个平面上，\(\{\bm{\hat j},\bm{\hat k}\}\)也如此，但这两组向量得到的平面并不平行或重叠；\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)数乘求和后的向量可以遍布整个立体空间. 每个向量都是独特的，不同的向量组合也都是不同的，并且随着向量的增加，数乘求和得到的向量丰富性大大增加.
+
+给个反面教材，\(\bm{a} = (0,1,1), \bm{b} = (1,0,1), \bm{c} = (3,2,5)\)这三个向量，我们很容易发现\(\bm{c} = 2\bm a+3\bm b\)，那这就意味着\(\{\bm a,\bm b\}\)和\(\{\bm a,\bm b,\bm c\}\)数乘后相加所得到的向量是一样的，\(\bm c\)的出现并没有引入新的方向，没有提升向量空间的丰富度.
+
+对于以上两个例子，我们定义几个概念.
+
+\begin{definition}{线性相关}
+    对于一组向量\(\{\bm\alpha_i\}_{i=1}^{n}\)：
+    \begin{itemize}
+        \item 表达式\(\displaystyle{\sum_{i=1}^{n}c_i\bm\alpha_i = c_1\bm\alpha_1+c_2\bm\alpha_2+\cdots+c_n\bm\alpha_n}\)称为这组向量的\uline{线性组合}(linear combination)，其中\(c_i\)是任取的数量，\textbf{可以全为零}.
+        \item 由该组向量的线性组合的来的所有向量的集合，称为该组向量\uline{张成的空间}，记作\(\trm{span}\{\bm\alpha_i\}_{i=1}^{n}\).
+        \item 如果某个向量\(\bm\beta\)等于该组向量的某个线性组合（即属于该张成的空间），那么就说\(\bm\beta\)能被该组向量\uline{线性表出}.
+        \item 如果零向量被该组向量线性表出时系数\(c_i\)全为零，那么就说该组向量\uline{线性无关}(linearly independent)，否则为\uline{线性相关}(linearly dependent).
+    \end{itemize}
+\end{definition}
+
+现在我们可以说，向量\(\bm{\hat i}\)张成的空间是一条直线，\(\trm{span}\{\bm{\hat i},\bm{\hat j}\}\)是一个平面，\(\trm{span}\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)则是一个立体的空间. 若想得到立体空间中的\(\bm 0\)向量，唯一的组合是\(0\bm{\hat{i}}+0\bm{\hat{j}}+0\bm{\hat{k}}\)，系数全为\(0\)，所以\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)线性无关.
+
+接下来通过几个命题来刻画以上这些概念
+\begin{itemize}
+    \item [(1)] \(\{\bm\alpha_i\}_{i=1}^{n}\)线性无关的充要条件是任一\(\bm\alpha_i\)都不能被剩余\(n-1\)个向量线性表出.
+    \begin{proof}
+        反证法. （右推左）反设\(\{\bm\alpha_i\}_{i=1}^{n}\)线性相关，那么就有不全为零的数\(\{c_i\}_{i=1}^{n}\)，使得\(\displaystyle{\bm 0 = \sum_{i=1}^{n}c_i\bm\alpha_i}\)，把\(\bm\alpha_1\)移到左边然后除以\(-c_1\)，得到\(\displaystyle{\bm\alpha_1 = -\sum_{i=2}^{n}\frac{c_i}{c_1}\alpha_i}\)，这就是\(\bm\alpha\)的线性表出，矛盾了. \\
+        （左推右）反设
+    \end{proof}
+    \item [(2)] 若某组向量\(\mathcal{A}\)线性无关，则其任意非空子集都线性无关；若\(\mathcal{A}\)线性相关，则其任意超集都线性相关.
+    \item [(3)] 若\(\bm 0 \in \mathcal{A}\)，则\(\mathcal{A}\)一定线性相关.
+    \item [(4)] 若\(\mathcal{A}\)线性无关，但\(\mathcal{A} \cup \{\bm\beta\}\)线性相关，那么\(\bm\beta\)可用$\mathcal A$中的向量线性表出，且表出的方式是唯一的.
+\end{itemize}
+
+根据以上命题(2)，我们定义极大无关组
+
+\begin{definition}{极大线性无关组}
+    对于向量组\(\mathcal A\)，若\(\mathcal B \subseteq \mathcal A\)线性无关，而且任意\(\mathcal{C} \supseteq \mathcal{B}\)都线性相关，那么\(\mathcal B\)称为\(\mathcal{A}\)的\uline{极大线性无关组}，\(\trm{card}(B)\)称为\(\mathcal A\)的\uline{秩}(rank)，记作\(r(\mathcal{A})\).
+\end{definition}
+
+\begin{itemize}
+    \item [(5)] 若\(S\)是线性空间，向量\(\bm\alpha_1,\bm\alpha_2,\cdots,\bm\alpha_n \in S\)，则\(\trm{span}\{\bm\alpha_i\}_{1}^{n}\)是\(S\)的线性子空间.
+    \item [(6)] 若\(\mathcal B\)是\(\mathcal A\)的极大线性无关组，那么\(\trm{span}\mathcal{A} = \trm{span}\mathcal{B}\)，且\(r(\mathcal A) = r(\mathcal B)\).
+\end{itemize}
+
+对于狭义的向量，又可以补充以下两个命题.
+\begin{itemize}
+    \item [(7)] \(n\)元狭义向量的线性无关组中至多有\(n\)个向量.
+    \begin{note}
+        回到本节开头的例子，空间直角坐标系中只需要\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)就可以表出所有空间向量，而平面直角坐标系只需要\(\{\bm{\hat i}, \bm{\hat j}\}\)两个向量. 你也许也发现了对于狭义的向量，线性无关组似乎有上界：
+    \end{note}
+    \item [(8)] 设\((a_i)_{i=1}^{n}\)为一个狭义向量，而另一个狭义向量\((b_i)_{i=0}^{m}\)满足\(m > n\)，且对于\(1\leq i \leq n\)均有\(a_i = b_i\)，那么\((b_i)_{i=1}^{m}\)称为\((a_i)_{i=1}^{n}\)的延伸向量. 对于向量组\(\mathcal{A} = \{\bm\alpha_i\}_{i=1}^{n}\)和\(\mathcal{B} = \{\bm\beta_i\}_{i=1}^{n}\)，若\(\bm\beta_i\)是\(\bm\alpha_i\)的延伸向量，那么称\(\mathcal{B}\)是\(\mathcal{B}\)的延伸组，\(\mathcal{A}\)是\(\mathcal{B}\)的缩短组. 如果某一组向量线性无关，那么其延伸组线性无关；如果某一向量组线性相关，那么其缩短组也线性相关.
+\end{itemize}
+
+\subsection{空间的基与坐标}
+
+上一节详细叙述了线性相关性，却一直没有捅破窗户纸：我们只将\(\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)看作是一个线性无关的向量组，也讲明了\(\trm{span}\{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)为整个立体空间，但一直没有出现“基底”一词，似乎刻意避开了这个概念——其实是为了留到现在.
+
+从直觉上来说，有了基底，空间中的向量就可以表示为基底向量的线性组合，就像\(\bm\alpha = 2\bm{\hat i} + 4\bm{\hat j} + 3\bm{\hat k}\)一样. 除此之外，我们还希望基底向量是线性无关的，即每个向量都能引出独特的方向.
+
+\begin{definition}{空间的基与坐标}
+    若\(\mathcal{A} = \{\bm\alpha_i\}_{i=1}^{n}\)是一个线性无关的向量组，而且线性空间\(S\)中的每一个向量都可以用\(\mathcal{A}\)中向量的线性组合来表示（允许系数全为\(0\)，那么称\(\mathcal{A}\)是\(S\)的一个基底.
+    \newline
+    若某个向量\(\bm\beta \in S\)为\(\displaystyle{\bm\alpha = \sum_{i=1}^{n}c_i\bm\alpha_i}\)，那么狭义向量\((c_i)_{i=1}^{n}\)称为向量\(\bm\beta\)在基底\(\mathcal{A}\)下的\uline{坐标}(coordinate)，记作\([\bm\beta]_{\mathcal{A}}\).
+\end{definition}
+
+坐标一词终于出现了，我们发现坐标就是狭义向量，而系数的任意性又保证了每个狭义向量都是一个坐标，所以现在我们规定：\textbf{形如\((a_i)_i\)这样的有序组，今后不再称为狭义向量，而称为坐标}. 值得注意的是，我们常常将坐标竖着写，例如\(\mathcal A = \{\bm{\hat i}, \bm{\hat j}, \bm{\hat k}\}\)是空间直角坐标系中的基，那么
+\[\bm\beta = 2\bm{\hat i} + 4\bm{\hat j} + 3\bm{\hat k} \Longleftrightarrow [\bm\beta]_\mathcal{A} = \begin{bmatrix} 2 \\ 4 \\ 3 \end{bmatrix}\]
+这种写法已经有了矩阵的影子，至于为什么这样写，那是历史遗留问题了……但我们将会发现该写法在方程组的简化表示上起到非常大的作用.
+
+每个线性空间是否都存在基底？我们希望它是存在的. 激动人心的一点是，证明每个线性空间都有基底依赖于选择公理——如此底层的公理居然在这里派上了用场.
+
+\begin{proposition}{}
+    每个线性空间都有基底.
+\end{proposition}
+
+\subsection{线性代数的核心：线性变换}
+
+*这是非常重要的内容，除了线性变换以外，矩阵也将首次出现.
+
+\subsubsection{定义和性质}
+
+什么是“线性”？在初等数学中，如果某个因变量正比于自变量，或者某事物的发展与另一事物总是相差某个倍数，亦或者某个量在等长的两段时间间隔内的变化是相等的，那么我们就会为这种情况打上“线性”的标签. 不难发现，这三个例子中，“线性”的背后总暗含着关系：因变量与自变量的关系、两个事物发展情况的关系、某个量与时间的关系，因此“线性”一词实际上是对于联系的描述. 联系在数学中体现为函数，我们可以为函数定下线性的定义，既严格又符合我们的直觉.
+
+\begin{definition}{线性映射}
+    设\(S,T\)为线性空间，如果一个映射\(f:S \to T\)满足以下两点
+    \begin{itemize}
+        \item [(1)] \(f(\bm\alpha+\bm\beta) = f(\bm\alpha)+f(\bm\beta)\)
+        \item [(2)] \( f(c\cdot\bm\alpha) = c\cdot f(\bm\alpha)\)
+    \end{itemize}
+    则称\(f\)为\uline{线性映射}(linear mapping)；如果\(S=T\)，那么一般又称为\uline{线性变换}(linear transformation).
+\end{definition}
+
+\subsubsection{矩阵："Hello World!"}
+
+既然向量空间中都存在基底，那么每一个向量都可被基底表现出来. 设某个向量空间中的基底是\(\mathcal A = \{\bm\alpha_i\}_{i=1}^{n}\)，某个向量\(\displaystyle{\bm\beta = \sum_{i=1}^{n}c_i\bm\alpha_i}\)，现在把\(\bm\beta\)放入一个线性变换\(f\)中：
+\[f(\bm\beta) = f\left(\sum_{i=1}^{n}c_i\bm\alpha_i\right) = \sum_{i=1}^{n}c_if(\bm\alpha_i)\]
+可见，我们只要知道每个基底向量经过线性变换后的结果，就可以知道任意一个向量的结果. 更进一步地，既然基底向量数量有限，其经过线性变换后也是有限的，元数也有限，那么我们可以将基底向量线性变换后的基底记录下来形成一个列表，其他向量即可根据该列表记录下来.
+
+继续这个例子，记\(f(\bm\alpha_i)\)的坐标为\((a_{j,i})_{j=1}^{n}\)，不要问我为什么\(j\)要放前面，这是历史使然. 继续上式的推导：
+\begin{equation*}
+    f(\bm\beta) = \sum_{i=1}^{n}c_if(\bm\alpha_i) = \sum_{i=1}^{n}c_i \sum_{j=1}^{n}a_{ji}\bm\alpha_j = \sum_{j=1}^{n} \left(\sum_{i=1}^{n}c_i a_{ji}\right)\bm\alpha_j \tag{*}
+\end{equation*}
+
+接下来我们把每个\(f(\bm\alpha_i)\)竖着写的坐标拼起来，得到一张矩形表格：
+\[\left[\begin{array}{c|c|c|c}
+    a_{11} & a_{21} & \cdots & a_{n1} \\
+    a_{21} & a_{22} & \cdots & a_{n2} \\
+    \vdots & \vdots & & \vdots \\
+    a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{array}\right]_{n \times n}\]
+在给定空间的基底\(\mathcal{A}\)的情况下，这张矩形表可以确定线性变换\(f\)本身，所以称为\uline{线性变换的矩阵表示}(transformation matrix)，也称作\uline{基变换矩阵}(change of basis). 我们可以从集合论中借鉴更先进的表达式来表示矩阵，如上面这个矩阵可以表示为\([a_{ij}]_{n \times n}\)，坐标可以看成\(n\times 1\)的矩阵，所以可以写为\([a_i]_{n \times 1}\). 接下来使用粗体来表示矩阵.
+
+就像向量可以进行加法和乘法一样，我们也要给矩阵制定加法和乘法的规则. 这里只介绍规则背后的思想，更深入的内容将在后面讨论. 在定下具体的表达式之前，先来说一说我们希望它应有的样子. 既然矩阵的功能是确定某个线性变换，那么我们可以规定矩阵相加相当于线性变换相加；在某些文献上，一个函数\(f\)作用于某个变量\(x\)有时会直接写作\(fx\)——是相乘的形式. 由此我们可以\textbf{将矩阵与单个坐标的乘积定义为矩阵对应的线性变换作用于该向量所得到的坐标}，即\(f(\bm\alpha) := \bm A \bm\alpha\)，其中\(\bm A\)是变换矩阵.
+
+具体是多少呢？上面其实推导了出来了，新坐标的第\(j\)元就是\(\displaystyle{\sum_{i=1}^{n}c_i a_{ji}}\). 所以我们可以规定
+\[[a_{ij}]_{n \times n} \times [c_i]_{n \times 1} := \left[ \sum_{i=1}^{n}c_i a_{ji} \right]_{n \times 1}\]
+贴心地展开写出来：
+\[
+    \left[\begin{array}{cccc}
+    a_{11} & a_{21} & \cdots & a_{n1} \\
+    a_{21} & a_{22} & \cdots & a_{n2} \\
+    \vdots & \vdots & & \vdots \\
+    a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{array}\right]_{n \times n}
+    \times
+    \begin{bmatrix}
+        c_1 \\ c_2 \\ \vdots \\ c_n
+    \end{bmatrix}_{n \times 1}
+    =
+    \begin{bmatrix}
+        a_{11}c_1+a_{12}c_2+\cdots+a_{1n}c_n \\
+        a_{21}c_1+a_{22}c_2+\cdots+a_{2n}c_n \\
+        \vdots \\
+        a_{n1}c_1+a_{n2}c_2+\cdots+a_{nn}c_n
+    \end{bmatrix}_{n \times 1}
+\]
+
+问题又来了，我们定义了矩阵乘以坐标的结果，那么矩阵乘以矩阵呢？回顾集合论中复合函数的写法：\(f(g(x)) = (f \circ g)(x)\)，右式居然写成了两个函数的某种运算的形式. 在左式中，我们要先算\(g(\cdot)\)，再算\(f(\cdot)\)，而右式让我们先算\(f\circ g\)，再算这个整体作用于\(x\)的结果. 由于\(g(\bm\alpha)\)可以写成一个矩阵乘以一个向量的形式，\((f\circ g)(x)\)也可以写成一个矩阵乘以一个向量的形式，所以\(f\circ g\)应当可以写成一个矩阵.
+
+至于该矩阵的每个元是多少，接下来推导一下. 设基底是\(\mathcal A = \{\bm\alpha_i\}_{i=1}^{n}\)，\(\displaystyle{\bm\beta = \sum_{i=1}^{n}c_i\bm\alpha_i}\)，两个线性变换\(f,g\)的矩阵表示是\(\bm A = [a_{ij}]_{n \times n}\)和\(\bm B = [b_{ij}]_{n \times n}\)，由上文已知，放入线性变换\(g(\cdot)\)后
+\[g(\bm\beta) = \sum_{j=1}^{n} \left({\color{red}\sum_{i=1}^{n}c_i a_{ji}}\right)\bm\alpha_j\]
+令\(\displaystyle{d_j = {\color{red}\sum_{i=1}^{n}c_i a_{ji}}}\)，接下来再计算\(f(g(\bm\beta))\)：
+\[f(g(\bm\beta)) = f(\sum_{j=1}^{n} d_j\bm\alpha_j) = \sum_{j=1}^{n}d_jf(\bm\alpha_j) = \sum_{j=1}^{n}d_j\sum_{k=1}^{n}b_{kj}\bm\alpha_k\]
+再把\(d_j\)写出来：
+\[f(g(\bm\beta)) = \sum_{j=1}^{n} \sum_{i=1}^{n}c_i a_{ji}\sum_{k=1}^{n}b_{kj}\bm\alpha_j = \sum_{k=1}^{n}\left[\sum_{i=1}^{n}c_i\left({\color{red}\sum_{j=1}^{n}a_{ji}b_{kj}}\right)\right]\bm\alpha_k\]
+对照该式与上文的*式，可以发现该式的红色部分对应*式中的\(a_{ji}\)，所以我们可以规定矩阵乘法为
+\[[a_{ij}]_{n\times n} \times [b_{ij}]_{n \times n} := \left[\sum_{j=1}^{n}a_{ij}b_{jk}\right]_{n \times n}\]
+
+而加减法就简单了，由于加减号可以从线性变换中拿出来，所以可以简单地定义为
+\[[a_{ij}]_{n\times n} \pm [b_{ij}]_{n \times n} := [a_{ij} \pm b_{ij}]_{n \times n}\]
+
+本节仅仅叙述了矩阵的加法和乘法的由来，并没有对其性质深入讨论，这些工作将在后面的章节完成.
+
+\section{矩阵运算}
+
+\section{行列式}
+
+\section{特征值理论}
+
+\section{二次型理论}
+
+% \section{高斯消元法}
+% \subsection{线性方程组的基本概念}
+% 	线性方程组(system of linear equations)一般形如下面这个样子：
+% 	\begin{equation}
+% 	\left \{ \begin{array}{ccccccccc}
+% 		a_{11}x_1 &+ & a_{12}x_2 &+ & \cdots &+ & a_{1n}x_n &= & b_1	\\
+% 		a_{21}x_1 &+ & a_{22}x_2 &+ & \cdots &+ & a_{2n}x_n &= & b_2	\\
+% 		\hdotsfor{9}\\
+% 		a_{m1}x_1 &+ & a_{m2}x_2 &+ & \cdots &+ & a_{mn}x_n &= & b_m\\ \tag{1.1}
+% 	\end{array} \right.
+% 	\end{equation}
+	
+	
+% 	\begin{definition}
+% 		（方程组的各部分定义）在方程组(1,1)中，对于\(\forall i \forall j :i \in [1,m] \cap \mathbb{Z} \wedge j \in [1,n] \cap \mathbb{Z}\)，\(x_j\)称为\textbf{未知数}\trm{(unknown number)}，\(a_{ij}\)称为\textbf{系数}\trm{(coefficient)}，\(b_i\)是\textbf{常数项}\trm{(constant)}，方程组1.1是\textbf{含有\(m\)个方程\(n\)个未知数的线性方程组}.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		（方程组次数特征定义）若\(\exists i:b_i\neq0\)，则方程组为\textbf{非齐次的}\trm{(nonhomogeneous)}；若\(\forall i : b_i =0\)，则方程组为\textbf{齐次的}\trm{(homogeneous)}.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		（方程组解的定义）任取\(n\)个数\(c_1, c_2, \cdots, c_n\)来分别代替\(x_1, x_2, \cdots, x_n\)，使得方程组的每个等号都成立，则称\(x_1=c_1, x_2=c_2,\cdots, x_n=c_n\)是方程组的一个\textbf{解}\trm{(solution)}，可以记作\((c_1,c_2,\cdots, c_n)\)，若某个解中\(\forall i : c_i=0\)，则称该解为\textbf{零解}\trm{(trival solution)}. 方程组全部的解构成的集合称为方程组的\textbf{解集合}\trm{(solution set)}.若两个线性方程组有相同的解集合，则称它们为\textbf{同解的}\trm{(equivalent)}.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		（方程组逻辑定义）记方程组解集合为\(W\)，则\(W\)的势有三种情况：\\
+% 		(1)	\(\card{W}=0\)，称该方程组是\textbf{不相容的}\trm{(inconsistent)}；\\
+% 		(2)	\(\card{W}=1\)，称该方程组有\textbf{唯一解}\trm{(unique solution)}；\\
+% 		(3)	\(\card{W}>1\)，\(W\)中的一个元素称为\textbf{特解}，通项表达式称为\textbf{通解}.
+% 	\end{definition}
+	
+% \subsection{解方程的一般过程}
+
+% 	\begin{definition}
+% 		\uline{方程组的初等变换}\trm{(elementary formula operation)}包括以下三种：
+% 		\par (1)	用非零数乘一个方程；
+% 		\par (2)	把一个方程的倍数加到另一个方程上；
+% 		\par (3)	互换两个方程的位置.
+% 	\end{definition}
+	
+% 	解方程的过程可以概括为对方程组进行的有限次初等变换.
+	
+% 	\begin{theorem}
+% 		方程组的初等变换将原线性方程组变换成同解线性方程组.
+% 	\end{theorem}
+
+% 	方程组消元的时候有一个约定：
+% 	\par (1)	用上面方程的未知数消去下面方程中的未知数；
+% 	\par (2)	一个方程中从左向右消去未知数.\\
+% 	遵守这个约定，最后总是可以把方程组变成\textbf{阶梯形方程组}，其特征是：
+% 	\par (1)	从上到下，每个方程组中系数不为零的第一个未知数的下标严格增大；
+% 	\par (2)	不出现“0=0”的式子.
+	
+% \subsection{引出矩阵}
+% 	为了避开解方程时巨大的书写量，可以把方程组的系数单独提出来，排列成一个\(m\)行\(n\)列的的矩形表，称为\(m\times n\) \textbf{矩阵}(matrix)，如以上方程组的系数可以单独提出来，形成以下矩阵：
+% 	\begin{equation*}
+% 		\begin{bmatrix}
+% 			a_{11} & a_{12} & \cdots & a_{1n} \\
+% 			a_{21} & a_{22} & \cdots & a_{2n} \\
+% 			\vdots & \vdots &  & \vdots \\
+% 			a_{m1} & a_{m2}  & \cdots & a_{mn}
+% 		\end{bmatrix}
+% 	\end{equation*}
+	
+% 	矩阵一般用大写黑体字母如\(\bm{A},\bm{B},\bm{C}\)表示，或用中括号及代表元（元素）如\([a_{ij}]_{m\times n}\)表示.
+% 	\begin{definition}
+% 	对于以上矩阵，序列\(\langle a_{i1},a_{i2},a_{i3},\cdots,a_{in}\rangle\)称为第\(i\)行\trm{(row)}，序列\(\langle a_{1j},a_{2j},a_{3j},\cdots,a_{mj}\rangle\)称为第\(j\)列\trm{(column)}，\(a_{ij}\)位于第\(i\)行第\(j\)列，称为第\((i,j)\)-元.
+% 	\end{definition}
+
+% \subsection{怎样解题：用矩阵解方程的一般过程}
+
+% 	\noindent 首先是将方程组化为矩阵，把方程组的参与运算的部分单独提出来组成矩阵有两种方式：
+% 	\par (1)	把等号右边的常数也放入矩阵的对应位置，此矩阵称为该方程组的\textbf{增广矩阵}(augumented matrix)；
+% 	\par (2)	当等号右边的数全为0，可以只把系数提出来，此矩阵称为该方程组的\textbf{系数矩阵}(coefficient matrix).
+	
+% 	\noindent 接下来变换矩阵，对应于方程的三种初等变换，矩阵有三种\textbf{初等行变换}(elementary row operation)：
+% 	\par (1)	用一个非零数\(c\)乘上第\(i\)行的全部元素，用\(cR_i\)表示；
+% 	\par (2)	第\(i\)行的全部元素乘同一个数\(c\)，并加到第\(k\)行的对应元素上，用\(R_i + cR_k\)表示；
+% 	\par (3)	互换第\(i\)和第\(k\)行的位置，用\(R_{ik}\)或\(R_i\leftrightarrow R_k\)表示.
+	
+% 	\noindent 利用矩阵的初等行变换消元的时候有同样有一个约定：
+% 	\par (1)	用上面方程的未知数消去下面方程中的未知数；
+% 	\par (2)	一个方程中从左向右消去未知数.
+	
+% 	\noindent 遵守这个约定，最后总是可以把矩阵变成\textbf{阶梯形矩阵}(echelon form)，其特征是：
+% 	\par (1)	零行总在非零行的下面；
+% 	\par (2)	随行标增大，每一行的\textbf{主元}(pivot entry)（即首非零元）的列标严格增大；
+	
+% 	\begin{equation*}
+% 		\left[
+% 		\begin{BMAT}(b,20pt,20pt){ccc}{ccc}
+% 			0 & 1 & 1 \\
+% 			0 & 0 & 3 \\
+% 			0 & 0 & 0
+% 			\addpath{(1,3,2)drdr}
+% 		\end{BMAT}
+% 		\right]
+% 	\end{equation*}
+	
+% 	以上的消元过程即所谓的\textbf{高斯消元法}(Gauss elimination).
+	
+% 	\begin{theorem}
+% 		任一矩阵均可通过有限次初等行变换化为阶梯形矩阵.
+% 	\end{theorem}
+
+% 	注意：(1)	为了更快地化成阶梯形矩阵，常使减去其他行的行的首非零元为1且0元素尽可能的多，或者尽可能的使其他行的首非零元是本行首非零元的倍数，这样才能本行乘的数为整数，避免出现分数.  如果不幸出现了分数，可以让该行乘以分母化为整数，从而变得更好看.\\
+% 	(2)	消元要一次消为零，即本行的主元首非零元是\(R_{ij}\)，下面某行同一列的元素是\(R_{kj} \neq 0\)，则将本行乘以\(-\dfrac{R_{kj}}{R_{ij}}\)加到下一行，这样新的\(R_{k,j}\)就可以变为0.\\
+% 	(3)	对于含参的矩阵，在“将某一行乘以若干倍加到另一行”的操作中，乘以的倍数如果是一个分数，那么分母不能含有参数，除非证明参数不等于0.\\
+	
+% 	消元到最后，会出现三种结果：
+% 	\par (1)	出现\textbf{矛盾方程}(incosistent formula)，即形如“零=非零数”的式子，表明这是一个不相容方程组，\(\card{W}=0\)；
+% 	\par (2)	当略去零行时，方程个数和未知数个数相等，此时方程有唯一解，\(\card{W}=1\)；
+% 	\par (3)	当略去零行时，方程个数小于未知数的个数，此时方程有无穷多解，\(\card{W} \not \in \mathbb{N} \)，此时要将某几个未知数看成“可以自由取定的”的\textbf{自由未知数}\trm{(free variable)}，剩下的未知数称为\textbf{主元未知数}\trm{(basic variable)}，逐个回代求解. 自由未知数的选取要保证既不出现矛盾方程也要使得方程组的解唯一，通常选取非主元未知数作为自由未知数.
+	
+% 	\begin{theorem}
+% 		对于任意一个有\(n\)个未知数\(r\)个方程的方程组，其解有三种情况：
+% 		\par (1)	若出现矛盾方程，则方程组无解；
+% 		\par (2)	若\(n=r\)，方程有唯一解；
+% 		\par (3)	若\(n>r\)，方程有无穷多解.
+% 	\end{theorem}
+	
+	
+% \section{矩阵的基本运算}
+
+% 	首先定义几个特殊的矩阵.
+% 	\begin{definition}\;\\
+% 		对于矩阵\(\bm{A}=[a_{ij}]_{m \times n}\)：
+% 		\par (1)	若\(m=n\)，则称\(\bm{A}\)为\(n\)阶方阵\trm{(square matrix)}
+% 		\par (2)	若\(m=1\)，则称\(\bm{A}\)为行矩阵/行向量\trm{(row vector)}；
+% 		\par (3)	若\(n=1\)，则称\(\bm{A}\)为列矩阵/列向量\trm{(column vector)}；
+% 		\par (4)	若\(\bm{A}\)的元素全为0，则称\(\bm{A}\)为\textbf{零矩阵}\trm{(zero matrix})，用\(\bm{0}\)或\(\bm{0}_{m \times n}\)表示；\\
+% 		对于\(n\)阶方阵\(\bm{A}\)：
+% 		\par (1)	元素\(a_{ii}\)称为\textbf{主对角元}\trm{(main diagonal entry)}；
+% 		\par (2)	元素\(a_{i,n-i+1}\)称为\textbf{副对角元}\trm{(counter-diagonal entry)}；
+% 		\par (3)	\(\trm{tr}(\bm{A})=\sum_{i=0}^n a_{ii}\)称为\textbf{迹}\trm{(trace)}.
+% 		\par (4)	若\(\bm{A}\)的主对角元为1，其他元素为0，则称\(\bm{A}\)为\textbf{单位矩阵}\trm{(identity matrix)}，一般用\(\bm{I}\)来表示.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		对于两个矩阵\([a_{ij}]_{m\times n }\)和\([b_{ij}]_{p \times q}\)：\\
+% 		(1)	若\(m=n\wedge p=q\)，则说两个矩阵\textbf{同型}\trm{(isomorphic)}；\\
+% 		(2)	若\(\forall i,j :a_{ij}=b_{ij}\)（如果有意义），则称两个矩阵\textbf{相等}\trm{(equal)}.
+% 	\end{definition}
+	
+% \subsection{矩阵的线性运算}
+% 	矩阵的线性运算包括\textbf{矩阵加法}(matrix addtion)和矩阵的\textbf{数量乘法}(scalar multiplication).
+% 	\begin{definition}\;\\
+% 		(1)	对于两个\uline{同型矩阵}\(\bm{A}=[a_{ij}]_{m \times n}\)和\(\bm{B}=[b_{ij}]_{m \times n}\)，定义它们的加减法：
+% 		\[\bm{A} \pm \bm{B} = [a_{ij} \pm b_{ij}]_{m \times n}\]
+% 		(2)	对于矩阵\(\bm{A}=[a_{ij}]_{m \times n}\)和常数\(c\)，定义它们的数量积：
+% 		\[c\bm{A} = [ca_{ij}]_{m \times n}\]
+% 	\end{definition}
+% 	注意：矩阵能够相加或相减的前提是同型，称\(-\bm{A}\)为\(\bm{A}\)的\textbf{负矩阵}.
+
+% 	\begin{theorem}
+% 		矩阵的线性运算有以下性质：
+% 		\begin{eqnarray*}
+% 			\bm{A} + \bm{B} &=& \bm{B} + \bm{A};\\
+% 			(\bm{A} + \bm{B}) + \bm{C} &=& \bm{A} + (\bm{B} + \bm{C});\\
+% 			\bm{A} + \bm{0} &=& \bm{A}; \\
+% 			\bm{A} + (-\bm{A}) &=& \bm{0}; \\
+% 			1\bm{A} &=& \bm{A};\\
+% 			(kl)\bm{A} &=& k(l\bm{A}).
+% 		\end{eqnarray*}
+% 	\end{theorem}
+
+% \subsection{矩阵的乘法和幂}
+% 	对于两个矩阵\(\bm{A}=[a_{ij}]_{m \times p}\)和\(\bm{B}=[b_{ij}]_{p \times n}\)，定义\textbf{矩阵的乘法}\trm{(matrix multiplication)}：
+% 	\begin{equation}
+% 		\bm{AB}=[\sum_{i=1}^p a_{ip}b_{pj}]_{m \times n}.
+% 	\end{equation}
+	
+% 	通俗地说，\(\bm{A}\)和\(\bm{B}\)相乘得到的矩阵\(\bm{C}\)，其\((i,j)\)-元的值为\(\bm{A}\)的第\(i\)行的元素与\(\bm{B}\)的第\(j\)列的元素对应相乘再求和.
+	
+% 	由此可以得出矩阵相乘的一个前提：若\(\bm{A}=[a_{ij}]_{m \times n}\)和\(\bm{B}=[b_{ij}]_{p \times q}\)能够相乘，则必有\(n=p\)，即前者的列数等于后者的行数，这样才能使得\(\bm{A}\)那一行的元素都能在\(\bm{B}\)中对应列中找到相应的元素相乘，而且积的矩阵是\(m \times q\)的.
+	
+% 	\begin{theorem}
+% 		矩阵的乘法有以下性质：
+% 		\begin{eqnarray*}
+% 			&\bm{(AB)C = A(BC)};\\
+% 			&\bm{A(B + C) = AB + AC};\\
+% 			&\bm{(A + B)C=AC + BC}; \\
+% 			&(k)\bm{AB} = \bm{A}(k\bm{B});\\
+% 			&\bm{I}_m\bm{A}_{m \times n} = \bm{A}_{m \times n}\bm{I}_n = \bm{A}_{m \times n};\\
+% 			&\bm{0}_{p \times m}\bm{A}_{m \times n} = \bm{A}_{m \times n}\bm{0}_{n \times q} = \bm{0}.
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	注意：矩阵乘法没有交换律，即\(\bm{AB}\)不恒等于\(\bm{BA}\)，由以上性质的第5条可得，
+% 	\begin{equation*}
+% 		\bm{AB} = \bm{BA} \iff \bm{A} = c\bm{I} \vee \bm{B} = c\bm{I} \vee \bm{A} = \bm{B}.
+% 	\end{equation*}
+% 	同时矩阵的乘法也没有消去律，即两个非零矩阵相乘可能得到零矩阵.
+	
+% 	另外还要注意，由于矩阵的乘法没有交换律，对等号两边同乘一个矩阵要分左右：
+% 	\begin{eqnarray*}
+% 		\bm{A} = \bm{B}  &\Rightarrow& \bm{CA} = \bm{CB} \wedge \bm{AC} = \bm{BC}; \\
+% 		\bm{A} = \bm{B} &\not\Rightarrow& \bm{CA} = \bm{BC}.
+% 	\end{eqnarray*}
+	
+% 	对于\underline{方阵}\(\bm{A}\)， 递归定义矩阵的幂(power)：
+% 	\begin{eqnarray*}
+% 		\bm{A}^0 &=& \bm{I};\\
+% 		\bm{A}^{(c +1)} &=& \bm{A}^c\bm{A}.
+% 	\end{eqnarray*}
+% 	设\(f(x)=\sum_{i=0}^n a_i x^i\)为一个普通的一元多项式，则定义\underline{方阵}的多项式为\(f(\bm{A}) = \sum_{i = 0}^n a_i\bm{A}^i\)
+	
+% 	\begin{theorem}
+% 		矩阵的幂有以下性质：
+% 		\begin{eqnarray*}
+% 			\bm{A}^k \bm{A}^l &=& \bm{A}^{k+l};\\
+% 			(\bm{A}^k)^l &=& \bm{A}^{kl};\\
+% 			f(x) = g(x)h(x) & \Rightarrow & f(\bm{A}) = g(\bm{A})h(\bm{A}).
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	根据矩阵乘法的性质，矩阵的幂也有一些条件：
+% 	\begin{eqnarray*}
+% 		(\bm{AB})^k & \neq & \bm{A}^k \bm{B}^k;\\
+% 		(\bm{A} \pm \bm{B})^2 & \neq & \bm{A}^2 \pm 2\bm{AB} + \bm{B}^2;\\
+% 		\bm{A}^2 -\bm{B}^2 & \neq & (\bm{A} + \bm{B})(\bm{A} - \bm{B});\\
+% 		(\bm{A} + \bm{B})^n & \neq & \sum_{k = 0}^n C_n^k \bm{A}^{n-k} \bm{B}^k.
+% 	\end{eqnarray*}
+% 	当然，以上不等式也有可能变成等式，充分必要条件是\(\bm{AB} = \bm{BA}\).
+
+% % More details needed
+% 	\noindent \textbf{【怎样解题】}\\
+% 	计算方阵的幂，有以下几种方法：\\
+% 	(1)	试乘法：适用于具体方阵，先计算方阵的较低次数的幂，找规律，再证明该规律；\\
+% 	(2)	展开法：当所给矩阵是若干矩阵乘积时，可以展开连乘，使中间许多矩阵可以被提出或消去；\\
+% 	(3)	二项式公式法：把矩阵分解为两个矩阵的和，用二项式定理.
+	
+% \subsection{矩阵的转置}
+% 	对于任意一个矩阵\(\bm{A}=[a_{ij}]_{m \times n}\)，定义矩阵的\textbf{转置}\trm{(transpose)}\(\bm{A}^T\)为：
+% 	\begin{equation*}
+% 		\bm{A}^T = [b_{pq}]_{n \times m} , b_{pq} = a_{ji}.
+% 	\end{equation*}
+% 	通俗的说，转置就是把原矩阵的行和列角色调换一下.
+	
+% 	\begin{theorem}
+% 		\(\bm{AA}^T = \bm{0} \iff \bm{A} = \bm{0}\).
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		矩阵的转置有以下几个性质：
+% 		\begin{eqnarray*}
+% 			(\bm{A}^T)^T &=& \bm{A};\\
+% 			(\bm{A} + \bm{B}) &=& \bm{A}^T + \bm{B}^T;\\
+% 			(c\bm{A})^T &=& c\bm{A}^T, c \in \mathbb{R};\\
+% 			(\bm{AB})^T &=& \bm{B}^T \bm{A}^T; \\
+% 			(\bm{AB}^T + \bm{BA}^T)^T &=& \bm{AB}^T + \bm{BA}^T.
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+	
+% \section{矩阵的秩和初等变换}
+% \subsection{矩阵的秩}
+
+% 	矩阵的\textbf{秩}\trm{(rank)}有好几种定义，可以定义为矩阵用初等行变换化成的阶梯形矩阵中主元的个数，记作\(r(\bm{A})\). 此外，秩还等于阶梯形矩阵中非零行的个数；对于线性方程组的增广矩阵，秩还等于与原方程组同解的阶梯形方程组中方程的个数.
+% 	\begin{theorem}
+% 		矩阵的秩有如下特征：
+% 		\begin{eqnarray*}
+% 			\forall \bm{A} : r(\bm{A}) = 0 & \iff & \bm{A} = 0;\\
+% 			\forall \bm{A}_{m \times n} : r(\bm{A})  & \leq & {\rm min}\{m,n\}.
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	对于\(n\)阶方阵\(\bm{A}\)，若\(r(\bm{A}) = n\)则称矩阵\(\bm{A}\)为满秩方阵；若\(r(\bm{A}) < n\)，则称\(\bm{A}\)为降秩方阵.
+	
+% 	因此非零行矩阵、非零列矩阵的秩为1；单位矩阵、数量矩阵为满秩矩阵.
+	
+% 	\begin{theorem}
+% 		满秩方阵可以只通过初等行变换化为单位矩阵.
+% 	\end{theorem}
+% 	证明思路：满秩方阵可以看做是有唯一解的线性方程组的系数矩阵.
+% 	\begin{theorem}
+% 		初等行变换不改变矩阵的秩.
+% 	\end{theorem}
+% 	证明思路：线性方程组的初等变换不改变主元的个数.
+
+% \subsection{矩阵的初等变换}
+
+% 	对应于方程的三种初等行变换，矩阵也有三种\textbf{初等列变换}：
+% 	\par (1)	用一个非零数\(k\)乘上第\(i\)列的全部元素，用\(kC_i\)表示；
+% 	\par (2)	第\(i\)列的全部元素乘同一个数\(k\)，并加到第\(j\)列的对应元素上，用\(C_i + kC_j\)表示；
+% 	\par (3)	互换第\(i\)和第\(k\)列的位置，用\(C_{ik}\)或\(C_i\leftrightarrow C_k\)表示.
+	
+% 	矩阵的初等行变换和初等列变换统称为\textbf{初等变换}.
+	
+% 	\begin{definition}
+% 		（矩阵的三大关系之一）若两个矩阵\(\bm{A}\)和\(\bm{B}\)同型，且\(\bm{A}\)可以通过有限次初等变换变成\(\bm{B}\)，那么称\(\bm{A}\)\textbf{相抵于}\(\bm{B}\)，记作\(\bm{A} \cong \bm{B}\).
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		矩阵的相抵关系是一种等价关系.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		任意满秩矩阵相抵于同型单位矩阵.
+% 	\end{theorem}
+% 	因为可以通过初等行变换化为单位矩阵.
+	
+% 	对于任意秩为\(r\)的矩阵\(\bm{A}_{m \times n}\)，定义\(\bm{A}\)的\textbf{相抵标准型}为矩阵\([d_{ij}]_{m \times n} \)，其中\(\forall i \in [1,r] \cap \mathbb{Z} : d_{ii} = 1\)，其余元素全为0，如下：
+% 	\begin{equation*}
+% 		\begin{bmatrix}
+% 		1 & 0 & 0 & \cdots & 0 \\
+% 		0 & 1 & 0 & \cdots & 0 \\
+% 		0 & 0 & 1 & \cdots & 0 \\
+% 		\vdots & \vdots & \vdots & & \vdots \\
+% 		0 & 0 & 0 & \cdots & 1 \\
+% 		0 & 0 & 0 & \cdots & 0 \\
+% 		\vdots & \vdots & \vdots & & \vdots \\
+% 		0 & 0 & 0 & \cdots & 0
+% 		\end{bmatrix}
+% 	\end{equation*}
+	
+% 	\begin{theorem}
+% 		任意矩阵的相抵标准型唯一确定，即两矩阵\(\bm{A}\)和\(\bm{B}\)相抵的充分必要条件是\(r(\bm{A}) = r(\bm{B})\).
+% 	\end{theorem}
+	
+	
+% \subsection{矩阵的初等变换和运算的关系}
+	
+% 	\noindent
+% 	\hangafter = 1
+% 	\setlength{\hangindent}{2em}
+% 	由单位矩阵经过一次初等变换而来的矩阵称为\textbf{初等矩阵}\trm{(elementary matrix)}，有三种初等矩阵：\\
+% 	(1)	用一个常数\(c\)乘以单位矩阵的第\(i\)行或第\(i\)列，得到的矩阵用\(\bm{E}_i (c)\)表示；\\
+% 	(2)	把单位矩阵的第\(i\)行或第\(i\)列乘以常数\(c\)后加到第\(j\)行或第\(j\)列，得到的矩阵用\(\bm{E}_{ij}(c)\)表示；\\
+% 	(3)	交换单位矩阵某两行或某两列的位置，得到的矩阵用\(\bm{E}_{ij}\)表示.
+	
+% 	\noindent
+% 	初等矩阵有以下几个性质：
+% 	\par (1)	初等矩阵是满秩方阵，初等矩阵的乘积也是满秩方阵；
+% 	\par (2)	对于任何一个初等矩阵\(\bm{A}\)，均存在一个初等矩阵\(\bm{B}\)，使得\(\bm{AB} = \bm{BA} = \bm{I}\).
+	
+% 	\begin{theorem}
+% 		满秩方阵可以表示若干初等矩阵的乘积.
+% 	\end{theorem}
+% 	证明思路：满秩方阵都可以经过初等行变换变成单位矩阵，因此也可以由单位矩阵经过初等行变换得来，而初等行变换可以等价为左边乘上相应的初等矩阵.因此还有推论：满秩方阵的乘积还是满秩方阵.
+	
+% 	\begin{theorem}
+% 		设\(\bm{A}\)是一个\(m \times n\)矩阵，对\(\bm{A}\)实行一次初等行变换，相当于是在\(\bm{A}\)的左边乘以相应的初等矩阵；对\(\bm{A}\)实行一次初等列变换，相当于是在\(\bm{A}\)的右边乘以一个相应的初等矩阵.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		任意矩阵\(\bm{A}_{m \times n}\)和\(\bm{B}_{m \times n}\)相抵的充分必要条件是：存在\(n\)阶满秩矩阵\(\bm{P}\)和\(\bm{Q}\)，使得\(\bm{PAQ} = \bm{B}\).
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		矩阵的转置不改变它的秩.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		对于任意矩阵\(\bm{A}_{m \times n}\)、\(m\)阶满秩方阵\(\bm{P}\)和\(n\)阶满秩方阵\(\bm{Q}\)，均有：
+% 		\begin{equation}
+% 			r(\bm{A}) = r(\bm{PA}) = r(\bm{AQ}) = r(\bm{PAQ}).
+% 		\end{equation}
+% 	\end{theorem}
+
+
+% \subsection{矩阵的逆}
+	
+% 	\begin{definition}
+% 	对于任意矩阵\(\bm{A}\)，若存在一个矩阵\(\bm{A}^{-1}\)，使得\(\bm{AA}^{-1} = \bm{A}^{-1}\bm{A}=\bm{I}\)，则称矩阵\(\bm{A}\)是\textbf{可逆的}\trm{(invertible)}，矩阵\(\bm{A}^{-1}\)是\(\bm{A}\)的\textbf{逆矩阵}\trm{(inverse)}.
+% 	\end{definition}
+% 	注意：矩阵的逆只对方阵有效，非方阵一定不可逆，但是方阵不一定都可逆，比如零矩阵（任何矩阵乘以零矩阵都不等于单位矩阵.若矩阵可逆，则它的逆矩阵也可逆，且逆矩阵等于矩阵自己，由此推出可逆矩阵的逆矩阵都是唯一的.
+	
+% 	\begin{theorem}
+% 		初等矩阵都是可逆矩阵，且其逆矩阵也为初等矩阵：
+% 		\begin{eqnarray*}
+% 			{[E_i(k)]}^{-1} &=& E_i(\frac{1}{k})\\
+% 			{[E_{ij}(k)]}^{-1} &=& E_{ij}(-k)\\
+% 			{[E_{ij}]}^{-1} &=& E_{ij}
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		若\(\bm{A}\)是方阵，则\(\bm{A}\)可逆的充分必要条件是\(\bm{A}\)满秩.
+% 	\end{theorem}
+% 	矩阵的满秩和可逆等价，所以任何满秩方阵的性质对可逆矩阵全部成立.
+	
+% 	\noindent
+% 	因此现在有两种方法判断矩阵的可逆性：
+% 	\par (1)	对于具体的矩阵，判断矩阵是否为满秩矩阵，可用高斯消元法；
+% 	\par (2)	对于抽象的矩阵\(\bm{A}\)（一般给出一个关于矩阵的式子），利用矩阵可逆的定义，把该式子整理成\(\bm{AB}=\bm{I}\)或\(\bm{BA}=\bm{I}\)的形式.
+	
+% 	\begin{theorem}
+% 		把可逆矩阵\(\bm{A}\)化成单位矩阵的一系列初等变换，可以把同型的单位矩阵化为\(\bm{A}^{-1}\).\\
+% 		即若\(\bm{PAQ}=\bm{I}\)，则\(\bm{PIQ}=\bm{A}^{-1}\).
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】} \\
+% 	目前有三种求逆矩阵的方法：\\
+% 	(1)	对于二阶具体方阵，可以直接套公式：
+% 	\begin{equation*}
+% 		{\begin{bmatrix} a & b \\ c & d \end{bmatrix}}^{-1} = \frac{1}{ac-bd}
+% 		\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
+% 	\end{equation*}
+% 	(2)	对于三阶及以上的具体方阵，使用初等变换化为单位矩阵，然后把同样的操作应用在同型的单位矩阵上；\\
+% 	(3)	对于抽象矩阵\(\bm{A}\)，一般给出一个关于矩阵的式子，把该式子整理成\(\bm{AB}=\bm{I}\)或\(\bm{BA}=\bm{I}\)的形式，此时\(\bm{B}\)就是逆矩阵.
+	
+% 	\begin{theorem}
+% 		矩阵的逆有如下性质（前提是以下矩阵都可逆）：
+% 		\begin{eqnarray*}
+% 			(\bm{A}^{-1})^{-1} &=& \bm{A}; \\
+% 			(c \bm{A})^{-1} &=& \frac{1}{c} \bm{A}^{-1}, c \in \mathbb{R}; \\
+% 			\bm{AB}^{-1} &=& \bm{B}^{-1} \bm{A}^{-1}; \\
+% 			(\bm{A}^{T})^{-1} &=& (\bm{A}^{-1})^{T}.
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+
+% \subsection{矩阵方程（逆矩阵的应用）}
+
+% 	\begin{definition}
+% 		\underline{矩阵方程的三种最简形式}形如：
+% 		\begin{equation*}
+% 			\bm{AX}=\bm{C},	\bm{XB}=\bm{D};	\bm{AXB}=\bm{F}.
+% 		\end{equation*}
+% 		其中\(\bm{A}, \bm{B}, \bm{C}, \bm{D}, \bm{F}\)为已知矩阵，\(\bm{X}\)为未知矩阵.
+% 	\end{definition}
+	
+% 	当系数矩阵\(\bm{A}\)和\(\bm{B}\)都为可逆矩阵时，可以在等号两边乘上它们的逆矩阵，最后化成等号左边只有\(\bm{X}\)的形式：
+% 	\begin{eqnarray*}
+% 		\bm{AX}=\bm{C} &\Rightarrow& \bm{X}=\bm{A}^{-1}\bm{C}; \\
+% 		\bm{XB}=\bm{D} &\Rightarrow& \bm{X}=\bm{DB}^{-1}; \\
+% 		\bm{AXB}=\bm{F} &\Rightarrow& \bm{X}=\bm{A}^{-1} \bm{F} \bm{B}^{-1}.
+% 	\end{eqnarray*}
+	
+% 	当系数矩阵不可逆时...
+	
+% \section{分块矩阵}
+% \subsection{分块矩阵的概念}
+% 	\begin{definition}
+% 		对于矩阵\(\bm{A}_{m \times n}\)，在行之间插入\(t-1\)条贯穿整个矩阵的竖线，在列之间插入\(s-1\)条贯穿矩阵的横线，使得矩阵\(\bm{A}\)被分割成为\(s \times t\)个小矩阵，依次记为
+% 		\begin{equation*}
+% 			\bm{A}_{ij} (i \in [1,s] \cap \mathbb{Z} \wedge j \in [1,t] \cap \mathbb{Z})
+% 		\end{equation*}
+% 		此时\(\bm{A}\)可以写为：
+% 		\begin{equation*}
+% 			\bm{A} = 
+% 			\begin{bmatrix}
+% 				\bm{A}_{11} & \bm{A}_{12} & \cdots & \bm{A}_{1t} \\
+% 				\bm{A}_{21} & \bm{A}_{22} & \cdots & \bm{A}_{2t} \\
+% 				\vdots & \vdots & & \vdots \\
+% 				\bm{A}_{s1} & \bm{A}_{s2} & \cdots & \bm{A}_{st}
+% 			\end{bmatrix}
+% 		\end{equation*}
+% 		称此时的\(\bm{A}\)为\textbf{分块矩阵}\trm{(partitioned matrix)}，其中每一个\(\bm{A}_{ij}\)都是\(\bm{A}\)的\textbf{子块}\trm{(block)}.
+% 	\end{definition}
+	
+% 	\noindent
+% 	矩阵的分块一般有三种分法：
+% 	\par (1)	根据元素的排列特性；
+% 	\par (2)	按行或列划分；
+% 	\par (3)	两个极端划分：整个矩阵看做一个子块，以及每个元素都划分为一个矩阵（这两种情况一般不看做分块矩阵）.
+	
+% \subsection{分块矩阵的运算}
+% 	\begin{definition}
+% 		对于两个划分方式相同的矩阵\(\bm{A}=[\bm{A}_{ij}]\)和\(\bm{B}=[\bm{A}_{ij}]\)，其加减法定义为：
+% 		\begin{equation*}
+% 			\bm{A} \pm \bm{B} = \bm[\bm{A}_{ij} \pm \bm{B}_{ij}].
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		对于分块矩阵\(\bm{A}=[\bm{A}_{ij}]\)，常数\(c\)与其数乘定义为：
+% 		\begin{equation*}
+% 			c \bm{A} = [c \bm{A}_{ij}].
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		分块矩阵\(\bm{A} = [\bm{A}_{ij}]_{m \times p}\)和\(\bm{B} = [\bm{B}_{ij}]_{p \times n}\)的乘法定义为：
+% 		\begin{equation*}
+% 			\bm{AB} = [\sum_{i = 1}^p \bm{A}_{ip} \bm{B}_{pj}]_{m \times n}.
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	关于分块矩阵的数乘，有几点需要注意：
+% 	\par (1)	\(\bm{A}\)的列划分方式和\(\bm{B}\)的行划分方式要相同，即左边矩阵的行组数=右边矩阵的列组数，且左矩阵的每个列组所含列数=右矩阵的相应行组所含的行数；
+% 	\par (2)	左边矩阵的子矩阵在左边，右边矩阵的子矩阵在右边，两者不可交换，即
+% 	\begin{equation*}
+% 		\bm{AB} = [\sum_{i = 1}^p \bm{A}_{ip} \bm{B}_{pj}]_{m \times n} \neq [\sum_{i = 1}^p \bm{B}_{ip} \bm{A}_{pj}]_{m \times n} 
+% 	\end{equation*}
+	
+% 	\begin{theorem}
+% 		对于任意\(n\)阶方阵\(\bm{A}\)，若存在\(n\)阶非零方阵\(\bm{B}\)，使得\(\bm{AB} = \bm{0}\)，则\(\bm{A}\)是降秩矩阵.
+% 	\end{theorem}
+% 	证明思路：
+	
+% 	\begin{corollary}
+% 		对于矩阵\(\bm{A}_{m \times n}\)和\(\bm{B}_{n \times p}\)，\(\bm{AB}=\bm{C}\)成立的充要条件是\(\bm{B}\)的\(p\)个列恰好是非齐次线性方程组\(\bm{AX}=\bm{C}_j,  j \in [1,p] \cap \mathbb{Z} \)的\(p\)个解，其中\(C_1, C_2, ..., C_p\)为矩阵\(\bm{C}\)的\(p\)列.
+% 	\end{corollary}
+	
+% 	利用分块矩阵可以简化某些矩阵的求逆过程，但核心方法仍不变：待定元素法，即把逆矩阵先设出来，在和原矩阵相乘得到单位矩阵，最后逐个解出，分块的好处是可以减少计算量.
+	
+% 	对于某些矩阵的求逆有规律.
+% 	\begin{definition}
+% 		对于分块方阵\( \bm{A} = [\bm{A}_{ij}]_{m \times m}\)，若\(\forall i,j \in [1,m] \cap \mathbb{Z} : (i=j \rightarrow \bm{A}_{ij} \neq \bm{0}) \wedge (i \neq j \rightarrow \bm{A}_{ij} = \bm{0})\)，则称矩阵\(\bm{A}\)为\textbf{准对角矩阵}\trm{(block diagonal matrix)}. \par 对于分块方阵 \(\bm{A} = [\bm{A}_{ij}]_{m \times m}\)，若\(\forall i,j \in [1,m] \cap \mathbb{Z} : (i=m-j \rightarrow \bm{A}_{ij} \neq 0) \wedge (i \neq m-j \rightarrow \bm{A}_{ij} = 0) \)，则称矩阵\(\bm{A}\)为反准对角矩阵.
+% 	\end{definition}
+% 	\begin{theorem}
+% 		对于准对角矩阵\(\bm{A} = [\bm{A}_{ij}]\)，有\(\bm{A}^{-1}=[\bm{A}_{ij}^{-1}]\)；对于反准对角矩阵\(\bm{B} = [\bm{B}_{ij}]\)，有\(\bm{B}^{-1}=[\bm{B}_{ji}^{-1}]\)，即 \\
+% 		\begin{eqnarray*}
+% 		\bm{A} = 
+% 		\begin{bmatrix}
+% 			\bm{A}_{1} & & & \\
+% 			 & \bm{A}_{2} & & \\
+% 			 & & \ddots &  \\
+% 			 & & & \bm{A}_{m}
+% 		\end{bmatrix}
+% 		\Rightarrow \bm{A}^{-1} = 
+% 		\begin{bmatrix}
+% 			\bm{A}_{1}^{-1} & & & \\
+% 			 & \bm{A}_{2}^{-1} & & \\
+% 			 & & \ddots &  \\
+% 			 & & & \bm{A}_{m}^{-1}
+% 		\end{bmatrix} \\
+% 		\bm{B} = 
+% 		\begin{bmatrix}
+% 			 & & & \bm{B}_{1} \\
+% 			 & & \bm{B}_{2} & \\
+% 			 &\iddots &  &  \\
+% 			 \bm{B}_{m} & & & 
+% 		\end{bmatrix}
+% 		\Rightarrow \bm{B}^{-1} = 
+% 		\begin{bmatrix}
+% 			 & & & \bm{B}_{m} ^{-1}\\
+% 			 & & \iddots & \\
+% 			 & \bm{B}_{2}^{-1} &  &  \\
+% 			 \bm{B}_{1}^{-1} & & & 
+% 		\end{bmatrix}
+% 		\end{eqnarray*}
+% 	\end{theorem}
+
+% \subsection{分块矩阵的性质}
+	
+% 	\begin{theorem}
+% 		分块矩阵的秩有以下性质：\\
+% 		\begin{eqnarray*}
+% 			r(\begin{bmatrix} \bm{A} & \bm{B} \\ \bm{C} & \bm{D} \end{bmatrix})  & \geq & r(\bm{A}); \\
+% 			r(\begin{bmatrix}\bm{A} & \bm{B} \\ \bm{C} & \bm{D} \end{bmatrix}) & \geq & r(\begin{bmatrix}\bm{A} & \bm{0} \\ \bm{C} & \bm{D} \end{bmatrix}); \\
+% 			r(\begin{bmatrix}\bm{A} & \bm{0} \\ \bm{0} & \bm{B} \end{bmatrix}) & = & r(\bm{A}) + r(\bm{B}); \\
+% 			r(\begin{bmatrix}\bm{0} & \bm{A} \\ \bm{B} & \bm{0} \end{bmatrix}) & = & r(\bm{A}) + r(\bm{B}).
+% 		\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		非常需要记住的结论：\\
+% 		(1)	设\(\bm{A}\)和\(\bm{B}\)是同型矩阵，则\(r(\bm{A} +\bm{B}) \leq r(\bm{A})+r(\bm{B})\)； \\
+% 		(2)	对于矩阵\(\bm{A}_{s \times n}\)和\(\bm{B}_{n \times t}\)，有\(r(\bm{AB}) \geq r(\bm{A}) + r(\bm{B}) -n \).
+% 	\end{theorem}
+	
+% --------------------------------------------------------------------------------------
+% \section{向量组的线性相关性}
+% \subsection{向量的基本概念和运算}
+% 	\begin{definition}
+% 		\(n\)个数按顺序构成的有序数组称为\textbf{\(n\)元向量}\trm{(vector)}或\textbf{\(n\)维向量}，记为\(\bm{\alpha} = (a_1,a_2,a_3,\cdots, a_n)\)，其中的\(a_i)\)称为\(\alpha\)的第\(i\)个\textbf{分量}.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		元素全为实数的向量称为\textbf{实向量}\trm{(real vector)}，元素全为复数的向量称为\textbf{复向量}\trm{(complex vector)}；把向量的元素写成一行，则称该向量为\textbf{行向量}\trm{(row vector)}（即\(1 \times n \)矩阵），把向量的元素写成一列则称\textbf{列向量}\trm{(column vector)}（即\(n \times 1 \)矩阵）.
+% 	\end{definition}
+% 	注意，虽然行向量和列向量只是转置的关系，但是也被看做是两个不同的向量。
+	
+% 	把向量看作是特殊的矩阵，可以引入向量的线性运算：加减和数乘；还可以引入向量相等的定义，以及负向量、零向量（一般记作\(\bm{0}\)或\(\bm{\theta}\)）的概念，此处不再赘述.
+	
+% 	\begin{theorem}
+% 		（向量的8条运算性质）设\(\bm{\alpha}, \bm{\beta}, \bm{\gamma}\)是任意三个\(n\)元向量，\(k,l\)是任意两个数，则有：
+% 	\begin{eqnarray*}
+% 		\bm{\alpha} + \bm{\beta} &=& \bm{\beta} + \bm{\alpha} \\
+% 		(\bm{\alpha} + \bm{\beta}) + \bm{\gamma} &=& \bm{\alpha} + (\bm{\beta} + \bm{\gamma}) \\
+% 		\bm{\alpha} + \bm{\theta} &=& \bm{\alpha} \\
+% 		\bm{\alpha} + (-\bm{\alpha}) &=& \bm{\theta} \\
+% 		1\bm{\alpha} &=& \bm{\alpha} \\
+% 		(kl)\bm{\alpha} &=& k(l\bm{\alpha}) \\
+% 		(k+l)\bm{\alpha} &=& k\bm{\alpha} + l\bm{\alpha} \\
+% 		k(\bm{\alpha} +\bm{\beta}) &=& k\bm{\alpha} + k\bm{\beta} 
+% 	\end{eqnarray*}
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		若\(k\bm{\alpha}=\bm{\theta}\)，则\(k=0\)或\(\bm{\alpha}=\bm{\theta}\)；\\
+% 		向量方程\(\bm{\alpha}+\bm{x}=\bm{\beta}\)有唯一解\(\bm{x}=\bm{\beta}-\bm{\alpha}\).
+% 	\end{corollary}
+	
+% % -------------------------
+% \subsection{线性相关性}
+
+% 	\begin{definition}
+% 		设有一个由同型的向量组成的集合（称为\textbf{向量组}）\(\{\bm{\alpha}_i |  i \in [1,n]\cap \mathbb{Z}\}\)，和一个数集\(\{k_i |  i \in [1,n]\cap \mathbb{Z}\} \)，则称向量
+% 	\begin{equation*}
+% 		\bm{\beta}=\sum_{i=1}^n k_i \bm{\alpha}_i
+% 	\end{equation*}
+% 	是向量组\(\{\bm{\alpha}_i |  i \in [1,n]\cap \mathbb{Z}\}\)的一个\textbf{线性组合}\trm{(linear combination)}，也称向量\(\bm{\beta}\)能被该向量组中的向量\textbf{线性表出}.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		\(\bm{\beta}\)可由向量组\(\{\bm{\alpha}_i |  i \in [1,n]\cap \mathbb{Z}\}\)线性表出的充要条件是：非齐次方程组\(\bm{AX}= \bm{\beta}\)有解， 其中矩阵\(\bm{A}=[ \bm{\alpha}_1, \bm{\alpha}_2, \bm{\alpha}_3, \cdots, \bm{\alpha}_n] \).
+% 	\end{theorem}
+	
+% 	\begin{definition}
+% 		对于向量组\(\{\bm{\alpha}_i |  i \in [1,n]\cap \mathbb{Z}\}\)，若存在数集\(\{k_i |  i \in [1,n] \cap  \mathbb{Z} \wedge \exists k_i \neq 0 \} \)，满足
+% 	\begin{equation}
+% 		\bm{\theta} = \sum_{i=1}^n k_i \bm{\alpha}_i
+% 	\end{equation}
+% 		则称该向量组\textbf{线性相关}\trm{(linear dependent)}，否则称该向量组\textbf{线性无关}\trm{(linear independent)}.
+% 	\end{definition}
+% 	注意：对于含有两个向量的向量组，其线性相关的充要条件是两向量的分量对应成比例，几何意义是两向量共线；三个向量线性相关的几何意义是三向量共面。
+	
+% 	\begin{definition}
+% 		设\(\varepsilon_i=(\underbrace{0,\cdots,0}_{i-1},1,0,0,\cdots,0)\)则\(\{\varepsilon_1,\varepsilon_2,\cdots,\varepsilon_n\}\)称为\textbf{基本向量组}（其实就是\(n\)阶单位矩阵的行向量）
+% 	\end{definition}
+	
+% 	容易证得，基本向量组线性无关.
+% 	\begin{definition}
+% 		对于\(m\)元向量\( \bm{\alpha} \)和\(n(n>m)\)元向量\(\bm{\beta}\)，若\(\bm{\alpha}\)的第\(i\)元与\(\bm{\beta}\)的第\(i\)元相同，则称\(\bm{\beta}\)是\(\bm{\alpha}\)的一个延伸组，\(\bm{\alpha}\)是\(\bm{\beta}\)的一个缩短组.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		(1)	对于向量组\(X\)，若\(\bm{\theta} \in  X \)，则\(X\)线性相关； \\
+% 		(2)	对于向量组\(X\)，若存在非空\(S \subset X \)，且\(S\)线性相关，则\(X\)也线性相关； \\
+% 		(3)	对于线性无关向量组\(X\)，任意非空\(S \subseteq X \)都线性无关；\\
+% 		(4)	若某个向量组线性无关，则其延伸组线性无关； \\
+% 		(5)	若某个向量组线性相关，则其缩短组线性相关；\\
+% 		(6)	\(S \subset \mathbb{R}^n \wedge \card{S} = m \wedge m > n \rightarrow S\)线性相关，即\uline{当向量组中的向量个数大于向量维数时（组中的向量维数都相同），向量组必定线性相关.}
+% 	\end{theorem}
+	
+% 	\noindent 【如何解题】\\
+% 	判断若干个\(n\)元向量\( \bm{\alpha}_1, \bm{\alpha}_2,\cdots, \bm{\alpha}_m\) 相关性方法为：\\
+% 	1.	设未知数\(x_1,x_2,x_3,\cdots,x_n\)；
+% 	2.	解向量方程\(\sum_{i=1}^m x_i\bm{\alpha}_i=\bm{\theta}\)，具体操作为列\(n\)个方程，在第\(p\)个方程中，让\(x_i\)与第\(p\)个向量的第\(i\)个分量相乘，最后再相加，等于0.
+	
+% 	\begin{theorem}
+% 		向量组线性相关的充分必要条件是：向量组中存在至少一个向量，能被组中其他的向量线性表出；\\向量组线性无关的充分必要条件是：向量组中的任何一个向量均不能用组中的其他向量线性表出.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		对于任何一个线性无关的向量组，若加入了向量 \(\bm{\beta}\)后变得线性相关，则 \(\bm{\beta}\)用组中其他向量的表出方法唯一.
+% 	\end{theorem}
+% 	证明思路：先用反证法证明加入了 \(\bm{\beta}\)的向量组线性相关（假设\( \bm{\beta}\)的系数为0，推出原向量组线性相关，矛盾），接着设两组不同的系数线性表出 \(\bm{\beta}\)，再两式相减，得到两组系数分别相等的结论.
+	
+% 	\begin{definition}
+% 		对于两组向量\(A\)和\(B\)，若\(A\)中的每一个向量均可用\(B\)中的向量线性表出，且\(B\)中的每一个向量也可用\(A\)中的向量线性表出，则称两个向量组\textbf{等价} ，记作\(A \cong B\)
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		对于两个向量组\(A=\{ \bm{\alpha}_i | i \in [1,s] \cap \mathbb{Z}\}\)和\(B=\{ \bm{\beta}_i | i \in [1,t] \cap \mathbb{Z}\}\)，若\(A\)中的每一个向量均可用\(B\)中的向量线性表出，且\(s>t\)，则\(A\)线性相关.
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		对于无关组\(A,B\)，若\(A \cong B\)，则\(\card{A}=\card{B}\).
+% 	\end{corollary}
+	
+	
+% \subsection{向量组的秩}
+	
+% 	\begin{definition}
+% 		对于任何一个向量组\(A\)，若存在线性无关组\( S \subseteq A\)且\( \forall T \subseteq A  \wedge \card{T}>\card{S}\)，\(T\)都线性相关，则称\(S\)为\(A\)的\textbf{极大（线性）无关组}，\(\card{S}\)称为向量组\(A\)的\textbf{秩}，记作\(r(A)=\card{S}\).
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		等价的向量组的极大无关组等价；向量组与它的极大无关组等价.
+% 	\end{theorem}
+% 	证明思路：
+	
+% 	\begin{theorem}
+% 	矩阵的秩和向量组的秩有以下重要性质：
+% 		(1)	任意矩阵的秩都等于其行向量的秩，也等于其列向量组的秩；\\
+% 		(2)	矩阵的初等变换不改变其行向量组或列向量组的秩；\\
+% 		(3)	矩阵可逆\(\iff\) 矩阵满秩 \(\iff \)矩阵的行/列向量组线性无关；\\
+% 		(4)	矩阵的初等行变换不改变列向量组的线性相关性，即设在做初等行变换之前和之后的列向量组为\(\{ \bm{\alpha}_1,\bm{\alpha}_2,\cdots, \bm{\alpha}_n\}\)和\( \bm{\beta}_1,\bm{\beta}_2,\cdots, \bm{\beta}_n\}\)，则\(\sum_{i=1}^n k_i \bm{\alpha}_i = \bm{\theta} \Rightarrow \sum_{i=1}^n k_i \bm{\beta}_i =\bm{\theta}\)（线性表出的系数不改变）.
+% 	\end{theorem}
+	
+% 	\noindent\textbf{【如何解题】}\\
+% 	求向量组\( \{\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n\}\) 极大无关组和秩，并使用该极大无关组中的向量表示其他向量的方法：\\
+% 	(1)	设\(A=[\bm{\beta}_1,\bm{\beta}_2, \cdots, \bm{\beta}_n] \)，即把它们作为矩阵的\uline{列向量}；\\
+% 	(2)	把矩阵\(A\)通过初等行变换化为阶梯形矩阵\(A'\)；\\
+% 	(3)	 \(A'\)的非零行数即为向量组的秩；\\
+% 	(4)	\(A'\)的主元所在的列的列向量即为极大无关组，\uline{由于某个主元所在的列可能不是唯一的，所以可以推出向量组的极大无关组可能不是唯一的}；\\
+% 	(5)	其他向量（没有主元的那几列）的线性表出的系数通过解方程来求得，或者通过把\(A'\)化为行简化阶梯型矩阵后用眼睛看出来.
+	
+% 	\begin{theorem}
+% 		对于任意两个矩阵\(A,B\)，有\(r(AB)\leq {\rm min}\{A,B\}\).
+% 	\end{theorem}
+	
+% \subsection{齐次线性方程组的解的结构}
+	
+% 	对于一个齐次线性方程组：
+% 	\begin{equation*}
+% 	\begin{cases}
+% 		a_{11}x_1+a_{12}x_2+\cdots+a_{1n}x_n=0	\\
+% 		a_{21}x_1+a_{22}x_2+\cdots+a_{2n}x_n=0	\\
+% 		\cdots\cdots\cdots\\
+% 		a_{m1}x_1+a_{m2}x_2+\cdots+a_{mn}x_n=0\\ 
+% 	\end{cases}
+% 	\end{equation*}
+% 	可以把未知数\(x_i\)的系数提出来，成为列向量；再把等号右边的0提出来，成为零列向量，此时方程可化为其\uline{向量表达式}：
+% 	\begin{eqnarray}
+% 		x_1\bm{\alpha}_1+x_2\bm{\alpha}_2+\cdots+x_n \bm{\alpha}_n=\bm{\theta}
+% 	\end{eqnarray}
+% 	此时方程组的系数矩阵即为\(\bm{A} = [\bm{\alpha}_1,\bm{\alpha}_2,\cdots,\bm{\alpha}_n]\).，这样就把方程组是否有解的问题转化为向量组是否线性相关的问题，于是有：
+	
+% 	\begin{theorem}
+% 		齐次线性方程组有非零解的充分必要条件有两个：\\
+% 		(1)	方程的系数列向量，即\(\bm{\alpha}_1, \bm{\alpha}_2,\cdots, \bm{\alpha}_n\)线性相关.\\
+% 		(2)	系数矩阵（即系数列向量的向量组）的秩小于未知数个数.\\
+% 		充分条件是：\\
+% 		系数矩阵为\(m\times n\)矩阵，其中\(m<n\).
+% 	\end{theorem}
+% 	换种方法思考，当系数列向量组线性无关时，系数矩阵满秩，可化为单位矩阵，此时再写出对应的线性方程组，必然是\(x_1=0,x_2=0,\cdots,x_n=0\)的形式；反过来，当系数列向量组线性相关时，系数矩阵降秩，此时它的相抵标准型一定不是单位矩阵，对应的线性方程组中一定有自由未知数，选取自由未知数的值，可以让方程有非零解.
+	
+% 	\begin{definition}
+% 		\(n\)元线性方程组的一个解是一个\(n\)元有序数组，可以看做一个\(n\)元\uline{列向量}，称为解向量，一般用\(X_1, X_2,...\)表示.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		设\(\bm{X}_1,\bm{X}_2,\cdots, \bm{X}_t\)是齐次线性方程组的解向量，\(k_1,k_2,\cdots,k_t\)为任意数，则它们的线性组合\(\sum_{i=1}^t k_i \bm{X}_i\)也是方程组的解向量.
+% 	\end{theorem}
+% 	证明思路：把这些东西代入\(\bm{AX}=\bm{0}\)中.
+	
+% 	\begin{definition}
+% 		线性方程组的解向量组的极大无关组称为\textbf{基础解系}.
+% 	\end{definition}
+% 	基础解系存在的意义是为了能线性表出线性方程组的所有解向量，方程组的基础解系可能不唯一，但是包含的解向量的个数唯一（因为方程组的系数矩阵的秩，即解向量组的秩是确定的）.
+	
+% 	\begin{theorem}
+% 		设有齐次线性方程组\(\bm{AX}=\bm{b}\)，若\(r(\bm{A}_{m \times n})<n\)，则该方程组存在基础解系，且基础解系包含\(n-r(\bm{A})\)个解向量.
+% 	\end{theorem}
+% 	注意，当系数矩阵 \(\bm{A}\)满秩时，方程组只有零解，此时说基础解系不存在.\\
+% 	证明思路：\sout{【有待整理】}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求\(n\)元齐次线性方程组\(\bm{AX}=\bm{0}\)的基础解系的方法如下：\\
+% 	(1)	把其系数矩阵 \(\bm{A}\)化为阶梯形矩阵 \(\bm{B}\)；\\
+% 	(2)	在阶梯形矩阵中确定自由未知数\(x_{r(\bm{A})+1}, x_{r(\bm{A})+2},\cdots, x_n\)；\\
+% 	(3)	将\((x_{r(\bm{A})+1}, x_{r(\bm{A})+2},\cdots, x_n)\)分别取
+% 		\begin{equation*}
+% 		(1,0,0,\cdots,0),(0,1,0,\cdots,0),\cdots,(0,0,0,\cdots,1)
+% 		\end{equation*}
+% 		，此时得到的每一个解向量都在基础解系中；\\
+% 	(4)	最后得到\(\bm{X}_1,\bm{X}_2,\cdots,\bm{X}_{n-r(\bm{A})}\)为基础解系；\\
+% 	(5)	此时方程的一般解可表示为\(\sum_{i=1}^{n-r(\bm{A})} k_i \bm{X}_i\)，其中\(k_1,k_2,\cdots,k_t\)为任意数.\\
+	
+% 	为什么可以这样做？以一个齐次线性方程组\(10x_1-3x_2-2x_3=0\)为例，3个未知数1个方程，那么就要设两个未知数\(x_2,x_3\)为自由未知数，解得\(x_1 = 0.3x_2+0.2x_3\)，写成解向量的形式，并分解成只包含一个自由未知数的向量的和：
+% 	\[\bm{X} = \begin{bmatrix} x_1\\x_2\\x_3 \end{bmatrix} = 
+% 			\begin{bmatrix} 0.3x_2+0.2x_3\\x_2\\x_3 \end{bmatrix} = 
+% 			\begin{bmatrix} 0.3x_2 \\ x_2 \\ 0 \end{bmatrix} + \begin{bmatrix}0.2x_3 \\ 0 \\ x_3\end{bmatrix} \]
+% 	运用后面线性空间的知识，现在解空间\(\bm{X}\)的所有向量都由自由未知数\(x_2,x_3\)决定，现在换一种形式写出来：
+% 	\[\bm{X} = x_2 \begin{bmatrix} 0.3 \\ 1 \\ 0 \end{bmatrix} + x_3 \begin{bmatrix} 0.2 \\ 0 \\ 1 \end{bmatrix}\]
+% 	可见，解空间中的任意向量都可以写成“以自由未知数作为系数的线性组合”的形式，此时基础解系（解空间的基）很容易看出就是\((0.3, 1, 0)^T\)和\((0.2, 0, 1)^T\)，让自由未知数逐个取1而其他的取0，就可以解出.
+	
+% 	注意，第(3)步中求得的是方程组的特解，所有解向量都线性无关，但并不是一定让自由未知数逐个分别取1才行，也可以取2，因为：
+	
+% 	\begin{theorem}
+% 		对于任意一个齐次线性方程组\(\bm{AX}=\bm{0}\)，若\(r(\bm{A}_{m \times n}) < n\)，则该方程的任意\(n-r(\bm{A})\)个线性无关的解向量均构成一个基础解系.
+% 	\end{theorem}
+	
+% \subsection{非齐次线性方程组的解的结构}
+	
+% 	\begin{theorem}
+% 		非齐次线性方程组\(\bm{A}_{m \times n} \bm{X}=\bm{b}\)是否有解可以通过系数矩阵\(r(\bm{A})\)与增广矩阵\(\tilde{\bm{A}}\)的秩的关系来判定：\\
+% 		(1)	当\(r(\bm{A})=r(\tilde{\bm{A}})\)时，方程有解；\\
+% 		(2)	当\(r(\bm{A}) \neq r(\tilde{\bm{A}})\)时，方程无解；\\
+% 		(3)	当\(r(\bm{A})=r(\tilde{\bm{A}})=n\)时，方程有唯一解；\\
+% 		(4)	当\(r(\bm{A})=r(\tilde{\bm{A}})<n\)时，方程有无穷多解.
+% 	\end{theorem}
+% 	证明思路：对于任意一个非齐次线性方程组\(\bm{AX}=\bm{b}\)，写出它的增广矩阵\(\tilde{\bm{A}}=[\bm{A},\bm{b}]\)，再化为阶梯形矩阵，\(r(\bm{A}) \neq r(\tilde{\bm{A}})\)即为有主元出现在了增广矩阵最右边一列的情况，此时它的对应方程组中有“零=非零数''的式子，出现矛盾方程，没有解；\(r(\bm{A})=r(\tilde{\bm{A}})=n\)即为增广矩阵的对应方程组没有自由未知数的情况.
+	
+% 	\begin{definition}
+% 		方程组\(\bm{AX}=\bm{0}\)称为\(\bm{AX}=\bm{b}\)的导出方程组.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		非齐次线性方程组的解向量经过线性组合后一般不是原方程的解，但：\\
+% 		(1)	若\(\bm{X}_1,\bm{X}_2,\cdots, \bm{X}_t\)是方程组\(\bm{AX}=\bm{b}\)的解向量，\(k_1,k_2,\cdots,k_t\)为任意数，且\(\sum_{i=1}^t k_i =1\)则它们的线性组合\(\sum_{i=1}^t k_i \bm{X}_i\)也是该方程组的解；若\(\sum_{i=1}^t k_i =0\)，该线性组合是导出方程组的解.\\
+% 		(2)	若\(\bm{X}_0\)是方程组\(\bm{AX}=\bm{b}\)的解向量，\(\bar{\bm{X}_1},\bar{\bm{X}_2},\cdots, \bar{\bm{X}_t}\)是导出方程组\(\bm{AX}=\bm{0}\)的解向量，\(k_1,k_2,\cdots,k_t\)为任意数，则\(\bm{X}_0 + \sum_{i=1}^t k_i \tilde{\bm{X}_i}\)是\(\bm{AX}=\bm{b}\)的解.
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求非齐次线性方程组\(\bm{AX}=\bm{b}\)的一般解的步骤如下：\\
+% 	(1)	写出它的增广矩阵\(\tilde{\bm{A}}=[\bm{A},\bm{b}]\)，并化为阶梯形矩阵；\\
+% 	(2)	写出阶梯形矩阵对应的方程组，选出自由未知数，并把自由未知数拉到等号右边；\\
+% 	(3)	让自由未知数全取0，得到一组特解\(\bm{X}_0\)；\\
+% 	(4)	求出导出方程组的基础解系\(\bar{\bm{X}}_1,\bar{\bm{X}}_2,\cdots, \bar{\bm{X}}_{r(\bm{A})}\)；\\
+% 	(5)	此时导出方程组的一般解为\(\bm{X}_0 + \sum_{i=1}^t k_i \bar{\bm{X}}_i\)，其中\(k_1,k_2,\cdots,k_t\)为任意数.
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	非齐次线性方程组中的某几个系数未知，已知该方程的若干个解，求出一般解.\\
+% 	(1)	确定其导出方程组的秩：若题目给的解的个数大于一，则可知导出方程组的系数矩阵降秩，得到秩的一个范围；验证方程组中系数全部已知的方程的线性相关性，得到秩的另一个范围.\\
+% 	(2)	求出导出方程组的基础解系：利用已知解，经过线性组合化为导出方程组的解.\\
+% 	(3)	现在知道了原方程的特解和导出方程组的基础解系，可以直接写出答案.
+	
+% 	\begin{theorem}
+% 		齐次线性方程组\(\bm{AX}=\bm{0}\)和非齐次线性方程组\(\bm{AX}=\bm{b}\)的解的关系如下：\\
+% 		(1)	\(\bm{AX}=\bm{0}\)有非零解 \(\Rightarrow\) \(\bm{AX}=\bm{b}\)有无穷多解；\\
+% 		(2)	\(\bm{AX}=\bm{b}\)有唯一解 \(\Rightarrow\) \(\bm{AX}=\bm{0}\)只有零解.
+% 	\end{theorem}
+	
+	
+% \section{线性空间}
+% \subsection{各种线性空间}
+	
+% 	线性空间是一个概括性很强的概念，但实际上可以由更基础的集合论和更抽象的抽象代数轻易地导出，接下来的定义从基础出发，由抽象到具体.
+	
+% 	\begin{definition}
+% 		（集合论）不依赖正则公理，\\
+% 		有序对\trm{(ordered pair)}\(\langle a, b\rangle \)定义为\(\{\{a\},\{a,b\}\}\)；\\
+% 		有序对\( \langle a_1, a_2, \ldots, a_n \rangle\)定义为\(\{a_n, \langle a_1, a_2, \ldots, a_{n-1} \rangle \}\)；\\
+% 		对于两个集合\(A,B\)，\(A\)与\(B\)的直积\trm{(Cartesian product)}\(A \times B\)定义为\(\{\langle a,b \rangle | a\in A \wedge b \in B\}\).
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		（抽象代数）对于代数系统\(\langle G,R_1,R_2 \rangle\)，其中\(G\)是非空集合，\(R_1,R_2\)为\(G \times G \rightarrow G\)的函数，\(m,n,p \in G\)若满足：\\
+% 		(1)	\( R_1(m,n) \in G \wedge R_2(m,n) \in G\)，即\(G\)对运算\(R_1,R_2\) \uline{封闭}\trm{(closed)}；\\
+% 		(2)	\( R_1(m,n) = R_1(n,m) \wedge R_2(m,n) = R_2(n,m)\)，即运算\(R_1,R_2\)\uline{可交换}\trm{(commutative)}；\\
+% 		(3)	\( \exists a, b \in G : R_1(m,a) = m \wedge R_2(m,b)=m\)，即运算\(R_1, R_2\)有\uline{单位元}\trm{(identity element)}；\\
+% 		(4)	\(\exists a \in G : R_1(m,a) = m \wedge R_2(m,a) =a\)，即运算\(R_1\)的单位元为\(R_2\)的\uline{零元}\trm{(zero element)}；\\
+% 		(5)	\( R_2(R_1(m,n),p) = R_1(R_2(m,p), R_2(n,p))\)，即运算\(R_2\)对运算\(R_1\)\uline{可分配}\trm{(distributive)}.\\
+% 		则称该代数系统\(\langle G,R_1,R_2 \rangle\)或该集合\(G\)为\textbf{域}\trm{(field)}.
+% 	\end{definition}
+	
+% 	线性空间可以看做一个代数系统：
+% 	\begin{definition}
+% 		对于数域\(F\)和结构\(\langle V,+,\cdot \rangle\)，其中\(V\)为非空集合，其中的元素概称为\textbf{向量}，函数\((+):V \times V \rightarrow V , (\cdot) : F \times V \rightarrow V \)分别称为\textbf{加法}和\textbf{数量乘法}，若满足以下2条性质，则称\(V\)为\(F\)上的\textbf{线性空间}\trm{(linear space)}：\\
+% 		(1)	\(+\)满足交换律和结合律，且有单位元和逆元；\\
+% 		(2)	\(\cdot\)对\(+\)及数域上的加法有分配律，对数域上的乘法有结合律，且存在单位元；
+% 	\end{definition}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	判断某个集合是否为线性空间的方法：\\
+% 	(1)	如果定义的运算为通常实数的加法、乘法运算，只需检验该集合对加法和数量乘法是否封闭；\\
+% 	(2)	如果定义的运算不是通常实数的加法、乘法运算，那么还需检验该集合的加法和数量乘法是否满足以上的两个特征.
+	
+% 	\; 
+	
+% 	由代数系统的性质很容易导出线性空间的性质：
+% 	\begin{theorem}
+% 		线性空间中的零向量唯一；\\
+% 		任一向量的负向量唯一；\\
+% 		若数量乘法的结果为零元，则系数为零或向量为零.
+% 	\end{theorem}
+	
+% 	接下来定义具体的线性空间，尤其注意向量空间：
+% 	\begin{definition}
+% 		记\\
+% 		以数域\(F\)中的数为元素的全体\(n\)元向量的集合为\(F^n\)，称为\textbf{向量空间}\trm{(vector space)}；\\
+% 		以数域\(F\)中的数为元素的全体\(m \times n\)矩阵的集合为\(F^{m \times n}\)，称为\textbf{矩阵空间}\trm{(matrix space)}；\\
+% 		以数域\(F\)中的数为系数的关于\(x\)的全体一元多项式的集合为\(F[x]\)，称为\textbf{多项式空间}\trm{(polynomial space)}；\\
+% 		以数域\(F\)中的数为系数的关于\(x\)的最高次为\(n\)的全体一元多项式的集合为\(F[x]_n\)；\\
+% 		定义在实区间\([a,b]\)中的全体实函数的集合为\(C[a,b]\)，称为\textbf{函数空间}\trm{(function space)}.
+% 	\end{definition}
+	
+% 	接下来定义向量空间维度的性质：
+% 	\begin{definition}
+% 		若在线性空间\(V\)中能找到\(n\)个线性无关的向量（即极大无关组），使得空间中的其他向量都能被这\(n\)个向量线性表出，则称该空间是\textbf{有限维线性空间}\trm{(finite-dimensional space)}，\textbf{维度}\trm{(dimension)}为\(n\)，记作\(\trm{dim}(V) = n\)，同时称该极大无关组为线性空间的\textbf{基}\trm{(basis)}；否则，称该空间为\textbf{无限维线性空间}\trm{(infinite-dimensional space)}.
+% 	\end{definition}
+	
+% 	基是线性空间空间中的极大无关组，其本质是一组（广义上的）向量组成的\uline{集合}，下文姑且使用大写手写体字母\(\mathcal{A}, \mathcal{B}, \mathcal{C}, \cdots\)表示线性空间的基.
+	
+% 	\begin{fact}
+% 		每一个线性空间都有基的充分必要条件是选择公理成立.
+% 	\end{fact}
+% 	若不承认选择公理，则只能保证有限维线性空间有基，\uline{接下来的讨论默认空间都是有限维的}.
+	
+% 	注意，此时基本向量组\(\varepsilon_1, \varepsilon_2, \cdots, \varepsilon_n\)组成的集合称为\textbf{自然基}\trm{(standard basis)}，下文姑且用\(\mathcal{E}\)表示；矩阵空间也有“自然基类似物”，定义\(\bm{I}_{ij} = [a_{ij}]\)为\((i,j)-\)元为1，其他元素为0的矩阵，那么所有\(\bm{I}_{ij}\)便可以表示矩阵空间\(F^{m \times n}\)中的任何一个向量.
+	
+% 	常见的线性空间例如向量空间\(F^n\)和矩阵空间\(F^{m \times n}\)是有限维的，多项式空间和函数空间则是无限维的.
+	
+% \subsection{基与坐标的变换}
+% 	本节讨论的向量是狭义上的向量，即行矩阵或列矩阵.
+% 	\begin{definition}
+% 		在线性空间\(V\)中，有一组基\(\mathcal{A} = \{\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n\} \)，若空间中的任意一个向量 \(\bm{\beta}\)都有
+% 		\begin{equation*}
+% 			\bm{\beta} = \sum_{i=0}^n k_i \bm{\alpha}_i \;\; k_i \in \mathbb{R}
+% 		\end{equation*}
+% 		则称\((k_1,k_2,\cdots,k_n)\)为向量\(\bm{\beta}\)的\textbf{坐标}\trm{(coordinates)}，姑且表示为
+% 		\[[\bm{\beta}]_{\mathcal{A}} = (k_1,k_2,\cdots,k_n)\]
+% 	\end{definition}
+	
+% 	注意：上面的坐标写成有序数组的形式，是为了强调坐标可以是一个行向量，也可以是列向量，但应该与原来的向量保持一致.
+	
+% 	向量在自然基下的坐标就是其原本的值，即\([\bm{\alpha}]_{\mathcal{E}} = \bm{\alpha}\)，若题目中没有指明是哪组基，而直接给出向量的值，就可以看做其在自然基下的坐标. 
+	
+% 	由向量线性表出的唯一性可以立马得知，向量在确定的基中的坐标是唯一确定的，而对于不同的基，向量的坐标一般不同；同时，在基确定以后，向量的加法和数乘运算可以根据坐标进行.
+% 	\begin{theorem}
+% 		在给定的空间中和给定的基上，向量\(\bm{\alpha} = (a_1, a_2, \ldots , a_n) \wedge \bm{\beta} = (b_1, b_2, \ldots, b_n)\)，则：\\
+% 		(1)	\(\bm{\alpha}+\bm{\beta} = (a_1 + b_1, a_2 + b_2, \cdots, a_n + b_n)\) \\
+% 		(2)	\(\forall k \in \mathbb{R} : k \bm{\alpha} = (ka_1, ka_2, \cdots, ka_n)\)
+% 	\end{theorem}
+	
+% 	由于线性空间的基可以线性表出空间中的所有向量，所以对于有多组基的线性空间，各组基之间一定可以相互表示，也就是说，对于两组基\(\mathcal{A} = \{\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n\}\)（姑且称为旧基）和\(\mathcal{B} = \{\bm{\beta}_1,\bm{\beta}_2,\cdots, \bm{\beta}_n\}\)（姑且称为新基），新基中的向量任意一个向量均可用旧基线性表出，即：
+% 	\begin{equation*}
+% 	\left\{ \begin{array}{ccccccccc}
+% 		\bm{\beta}_1 &=& k_{11} \bm{\alpha}_1  & + & k_{21} \bm{\alpha}_2 & + & \cdots & + & k_{n1} \bm{\alpha}_n \\
+% 		\bm{\beta}_2 &=& k_{12} \bm{\alpha}_1  & + & k_{22} \bm{\alpha}_2 & + & \cdots & + & k_{n2} \bm{\alpha}_n \\
+% 		\vdots & & \vdots & & \vdots & & & & \vdots\\
+% 		\bm{\beta}_n &=& k_{1n} \bm{\alpha}_1  & + & k_{2n} \bm{\alpha}_2 & + & \cdots & + & k_{nn} \bm{\alpha}_n \\
+% 	\end{array}\right.
+% 	\end{equation*}
+% 	写成按列分块矩阵的形式，就是
+% 	\[ [\bm{\beta}_1,\bm{\beta}_2,\cdots, \bm{\beta}_n] = [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n]
+% 		\begin{bmatrix}
+% 			k_{11} & k_{12} & \cdots & k_{1n} \\
+% 			k_{21} & k_{22} & \cdots & k_{2n} \\
+% 			\vdots & \vdots &  & \vdots \\
+% 			k_{n1} & k_{n2}  & \cdots & k_{nn}
+% 		\end{bmatrix}\]
+% 	其中的系数矩阵称为过渡矩阵，正式定义如下：
+	
+% 	\begin{definition}
+% 		对于同一线性空间中的两组基\(\mathcal{A},\mathcal{B}\)以及以它们为列的矩阵\(\bm{A}, \bm{B}\)，使得\(\bm{B} =\bm{A}\bm{C}\)成立的矩阵\(\bm{C}\)称为基\(\mathcal{A}\)到\(\mathcal{B}\)的\textbf{过渡矩阵}\trm{(change-of-coordinates matrix)}，这个等式称为\textbf{基变换公式}.
+% 	\end{definition}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求过渡矩阵的方法：\\
+% 	方法一：像上面那样解多个线性方程组，把过渡矩阵的每个元素都求出来（\(n\)维向量空间就要解\(n\)组线性方程组，所以有点麻烦）.\\
+% 	方法二：考虑到基中的向量线性无关，所以以基中的向量为列的矩阵一定可逆，将基变换公式\(\bm{B} =\bm{A}\bm{C}\)变形可得\(\bm{C} =\bm{A}^{-1}\bm{B}\)，完成等号右边的矩阵求逆、乘法操作即可.\\
+% 	方法三：（方法一的变形）注意到过渡矩阵的第\(i\)列是新基中的第\(i\)个向量在旧基中的坐标，所以当坐标能用眼睛看出来时，就可以直接按列填写（这个方法尤其适用于旧基是自然基时）.
+	
+% 	\begin{theorem}\;\\
+% 		(1)	过渡矩阵由旧基和新基唯一确定；\\
+% 		(2)	过渡矩阵是可逆矩阵；\\
+% 		(3)	若旧基到新基的过渡矩阵是 \(\bm{A}\)，则新基到旧基的过渡矩阵是 \(\bm{A}^{-1}\).
+% 	\end{theorem}
+% 	证明思路：(1)	过渡矩阵A的每一列都是新基中的向量关于旧基的坐标.\\
+% 	(2)(3)	\([\vec{\bm{\beta}}] = [\vec{\bm{\alpha}}]\bm{A} = [\vec{\bm{\beta}}]\bm{BA} \Rightarrow \bm{AB} = \bm{I} \Rightarrow \bm{B} = \bm{A}^{-1}\) \\
+	
+% 	有了基变换公式，下一步就是求出同一个向量在不同基下坐标的关系.
+	
+% 	\begin{theorem}
+% 		（坐标变换公式）若\(\mathcal{A}\)到\(\mathcal{B}\)的过渡矩阵为\(\bm{C}\)，且\([\bm{\gamma}]_{\mathcal{A}} = [x_1, x_2, \cdots, x_n]^T\)，\([\bm{\gamma}]_{\mathcal{B}} = [y_1, y_2, \cdots, y_n]^T\)，则：
+% 		\begin{equation*}
+% 			\begin{bmatrix}y_1\\y_2\\ \vdots \\ y_n \end{bmatrix} = \bm{C}^{-1} 
+% 			\begin{bmatrix}x_1\\x_2\\ \vdots \\ x_n \end{bmatrix}
+% 		\end{equation*}
+% 	\end{theorem}
+% 	通俗的说：过渡矩阵\(\times\)新基列坐标\(=\)旧基列坐标.\\
+% 	证明（利用坐标的唯一性，矩阵的消去不能乱用）：
+% 	\begin{eqnarray*}
+% 		\bm{\alpha} = [\bm{\beta}_1,\bm{\beta}_2,\cdots, \bm{\beta}_n][\bm{\gamma}]_{\mathcal{B}} = [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n]\bm{C}[\bm{\gamma}]_{\mathcal{B}}
+% 		\Rightarrow \bm{C}[\bm{\gamma}]_{\mathcal{B}} = [\bm{\gamma}]_{\mathcal{A}}
+% 	\end{eqnarray*}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	已知在某向量在旧基中的坐标，求在新基中的坐标的方法：\\
+% 	方法一：坐标变换公式；\\
+% 	方法二：根据定义直接解方程组\([\bm{\gamma}]_{\mathcal{A}} = \sum_{i=1}^n x_i\bm{\beta}_i\)（说不定会快一些）.
+	
+	
+% \subsection{生成子空间}
+	
+% 	\begin{definition}
+% 		设\(V\)是数域\(F\)上的线性空间，集合\(W \subseteq V\)且\(W\)对定义在\(V\)中的加法和数量乘法运算封闭，则\(W\)称为\(V\)的\textbf{线性子空间}\trm{(linear subspace)}，其中仅包含加法运算零元的集合\(\{\bm{\theta}\}\)和\(V\)本身称为\textbf{平凡线性子空间}\trm{(trival linear subspace)}.
+% 	\end{definition}	
+	
+% 	\begin{theorem}
+% 		对于数域\(F\)上的线性空间\(V\)，
+% 		\begin{equation*}
+% 			\{\sum_{i =1}^n k_i \bm{\alpha}_i | \bm{\alpha}_i \in V \wedge k_i \in F\}
+% 		\end{equation*}
+% 		可以构成子空间，称为\textbf{生成子空间}，记为\(L(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n)\)；
+% 	\end{theorem}
+% 	证明思路：用定义证，\(L(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n)\)非空，且对加法和数乘封闭.
+	
+% 	\begin{definition}  \; \\
+% 		(1)	记方程\(\bm{AX}=\bm{0}\)的全部解向量为\(X_1, X_2, \cdots, X_n\)，则\(L(X_1, X_2, \cdots, X_n)\)称为该\uline{方程}的\textbf{解空间}或\uline{矩阵}\(\bm{A}\)的\textbf{零空间}\trm{(null space)}，记作\(N(\bm{A})\)；\\
+% 		(2)	把矩阵 \(\bm{A}\)按列分块成\(\bm{A} = [\bm{\alpha}_1,\bm{\alpha}_2,\ldots,\bm{\alpha}_n]\)，则\(L(\bm{\alpha}_1,\bm{\alpha}_2,\ldots,\bm{\alpha}_n)\)称为矩阵的\textbf{列空间}\trm{(column space)}，记为\(R(\bm{A})\)，相应的\(R(\bm{A}^T)\)为矩阵的\textbf{行空间}\trm{(row space)}.
+% 	\end{definition}
+% 	可以看出，列空间就是矩阵列向量的线性组合，如果把线性组合的系数提出来成为一个矩阵\(\bm{X}\)（实际上是一个列向量，姑且称为系数向量），那么列空间中的向量都可以用\(\bm{AX}\)表示，也就是说，列空间可以有等价定义：
+% 	\[R(\bm{A}) = \{\bm{b} | \exists\bm{X} : \bm{AX} = \bm{b}\}\]
+% 	根据这个定义马上可以得出结论：线性方程组\(\bm{AX} = \bm{b}\)有解的充分必要条件是\(\bm{b}\in R(\bm{A})\)；
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求矩阵列空间的基的方法：\\
+% 	(1)	把矩阵用初等行变换化为阶梯形矩阵
+% 	\begin{theorem}
+% 		设\(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n\)和\(\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n\)为线性空间\(V\)中的两组向量（可以包含相同的向量），则：
+% 		\begin{equation*}
+% 			L(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n) = L(\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n) \iff \{\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n\} \cong \{\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n\}
+% 		\end{equation*}
+% 	\end{theorem}
+% 	证明思路：。。。
+	
+% 	根据定义用直觉感受，向量组的生成子空间就是该向量组可以线性表出的所有向量的集合，而这个向量组中的所有又可以被其极大无关组线性表出，所以该生成子空间中的所有向量也可以被该极大无关组线性表出，因此该空间等价于其极大无关组的生成子空间，此时该极大无关组就是该空间的一个基，所以便有：
+% 	\begin{corollary}
+% 		若\(A\)是一个向量组，\(B\)是\(A\)的极大无关组，则：
+% 		\begin{equation}
+% 			{\rm dim}(L(A)) = {\rm dim}(L(B)) = r(A) = r(B)
+% 		\end{equation}
+% 	\end{corollary}
+	
+% 	\begin{theorem}\;\\
+% 		(1)	（秩-解空间定理\trm{(rank-nullity theorem)}）设\(\bm{A} \in F^{m \times n}\)，则\(N(\bm{A}) \subseteq F^n\)，且\({\rm dim}(N(A)) = n-r(\bm{A})\)； \\
+% 		(2)	设\(\bm{A} \in F^{m \times n}\)，则\(\trm{dim}(N(\bm{A})) + \trm{dim}(R(\bm{A^T})) = n\)
+% 	\end{theorem}
+% 	证明思路：(1)\(\trm{dim}(\bm{A}) = r(\bm{A}) = \card{X}\)，其中\(X\)是方程的基础解系. \\ 
+% 	(2)未知数个数\(=\)自由未知数个数\(+\)主元个数.
+	
+% 	\begin{theorem}\;\\
+% 		(1)	有限维线性空间的子空间的维数也是有限维的；\\
+% 		(2)	有限维线性空间的子空间的基可以扩充成为原线性空间的基.
+% 	\end{theorem}
+	
+% \subsection{线性子空间的运算}
+
+% 	\begin{theorem} \;\\
+% 		(1)	若\(W_1\)和\(W_2\)为\(V\)的两个线性子空间，则\(W_1 \cap W_2\)也能构成\(V\) 的线性子空间，称为\(W_1\)和\(W_2\)的\textbf{交空间}.\\
+% 		(2)	若\(W_1\)和\(W_2\)为\(V\)的两个线性子空间，则\(\{ \bm{\alpha} + \bm{\beta} | \bm{\alpha} \in W_1 \wedge \bm{\beta} \in W_2\}\)也能构成\(V\) 的线性子空间，称为\(W_1\)和\(W_2\)的\textbf{交空间}，记作\(W_1 + W_2\).
+% 	\end{theorem}
+% 	证明思路：还是用定义.
+	
+% 	注意：\(W_1 \cup W_2\)一般不再是线性空间.
+	
+% 	\begin{theorem}
+% 		对于线性空间中的任意两组向量\(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_s\)和\(\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_t\)，有：
+% 		\begin{equation*}
+% 			L(\bm{\alpha}_1 + \bm{\alpha}_2, \cdots, \bm{\alpha}_s) + L(\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_t) = L( \bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_s, \bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_t)
+% 		\end{equation*}
+% 	\end{theorem}
+% 	证明思路：。。。
+	
+% 	\begin{theorem}
+% 		（维数公式）设线性空间\(V\)的两个子空间为\(W_1,W_2\)，则
+% 		\begin{equation*}
+% 			{\rm dim}(W_1) + {\rm dim}(W_2) = {\rm dim}(W_1 \cap W_2) + {\rm dim}(W_1 + W_2)
+% 		\end{equation*}
+% 	\end{theorem}
+% 	证明思路：。。。
+	
+% 	\begin{corollary}
+% 		若对于\(n\)维线性空间的两个子空间\(W_1, W_2\)，有\({\rm dim}(W_1) + {\rm dim}(W_2)>n\)则两者的交空间中一定有非零元.
+% 	\end{corollary}
+
+% \subsection{向量空间的度量}
+	
+% 	类似于解析几何中有向线段的点乘运算：\[\bm{\alpha} \cdot \bm{\beta} = |\bm{\alpha}||\bm{\beta}|\cos\langle \bm{\alpha},\bm{\beta} \rangle,\]可以定义广泛的向量空间中的向量的内积.
+% 	\begin{definition}
+% 		在\(n\)元向量组成的向量空间\(V\)中，定义两个向量\(\bm{\alpha} = (a_1, a_2, \cdots, a_n)\)和\(\bm{\beta} = (b_1, b_2, \cdots, b_n)\) 的\textbf{（标准）内积}\trm{(inner product)}：
+% 		\begin{equation*}
+% 			(\bm{\alpha},\bm{\beta}) = \sum_{i=1}^n a_i b_i
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	从矩阵的角度看向量的内积，当\(\bm{\alpha},\bm{\beta}\) 均为列向量时，有
+% 	\begin{equation*}
+% 		(\bm{\alpha},\bm{\beta}) = \bm{\alpha}^T \bm{\beta} = \bm{\beta}^T \bm{\alpha}
+% 	\end{equation*}
+% 	均为行向量时，有
+% 	\begin{equation*}
+% 		(\bm{\alpha},\bm{\beta}) = \bm{\alpha} \bm{\beta}^T = \bm{\beta} \bm{\alpha}^T
+% 	\end{equation*}
+	
+% 	需要注意的是，向量内积的运算结果是一个数；更确切地说，定义在数域\(F\)上的向量空间\(V\)中的线性运算是一个\(V \times V \rightarrow F\)的函数.
+	
+% 	\begin{theorem}
+% 		向量的内积有如下性质：\\
+% 		(1)	交换律：\((\bm{\alpha},\bm{\beta}) = (\bm{\beta},\bm{\alpha})\)；\\
+% 		(2)	分配律：\((\bm{\alpha}+\bm{\beta},\bm{\gamma}) = (\bm{\alpha},\bm{\gamma}) + (\bm{\beta},\bm{\gamma})\)；\\
+% 		(3)	数量乘法的结合律：\(k(\bm{\alpha},\bm{\beta}) = (k \bm{\alpha},\bm{\beta})\)；\\
+% 		(4)	非负性：\(\forall \bm{\alpha} \in V : (\bm{\alpha},\bm{\alpha}) \geq 0\)，当且仅当\(\bm{\alpha} = \bm{\theta}\)时，等号成立.
+% 	\end{theorem}
+	
+% 	\begin{definition}
+% 		定义了内积运算的实向量空间称为\textbf{欧几里得空间}\trm{(Euclid space)}.
+% 	\end{definition}
+	
+% 	\begin{definition}
+% 		在欧氏空间中，向量的\textbf{长度}\trm{(length)}定义为\(|\bm{\alpha}| = \sqrt{(\bm{\alpha},\bm{\alpha})}\)；\\
+% 		长度为1的向量称为\textbf{单位向量}，任何一个向量除以其本身的长度都可以得到单位向量，这个操作称为向量的\textbf{单位化}.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		（柯西-施瓦茨不等式\trm{(Cauchy-Schwartz inequality)}）对于欧氏空间\(V\)中的任意两个向量\(\bm{\alpha},\bm{\beta}\)，有：
+% 			\[|(\bm{\alpha},\bm{\beta})| \leq |\bm{\alpha}||\bm{\beta}|\] 
+% 		当且仅当\(\bm{\alpha},\bm{\beta}\)线性相关即\(\exists k \in \mathbb{R} : \bm{\beta} = k \bm{\alpha}\) 时，等号成立.
+% 	\end{theorem}
+% 	证明思路：分情况讨论，当\(\bm{\alpha}  = \bm{\theta}\)时等号成立；当\(\bm{\alpha} \neq \bm{\theta} \wedge \bm{\beta} \neq \bm{\theta}\)时，可知\(\forall x \in \mathbb{R} : \bm{\alpha} + \bm{\beta} \in V\) ，把它和自己做内积运算，完全平方展开，有
+% 	\[(\bm{\alpha}+x \bm{\beta},\bm{\alpha}+ x \bm{\beta}) = (\bm{\beta},\bm{\beta})x^2 + 2(\bm{\alpha},\bm{\beta})x +(\bm{\alpha},\bm{\alpha}) \geq 0,\]
+% 	得到了一个关于\(x\)且对于所有\(x\)均成立的一元二次不等式，所以有
+% 	\[\Delta = (\bm{\alpha},\bm{\beta})^2 - 4(\bm{\beta},\bm{\beta})(\bm{\alpha},\bm{\alpha}) \leq 0,\]
+% 	整理得\[|(\bm{\alpha},\bm{\beta})|^2 = (\bm{\alpha},\bm{\beta})^2 \leq (\bm{\alpha},\bm{\alpha})(\bm{\beta},\bm{\beta}) = |\bm{\alpha}|^2 |\bm{\beta}|^2,\]最后开方即可.
+	
+% 	以上可以看出，柯西不等式的向量形式的证明不需要依赖解析几何中两条有向线段夹角的概念，所以，欧氏空间中的向量的夹角可以根据柯西不等式定义.
+% 	\begin{definition}
+% 		设\(\bm{\alpha},\bm{\beta}\)是欧氏空间中的两个非零向量，则定义两向量的夹角\(\langle \bm{\alpha},\bm{\beta} \rangle\)为：
+% 		\begin{equation*}
+% 			\cos \langle \bm{\alpha},\bm{\beta}\rangle = \frac{(\bm{\alpha},\bm{\beta})}{|\bm{\alpha}||\bm{\beta}|}
+% 		\end{equation*}
+% 		并规定\(\langle \bm{\alpha},\bm{\beta} \rangle \in [0,\pi]\)；当\(\langle \bm{\alpha}, \bm{\beta} \rangle = \dfrac{\pi}{2}\)时，称\(\bm{\alpha},\bm{\beta}\)是\textbf{垂直（正交）}\trm{(perpendicular)}的.
+% 	\end{definition}
+	
+% 	定义了向量的夹角，便可以导出以下定理：
+% 	\begin{theorem}
+% 		对于欧氏空间\(V\)中的任意两个向量\(\bm{\alpha},\bm{\beta}\)，有：\\
+% 		(1)	\textbf{勾股定理}\trm{(Pythagorean theorem)} ：\\
+% 			\[\bm{\alpha} \perp \bm{\beta} \rightarrow |\bm{\alpha} + \bm{\beta}| ^2 = |\bm{\alpha}|^2 + |\bm{\beta}|^2\]
+% 		(2)	绝对值三角不等式：
+% 			\[|\bm{\alpha}+\bm{\beta}| \leq |\bm{\alpha}| + |\bm{\beta}|\]
+% 	\end{theorem}
+% 	证明：勾股定理：\[|\bm{\alpha} + \bm{\beta}|^2 = (\bm{\alpha},\bm{\beta})^2 = (\bm{\alpha},\bm{\beta}) + 2(\bm{\alpha},\bm{\beta}) + (\bm{\beta},\bm{\beta}) = |\bm{\beta}|^2 + |\bm{\beta}|^2\]\\
+% 	绝对值三角不等式：\[|\bm{\alpha} + \bm{\beta}|^2 = (\bm{\alpha},\bm{\beta})^2 = (\bm{\alpha},\bm{\beta}) + 2(\bm{\alpha},\bm{\beta}) + (\bm{\beta},\bm{\beta}) \\ 
+% 	\leq |\bm{\alpha}|^2 + 2|\bm{\alpha}||\bm{\beta}| + |\bm{\beta}|^2 = (|\bm{\alpha}| +|\bm{\beta}|)^2\]
+	
+% \subsection{正交向量组}
+
+% 	\begin{definition}
+% 		对于欧氏空间\(V\)中的向量组\(A = \{ \bm{\alpha} \in V | \bm{\alpha} \neq \bm{\theta}\}\)，若
+% 		\[\forall \bm{\alpha},\bm{\beta} \in A : \bm{\alpha} \neq \bm{\beta} \rightarrow \bm{\alpha} \perp \bm{\beta},\]
+% 		则称\(A\)为\textbf{正交向量组}；若\(A\)也满足\(\forall \bm{\alpha} \in A : |\bm{\alpha}| = 1\)，则称\(A\)为\textbf{标准正交向量组}.
+% 	\end{definition}
+% 	标准正交向量组的一个典型例子是自然基.
+	
+% 	\begin{theorem}
+% 		若\(A\)是正交向量组，则\(A\)线性无关.
+% 	\end{theorem}
+% 	证明：设\(\bm{\alpha}_i \in A\)，则令\(\sum k_i \bm{\alpha}_i = 0\)，两边与\(\bm{\alpha}_m(1 \leq m \leq \card{A})\)做内积，得\(\sum k_i(\bm{\alpha}_i, \bm{\alpha}_m) = 0\)，因为两两正交，即\(i \neq m \rightarrow  k_i(\bm{\alpha}_i,\bm{\alpha}_m) = 0\)，所以原式化简为\(k_m(\bm{\alpha}_m,\bm{\alpha}_m) = 0\)，又\(\bm{\alpha}_m \neq \bm{\theta}\)，所以\(k_m = 0\).
+	
+% 	\begin{theorem}
+% 		设向量空间\(V\)中有\(m\)个线性无关的向量，则存在\(m\)个正交的向量与其相抵.
+% 	\end{theorem}
+% 	证明思路：数学归纳法.
+	
+% 	由上面的定理，我们自然会想到使用向量空间的任意一组基来构造标准正交向量组.
+	
+% 	\begin{theorem}
+% 		（格拉姆-施密特正交化方法\trm{(Gram-Schmidt orthogonalization)}）在向量空间\(V\)中\(\bm{\alpha}_1,\bm{\alpha}_2,\cdots,\bm{\alpha}_n\)线性无关，则令
+% 		\begin{equation*}
+% 			\bm{\beta}_i = \left\{
+% 			 \begin{aligned}
+% 				& \bm{\alpha}_i  & i = 1, \\
+% 				& \bm{\alpha}_i - \sum_{i = 1}^{i-1} \dfrac{(\bm{\alpha}_i, \bm{\beta}_{i-1})}{(\bm{\beta}_{i-1},\bm{\beta}_{i-1})} \bm{\beta}_{i-1} &i \neq 1.
+% 			\end{aligned} \right.
+% 		\end{equation*}
+% 		则\(\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n\)为正交向量组，此时再令\(\bm{\gamma}_i = \dfrac{\bm{\beta}_i}{|\bm{\beta}_i|}\)，则\(\bm{\gamma}_1,\bm{\gamma}_2,\cdots, \bm{\gamma}_n\)为标准正交向量组.
+% 	\end{theorem}
+
+% \subsection{最小二乘法}
+
+% 	解决实际问题时经常需要建立线性方程组，而环境的微小变化、读取数据时的偏差、处理数据时的计算误差等等方面的原因都会引起所建立的线性方程组无解，但我们不能轻易断言问题本身无解，通常的做法是，求一组数使之最大限度地适合原方程组，进而把这组误差最小的数视为原方程组的解，实现这一目标的方法之一就是\textbf{最小二乘法}.
+	
+% 	方法：当\(\bm{AX} = \bm{b}\)无解的时候，写出它的正规方程\(\bm{A}^T\bm{AX} = \bm{A}^T\bm{b}\)，该正规方程一定有解，它的解即为原方程组的最小二乘解.
+
+% \subsection{一般的欧氏空间}
+
+% 	\begin{definition}
+% 		设\(V\)为\(\mathbb{R}\)上的一个线性空间，若存在满足下列4个条件的函数\(f:V \times V \rightarrow \mathbb{R}\)，则称该线性空间为\textbf{线性欧氏空间}\trm{(Euclid space)}：\\
+% 		(1)	\(f(\bm{\alpha},\bm{\beta}) = f(\bm{\beta},\bm{\alpha})\);\\
+% 		(2)	\(f(k \bm{\alpha}, \bm{\beta}) = kf(\bm{\alpha},\bm{\beta})\);\\
+% 		(3)	\(f(\bm{\alpha}+\bm{\beta},\bm{\gamma}) = f(\bm{\alpha},\bm{\gamma}) + f(\bm{\beta},\bm{\gamma})\);\\
+% 		(4)	\((\bm{\alpha} \neq \bm{\theta} \iff f(\bm{\alpha},\bm{\alpha}) \neq 0) \wedge f(\bm{\theta},\bm{\theta}) = 0\). \\
+% 		称这样的函数\(f\)为\textbf{标准内积}.
+% 	\end{definition}
+	
+% 	接下来定义几个具体的线性欧氏空间：
+% 	 \begin{definition} \;\\
+% 		(1)	定义在函数空间\(C[a,b]\)上的两个函数\(f(x),g(x)\)，其标准内积定义为：
+% 			\[\big(f(x),g(x) \big) = \int_a^b f(x)g(x)\trm{d}x\].
+% 		(2)	定义在矩阵空间\(\mathbb{R}^{n \times n}\)中的两个矩阵 \(\bm{A}\)和 \(\bm{B}\)，其标准内积定义为：
+% 			\[(\bm{A},\bm{B}) = \sum_{i=1}^n \sum_{j=1}^n a_{ij} b_{ij} = \trm{tr}(\bm{AB}^T)\].
+% 	\end{definition}
+	
+% \subsection{线性代数的核心：线性变换}
+% 	线性代数这门学科有两个研究对象，一个是线性方程组，另一个是线性变换，其他所有内容都是由这两个对象衍生出来的. 
+	
+% 	不小心又碰到了集合论，对于映射(mapping)，集合论可以用一阶公式给出映射最根本的定义.
+% 	\begin{definition}
+% 		\textbf{映射}\(f\)定义为具有外延性\trm{(extensionality)}的两个集合的直积的子集，即
+% 		\[ (\forall p \in f)(\exists x \exists y : p = \langle x,y \rangle) \wedge (\forall x)(\exists y \exists z : \langle x,y \rangle \in f \wedge \langle x,z \rangle \in f \rightarrow y=z) \]
+% 		其中\(\langle x,y \rangle \in f \)一般写作\(xfy\)或\(y=f(x)\)；\\
+% 		\textbf{定义域}\trm{(domain)}：\(\trm{dom}(f) = \{x | \exists y : \langle x,y \rangle \in f \}\)；\\
+% 		\textbf{值域}即象集合\trm{(codomain)}：\(\trm{ran}(f) = \{y | \exists x : \langle x,y \rangle \in f\}\)；\\
+% 		\(f:A\rightarrow B\)表示\(\trm{dom}(f) = A \wedge \trm{ran}(f) \subseteq B\)；\\
+% 		\(f\)是\textbf{单射}\trm{(injection)} \(\iff (\forall z \in \trm{ran}(f))(\forall x \forall y \in \trm{dom}(f) : \langle x,z \rangle \in f \wedge \langle y,z \rangle \in f \rightarrow x=y)\)；\\
+% 		\(f:A\rightarrow B\)是\textbf{满射}\trm{(surjection)}\(\iff \trm{ran}(f) = B\)；\\
+% 		\(f\)是\textbf{双射}\trm{(bijection)}\(\iff f\)既是单射又是满射；\\
+% 		\(f:A\rightarrow B\)是\textbf{变换}\trm{(transformation)}\(\iff A = B\)；\\
+% 		\(f\)的\textbf{逆映射}\trm{(inverse)}定义为\(f^{-1} = \{\langle y,x \rangle | \langle x,y \rangle \in f \}\)；\\
+% 		\(f\)与\(g\)的\textbf{复合映射}\trm{(composition)}定义为\(f \circ g = \{\langle x,y \rangle | \exists t (\langle x,t \rangle \in f \wedge \langle t,y \rangle \in g)\}\). 
+% 	\end{definition}
+	
+% 	接下来定义定义在线性空间中的具体的变换
+% 	\begin{definition}
+% 		设\(\sigma\)是数域\(F\)上线性空间\(V\)中的一个变换，若\(\sigma\)满足：\\
+% 		(1)	\(\forall \bm{\alpha} \forall \bm{\beta} \in V: \sigma(\bm{\alpha}+\bm{\beta}) = \sigma (\bm{\alpha}) + \sigma(\bm{\beta})\);\\
+% 		(2)	\(\forall \bm{\alpha} \in V, \forall k \in F : \sigma(k \bm{\alpha}) = k\sigma(\bm{\alpha})\).\\
+% 		 则称\(\sigma\)是一个线性变换.
+% 	\end{definition}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	判断某个变换\(\sigma\)是否为线性变换的方法是：\\
+% 	检验\(\sigma(k \bm{\alpha} + l \bm{\beta}) = k\sigma(\bm{\alpha}) + l \sigma(\bm{\beta})\)是否成立.
+	
+% 	\begin{definition} \;\\
+% 		(1)	对于线性变换\(\sigma\)，若\(\sigma(\bm{\alpha}) = k \bm{\alpha}\)，称\(\sigma\)为数乘变换；\\
+% 		(2)	若\(\sigma(\bm{\alpha}) = \bm{\alpha}\)，称\(\sigma\)为恒等变换，常记作\(\varepsilon\)；\\
+% 		(3)	若\(\sigma(\bm{\alpha}) = \bm{\theta}\)，称\(\sigma\)为零变换，常记作\(0^*\).
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		线性变换\(\sigma\)具有如下4个性质：\\
+% 		(1)	\(\sigma(\bm{\theta}) = \bm{\theta} \wedge \sigma(-\bm{\alpha}) = -\sigma(\bm{\alpha})\);\\
+% 		(2)	\(\sigma\)保持线性组合关系式不变，即
+% 		\[\sigma(\sum_{i=1}^n k_i \bm{\alpha}_i) = \sum_{i=1}^n \sigma(k_i \bm{\alpha}_i);\]
+% 		(3)	线性相关的向量组，都经过线性变换后仍线性相关，但逆命题不成立；\\
+% 		(4)	当\(\sigma\)有逆变换时，\(\sigma^{-1}\)仍是线性变换，且\(\sigma,\sigma^{-1}\)把线性无关向量组变换为线性无关的.
+% 	\end{theorem}
+	
+% \subsection{线性变换的矩阵表示}
+
+% 	回顾之前基变换公式的推导思路，线性变换的矩阵表示也可以用类似方法导出.
+	
+% 	设\(\sigma\)是线性空间\(V_n\)中的线性变换，\(\mathcal{A} = \{\bm{\alpha}_1, \bm{\alpha}_2, \cdots ,\bm{\alpha}_n\}\)是一组基，对于每个\(\bm{\alpha}_i\)，变换后的向量能够用该组基线性表出，即
+% 	\begin{equation*}
+% 	\left\{ \begin{array}{ccccccccc}
+% 		\sigma(\bm{\alpha}_1) &=& k_{11} \bm{\alpha}_1  & + & k_{21} \bm{\alpha}_2 & + & \cdots & + & k_{n1} \bm{\alpha}_n \\
+% 		\sigma(\bm{\alpha}_2) &=& k_{12} \bm{\alpha}_1  & + & k_{22} \bm{\alpha}_2 & + & \cdots & + & k_{n2} \bm{\alpha}_n \\
+% 		\vdots & & \vdots & & \vdots & & & & \vdots\\
+% 		\sigma(\bm{\alpha}_n) &=& k_{1n} \bm{\alpha}_1  & + & k_{2n} \bm{\alpha}_2 & + & \cdots & + & k_{nn} \bm{\alpha}_n \\
+% 	\end{array}\right.
+% 	\end{equation*}
+% 	写成按列分块矩阵的形式，就是
+% 	\[ [\sigma(\bm{\alpha}_1),\sigma(\bm{\alpha}_2),\cdots, \sigma(\bm{\alpha}_n)] = [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n]
+% 		\left[\begin{array}{c|c|c|c}
+% 			k_{11} & k_{12} & \cdots & k_{1n} \\
+% 			k_{21} & k_{22} & \cdots & k_{2n} \\
+% 			\vdots & \vdots &  & \vdots \\
+% 			k_{n1} & k_{n2}  & \cdots & k_{nn}
+% 		\end{array}\right]\]
+% 	其中的系数矩阵称为线性变换的矩阵表示，正式定义如下：
+	
+% 	\begin{definition}
+% 		对于线性空间中的一组基\(\mathcal{A} = \{\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n\}\)以及线性变换\(\sigma\)，使得
+% 		\[[\sigma(\bm{\alpha}_1), \sigma(\bm{\alpha}_2), \cdots, \sigma(\bm{\alpha}_n)] =[\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n]\bm{C}\]
+% 		成立的矩阵\(\bm{C}\)称为线性变换\(\sigma\)在\(\mathcal{A}\)的\textbf{矩阵表示}\trm{(standard matrix)}.
+% 	\end{definition}
+% 	其中\([\sigma(\bm{\alpha}_1), \sigma(\bm{\alpha}_2), \cdots, \sigma(\bm{\alpha}_n)]\)可以简记为\(\sigma[\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n]\)或\(\sigma(\bm{\alpha}_1, \bm{\alpha}_2, \cdots, \bm{\alpha}_n)\).
+	
+% 	不那么学术地说，线性变换在某基下的矩阵表示，就是把该基中的每个向量逐个放入变换中，然后把所得到的向量的坐标作为列，拼成的矩阵.
+	
+% 	由线性变换是一种映射的条件可以立即得出，当线性变换和基都确定后，矩阵表示是唯一确定的；反之，当线性变换的矩阵表示和基都确定后，线性变换唯一确定，所以方阵和列向量的乘法等价于将列向量放入一个线性变换中.
+	
+% 	回顾之前的基变换公式，可以发现旧基乘以过渡矩阵的过程，就是将旧基中的向量逐个线性变换的过程，而该线性变换在旧基下的矩阵表示就是过渡矩阵.
+% 	\begin{theorem}
+% 		\(0^*\)在任意一组基下的矩阵表示都是零矩阵；\(\varepsilon\)在任意一组基下的矩阵表示都是单位矩阵.
+% 	\end{theorem}
+	
+% 	基变换公式可以从线性变换的角度解释，所以坐标变换公式也可以用线性变换来解释.
+	
+% 	\begin{theorem}
+% 		设\(\sigma\)是\(n\)维线性空间中的线性变换，\(\sigma\)在基\(\mathcal{A}\)下的矩阵表示为\(\bm{A}\)，空间中的另一个向量\(\bm{\beta}\)在该基中的坐标为\([x_1,x_2,\cdots, x_n]^T\)，则
+% 		\begin{equation*}
+% 			\sigma(\begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}) = 
+% 			\bm{A} \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}
+% 		\end{equation*}
+% 	\end{theorem}
+	
+% 	这个定理说的是：对一个向量做线性变换，等价于用矩阵表示左乘该向量. 
+	
+% 	\begin{theorem}
+% 		设\(\sigma\)在线性空间某基下的矩阵表示为\(\bm{A}\)，则\(\sigma\)可逆的充分必要条件是\(\bm{A}\)可逆，且\(\sigma^{-1}\)的矩阵表示是 \(\bm{A}^{-1}\).
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		在线性空间中取定两组基\(\mathcal{A}=\{\bm{\alpha}_1,\bm{\alpha}_2, \cdots, \bm{\alpha}_n\}\)和\(\mathcal{B} = \{\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n\}\)，\(\mathcal{A}\)到\(\mathcal{B}\)的过渡矩阵为\(\bm{P}\)，线性变换\(\sigma\)在\(\mathcal{A}\)下的矩阵表示为\(\bm{A}\)，在\(\mathcal{B}\)下的矩阵表示为\(\bm{B}\)，则
+% 		\[\bm{B} = \bm{P}^{-1}\bm{A}\bm{P}\]
+% 	\end{theorem}
+% 	此时矩阵\(\bm{A}\)和\(\bm{B}\)相似，记作\(\bm{A} \sim \bm{B}\)，相似的定义和性质将在下面见到.
+	
+% \section{行列式}
+% \subsection{排列}
+
+% 	排列是行列式计算的基础，但是课本上的排列看上去就是一个自然数，因此仍可以借助集合论来定义排列，而为了和整数区分开，此处把排列写成有序对的形式；这里遵循集合论对自然数的扩展，即把自然数看作是一个序数：\(0=\emptyset; n^+ = n+1=n \cup \{n\}\)
+	
+% 	\begin{definition}
+% 		对于双射\(f:n \rightarrow n\)，有序对\(A=\langle f(0), f(1), \cdots, f(n-1) \rangle \)称为\(n\)阶\textbf{排列}；\\
+% 		若\(\forall x, y<n : x<y \rightarrow f(x) < f(y)\)，则称此排列为\textbf{自然序排列}；\\
+% 		\(\card{\{\langle x,y \rangle | x<y<n \wedge f(x) > f(y)\}}\)称为\textbf{逆序数}，记作\(\tau(A)\)；\\
+% 		逆序数为奇数的排列称为\textbf{奇排列}，逆序数为偶数的排列称为\textbf{偶排列}；\\
+% 		交换排列中两个数同时保持其余数不变的操作称为\textbf{对换}.
+% 	\end{definition}
+% 	注意，自然序排列的逆序数为0，因此是偶排列.
+% 	计算排列的逆序数的方法很简单粗暴，即数出每个元素后面比它小（或前面比它大）的数的个数，再相加即可，如\(\tau(\langle 3,2,5,1,4 \rangle) = 2+1+2+0+0 = 5\).
+	
+% 	\begin{theorem}\;\\
+% 		(1)	\(n\)阶排列共有\(n!\)个；\\
+% 		(2)	对换改变排列的奇偶性；\\
+% 		(3)	全部\(n\;(n\geq 2)\)阶排列中，奇排列和偶排列的个数相同，各占一半；\\
+% 		(4)	任何\(n\;(n \geq 2)\)阶排列可以经过有限次对换变为自然序排列，且对换次数的奇偶性与原排列的奇偶性相同.
+% 	\end{theorem}
+
+% \subsection{行列式的概念}
+
+% 	对于线性方程组
+% 	\begin{equation*}
+% 		\left\{ \begin{array}{ccccc}
+% 			a_{11}x_1  & + & a_{12}x_2 & = & b_1 \\
+% 			a_{12}x_2 & + & a_{12}x_2 & = & b_2
+% 		\end{array} \right.
+% 	\end{equation*}
+% 	当方程组有唯一解时，可以得出
+% 	\begin{equation*}
+% 		x_1 = \frac{b_1a_{22}-a_{12}b_2}{a_{11}a_{22}-a_{12}a_{21}}, x_2 = \frac{a_{11}b_2-b_1a_{21}}{a_{11}a_{22}-a_{12}a_{21}}.
+% 	\end{equation*}
+% 	为了简化结果的表达，就有了2阶行列式的定义：
+% 	\begin{definition}
+% 		\begin{equation*}
+% 			\begin{vmatrix}a_{11} & a_{12} \\ a_{21} & a_{22}\end{vmatrix} = a_{11}a_{22} - a_{12}a_{21}.
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	这时候若设\(D = \begin{vmatrix}a_{11} & a_{12} \\ a_{21} & a_{22} \end{vmatrix}\)，而\(D_1,D_2\)由\(D\)这么变换而来：
+% 	\begin{eqnarray*}
+% 		\begin{vmatrix} {\color{red}a_{11}} & a_{12} \\ {\color{red}a_{21}} & a_{22} \end{vmatrix} \Rightarrow D_1 = \begin{vmatrix} {\color{red}b_1} & a_{12} \\ {\color{red}b_2} & a_{22} \end{vmatrix} \\
+% 		\begin{vmatrix} a_{11} & {\color{red}a_{12}} \\a_{21} & {\color{red}a_{22}} \end{vmatrix} \Rightarrow D_2 = \begin{vmatrix} a_{11} & {\color{red}b_1} \\ a_{21} & {\color{red}b_2} \end{vmatrix}
+% 	\end{eqnarray*}
+% 	此时有：\(x_1 = \dfrac{D_1}{D}, x_2 = \dfrac{D_2}{D}\)\\
+	
+% 	同理，三阶行列式定义为：
+% 	\begin{definition}
+% 		\begin{equation*}
+% 			\begin{vmatrix} a_{11} & a_{12} & a_{13} \\ a_{21} & a_{22} & a_{23} \\ a_{31} & a_{32} & a_{33} \end{vmatrix} = a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} - a_{11}a_{23}a_{32} - a_{12}a_{21}a_{33} - a_{13}a_{22}a_{31}
+% 		\end{equation*}
+% 	\end{definition}
+	
+% 	二阶行列式的几何意义：在平面直角坐标系中，相邻两边的向量为\((x_1, y_1), (x_2, y_2)\)的平行四边形的面积为\(\begin{vmatrix}x_1 & y_1 \\ x_2 & y_2\end{vmatrix}\).
+	
+% 	三阶行列式的几何意义：在空间直角坐标系中，由向量\((x_1, y_1, z_1), (x_2, y_2, z_2), (x_3, y_3, z_3)\)确定的平行六面体的体积为\(\begin{vmatrix} x_1 & y_1 & z_1 \\ x_2 & y_2 & z_2 \\ x_3 & y_3 & z_3 \end{vmatrix}\).
+	
+% 	可见，2阶行列式的展开式一共有\(2!\)项，3阶行列式的展开式一共有\(3!\)项，如果把行列式扩展到任意n阶，但仍然按照2阶和3阶的模式定义为一个刚性的式子，那将会缺乏普遍性. 因此需要从2阶和3阶的行列式中找规律，既让n阶行列式的展开式能够高度概括地表达出来（即使用连加和、连乘积之类带有循环意味的符号），又能让n元线性方程组的唯一解（如果存在）用行列式的商简洁地表示出来.
+	
+% 	首先观察2阶行列式\(a_{{\color{red}1}1}a_{{\color{red}2}2} - a_{{\color{red}1}2}a_{{\color{red}2}1}\)，行列式每一项中的行下标都是按照自然序递增的；第一项中的列下标的排列的逆序数为\(\tau(\langle 1,2 \rangle) = 0\)，为偶数，该项符号取正；第二项中列下标的排列的逆序数为\(\tau(\langle 2,1 \rangle) = 1\)，为奇数，该项符号取负.
+	
+% 	然后观察3阶行列式\(a_{{\color{red}1}1}a_{{\color{red}2}2}a_{{\color{red}3}3} + a_{{\color{red}1}2}a_{{\color{red}2}3}a_{{\color{red}3}1} + a_{{\color{red}1}3}a_{{\color{red}2}1}a_{{\color{red}3}2} - a_{{\color{red}1}1}a_{{\color{red}2}3}a_{{\color{red}3}2} - a_{{\color{red}1}2}a_{{\color{red}2}1}a_{{\color{red}3}3} - a_{{\color{red}1}3}a_{{\color{red}2}2}a_{{\color{red}3}1}\)，每一项中的行下标也是按照自然序递增的，再看每一项的列下标，当它们的排序的逆序数是奇数时，该项符号为正，否则为负.
+	
+% 	根据这些性质，我们可以推广：任意n阶行列式的每一项都是\(n\)个数的乘积，为了好看，规定这\(n\)个数从左到右按照行下标递增的顺序相乘，此时若列下标排列的逆序数是奇数，则该项取负，否则取正. 把这条规则写得学术一点，就是下面的定义:
+% 	\begin{definition}
+% 		对于任意\(n\)阶行列式\trm{(determinant)}，都有定义
+% 		\begin{equation*}
+% 			\begin{vmatrix}
+% 				a_{11} & a_{12} & \cdots & a_{1n} \\
+% 				a_{21} & a_{22} & \cdots & a_{2n} \\
+% 				\vdots & \vdots &  & \vdots \\
+% 				a_{n1} & a_{n2}  & \cdots & a_{nn}
+% 			\end{vmatrix} = \sum \{(-1)^{\tau(\langle j_1, j_2, \cdots, j_n \rangle)}\prod_{i=1}^n a_{ij_i} | \forall p \forall q : p \neq q \rightarrow j_p \neq j_q \wedge p,q \in [1,n] \cap \mathbb{Z}\}
+% 		\end{equation*}
+% 	\end{definition}
+% 	这个定义实际上翻译自线性变换的放大率，过于抽象，下面还有更好理解的定义.
+% 	从外观上看，行列式和方阵的不同之处就是方阵由中括号围起来，行列式由竖线围起来，因此对于任意\(n\)阶方阵 \(\bm{A}\)，对应元素都相同的行列式称为 \(\bm{A}\)的行列式，记作\(\trm{det}(A)\)或\(|\bm{A}|\).
+
+% \subsection{行列式的性质}
+
+% 	\begin{definition}
+% 		非零元仅出现在主/副对角线上的行列式称为对角行列式；
+% 		对于任意上/下三角矩阵 \(\bm{A}\)，\(\trm{det}(\bm{A})\)称为上/下三角行列式
+% 	\end{definition}
+% 	由行列式的定义可以看出，它的展开式中每一项都是\(n\)个不同行且不同列的数的乘积，只要有一个数为0，那么这一项就为0. 因此对角行列式和三角行列式中，仅存的可能不为0的一项就是对角线上的各元素的乘积. 若为主对角线，则逆序数为0，所以把主对角线上的元素简单相乘即可；若为副对角线，则\(\tau(\langle a_{n1}, a_{n-1,2}, \cdots, a_{1n} \rangle )  = \dfrac{n(n-1)}{2}\).
+	
+% 	\begin{theorem} \;\\
+% 		(1)	\(\trm{det}(\bm{A}) = \trm{det}(\bm{A}^T)\)，即行列式的行与列的地位完全相同；\\
+% 		(2)	调换行列式的任意两行或两列（即\(R_{ij}\)或\(C_{ij}\)），行列式的正负号相反，绝对值不变；\\
+% 		(3)	行列式乘以某个数，等于用该数乘以行列式的某一行或某一列（即\(kR_i\)或\(kC_i\)）；\\
+% 		(4)	若行列式的第\(k\)行（列）形如\(b_{ki} + c_{ki}\)的形式，则该行列式等于两个行列式\(A,B\)之和，其中\(A\)的第\(k\)行（列）为\(b_{ki}\)，\(B\)的第\(k\)行（列）为\(c_{ki}\)；\\
+% 		(5)	把行列式的某一行（列）乘以某个数加到另一行上（即\(R_i + kR_j\)或\(C_i + kC_j\)），行列式的值不变.
+% 	\end{theorem}
+	
+% 	\begin{corollary} \;\\
+% 		(1)	可以把行列式的某一行（列）的公因数提到行列式的外面；\\
+% 		(2)	若行列式的某一行（列）为全为零，则行列式的值为零；\\
+% 		(3)	若行列式的某两行（列）成比例，则行列式的值为零；\\
+% 		(4)	\(\trm{det}(k\bm{A}_{n \times n}) = k^n \trm{det}(\bm{A}_{n \times n})\).
+% 	\end{corollary}
+	
+% 	\noindent \textbf{【怎样解题】} \\
+% 	用行列式的性质计算行列式的值的方法：\\
+% 	把类似于高斯消元法，可以把行列式化成上三角矩阵，然后根据上面的方法求值就好了
+	
+	
+% \subsection{行列式的展开}
+
+% 	当行列式的阶数太高，可以把它化成若干个低一阶行列式的线性组合来简化计算.
+% 	\begin{definition}
+% 		在\(n\)阶行列式\(A\)中划去元素\(a_{ij}\)所在的行和列，剩下的\((n-1)^2\)个元素按照原来的排法拼接成的新的行列式\(M_{ij}\)，称为\(a_{ij}\)的\textbf{余子式}，而\(A_{ij} = (-1)^{i+j}M_{ij}\)称为\(a_{ij}\)\textbf{代数余子式}\trm{(cofactor)}；对于第\(k\)行（列），称\(\sum_{i=1}^n a_{ki} A_{ki}\)为行列式\(A\)\textbf{按第\(k\)行展开}，\(\sum_{i=1}^n a_{ik} A_{ik}\)为行列式\(A\)\textbf{按第\(k\)列展开}.
+% 	\end{definition}
+	
+% 	关于代数余子式，有下面的定理：
+% 	\begin{theorem}
+% 		（拉普拉斯展开法则\trm{(Laplace expansion)}）行列式的值等于按任意一行（列）的代数余子式展开的值.
+% 	\end{theorem}
+% 	所以行列式的可以有递归定义：
+% 	\begin{definition}
+% 		\[\trm{det}(\bm{A}) = \left\{ 
+% 		\begin{aligned}
+% 			&a_{11}, &n=1\\
+% 			&\sum_{i=1}^n a_{1i}A_{1i}, &n \geq 2
+% 		\end{aligned}
+% 		\right.
+% 		\]
+% 	\end{definition}
+% 	\begin{corollary}
+% 		(1)	当行列式的某一行（列）只有一个元素不为0时，行列式的值等于该元素与其代数余子式的乘积；\\
+% 		(2)	改变某一行/列的值不改变其代数余子式的值（\uline{因为代数余子式与该行/列无关}），求某一行/列的元素的代数余子式的线性组合时，若原行列式中有某一行/列的系数与该线性组合的系数对应成比例，则该线性组合的值为0.
+% 	\end{corollary}
+	
+% 	\noindent \textbf{【怎样解题】} \\
+% 	结合行列式的性质及代数余子式计算行列式的方法：\\
+% 	(1)	用行列式的“初等行（列）变换”把行列式的化成某一行（列）只有一个非零元的形式（即“造零”）；\\
+% 	(2)	把行列式按照这一行（列）展开（即“降阶”）.\\
+% 	一般来说，把行列式降阶到了2阶就直接按定义计算.
+	
+% 	\begin{theorem}
+% 		行列式的某一行/列与另一行/列对应元素的代数余子式的乘积之和为0，即
+% 		\[\sum_{i=1}^n a_{pi}A_{qi} \sum_{i=1}^n a_{ip}A_{iq} = 0, \; p \neq q\]
+% 	\end{theorem}
+% 	证明思路：。。。
+	
+% 	接下来是一个经典的行列式模型：
+% 	\begin{theorem}
+% 		范德蒙德行列式\trm{(Vandermonde determinant)}有如下性质：
+% 		\[\begin{vmatrix} 
+% 			1 & 1 & 1 & \cdots & 1 \\
+% 			a_1 & a_2 & a_3 & \cdots & a_n \\
+% 			a_1^2 & a_2^2 & a_3^2 & \cdots & a_n^2 \\
+% 			a_1^3 & a_2^3 & a_3^3 & \cdots &a_n^3 \\
+% 			\vdots & \vdots & \vdots & & \vdots \\
+% 			a_1^n & a_2^n & a_3^n & \cdots & a_n^n
+% 		\end{vmatrix} 
+% 		= \prod \{a_i - a_j | 1 \leq j < i \leq n\}\]
+% 	\end{theorem}
+% 	证明思路：数学归纳法.
+	
+% 	\noindent \textbf{【怎样解题】} \\
+% 	结合范德蒙德行列式的性质及加边升阶法计算行列式的方法：\\
+% 	适用场景：每列中仅有一个不相同元素的行列式.
+% 	(1)	在最左侧增加一列（记为第0列），\((0,0)-\)元为1，其他全为0；\\
+% 	(2)	补全第0行，\((0,k)-\)元为第\(k\)列出现最多的元素；\\
+% 	(3)	用第\(k\)行减去第\(k+1\)行，\(k=0,1,2,\cdots,n-1\)，现在原行列式化为了箭形行列式；\\
+% 	(4)	\(C_0 + \dfrac{1}{a_{ii}}C_{i}\)，化为了对角行列式.
+	
+% 	\begin{theorem}
+% 		（矩阵的行列式）\\
+% 		(1)	分块矩阵\(\bm{P} = \begin{bmatrix} \bm{A} & \bm{C}_1 \\ \bm{0} & \bm{B} \end{bmatrix}, \bm{Q} = \begin{bmatrix} \bm{A} & \bm{0} \\ \bm{C}_2 & \bm{B} \end{bmatrix} \)（\(\bm{A},\bm{B}\)为方阵），\(\trm{det}(\bm{P}) = \trm{det}(\bm{Q}) = \trm{det}(\bm{A})\trm{det}(\bm{B})\)；\\
+% 		(2)	准对角矩阵\(\trm{diag}(\bm{A}_1,\bm{A}_2, \bm{A}_3, \cdots, \bm{A}_n) = \prod_{i=1}^n \trm{det}(\bm{A}_i)\)，其中\(\bm{A}_i\)为方阵；\\
+% 		(3)	任意多方阵：\(\trm{det}(\prod \bm{A}_i) = \prod\trm{det}(\bm{A}_i)\)；\\
+% 		(4)	可逆方阵：\(\trm{det}(\bm{A}^{-1}) = \dfrac{1}{\trm{det}(\bm{A})}\)；\\
+% 		(5)	正交矩阵：\(\trm{det}(A) = \pm 1\)；\\
+% 		(6)	初等矩阵：\(\trm{det}(\bm{E}_{ij}) = -1; \trm{det}(\bm{E}_i(c)) = c; \trm{det}(\bm{E}_{ij}(c) = 1)\)
+% 	\end{theorem}
+
+% \subsection{用行列式给出方程的解}
+
+% 	\begin{theorem}
+% 		（克莱姆法则\trm{(Cramer rule)}）对于非齐次线性方程组\(\bm{AX} = \bm{b}\)，若\(\trm{det}(\bm{A}) \neq 0\)且\(\bm{A}\)为方阵，则方程组有唯一解：\(x_i = \dfrac{\bm{D}_i}{\bm{A}}\)，其中\(\bm{D}_i\)是把 \(\bm{A}\)的第\(i\)列换成\(\bm{b}\)得来的矩阵，即
+% 		\begin{equation*}
+% 			\bm{D}_i=\begin{vmatrix}
+% 				a_{11} &  \cdots & a_{1,i-1} & {\color{red} b_1} & a_{1,i+1} & \cdots & a_{1n} \\
+% 				a_{21} &  \cdots & a_{2,i-1} & {\color{red} b_2} & a_{2,i+1} & \cdots & a_{2n} \\
+% 				\vdots & & \vdots &  \vdots & \vdots & & \vdots \\
+% 				a_{n1} &  \cdots & a_{n,i-1} & {\color{red} b_n} & a_{n,i+1} & \cdots & a_{nn} \\
+% 			\end{vmatrix}
+% 		\end{equation*}
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		当方程组\(\bm{AX} = \bm{b}\)无解或有无穷多个解时，\(\trm{det}(\bm{A}) = 0\)；\\
+% 		齐次线性方程组\(\bm{AX} = \bm{b}\)只有零解\(\iff \trm{det}(\bm{A}) \neq 0\)
+% 	\end{corollary}
+	
+% 	克莱姆法则建立了线性方程组的解和系数项、常数项的关系，主要适用于理论推导（比如判断方程组是否有解），以及解二元线性方程组，但是对于更多元的线性方程组，还是用高斯消元法来解决比较快.
+
+% \subsection{伴随矩阵}
+
+% 	\begin{definition}
+% 		设\(n\)阶方阵 \(\bm{A}\)中的元素\(a_{ij}\)的代数余子式是\(A_{ij}\)，令\(\bm{B} = [A_{ij}]\)，则\(\bm{B}^T\)称为 \(\bm{A}\)的\textbf{伴随矩阵}\trm{(adjugate)}，记作\(A^*\).
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		伴随矩阵的最重要性质：\(\bm{A}^*\bm{A} = \bm{AA}^* = \trm{det}(\bm{A})\bm{I}\)，也就是说，\(\bm{A}^{-1}\)和\(\bm{A}^*\)之间有比例关系
+% 	\end{theorem}
+% 	所以现在求矩阵的逆可以用伴随矩阵，但是一般该过程会非常复杂，所以求三阶及以上矩阵的逆还是用初等变换比较方便.
+% 	\begin{corollary}
+% 		对于任意\(n\;(n \geq 2)\)方阵，有：\\
+% 		(1)	\(\trm{det}(\bm{A}^*) = \trm{det}(\bm{A})^{n-1}\);\\
+% 		(2)	\((\bm{A}^*)^* = \trm{det}(\bm{A})^{n-2} \bm{A}\);\\
+% 		(3)	\((k\bm{A})^* = k^{n-1}\bm{A}^*\);\\
+% 		(4)	\((\bm{A}^*)^{-1} = (\bm{A}^{-1})^* = \dfrac{\bm{A}}{\trm{det}(\bm{A})}\).
+% 	\end{corollary}
+
+
+% \section{特征值}
+% \subsection{特征值和特征向量}
+	
+% 	对于\(n\)阶方阵\(\bm{A}\)和\(n\)维列向量\(\bm{X}\)，存在另外一个\(n\)维列向量\(\bm{b}_1\)，使得方程组\(\bm{AX}  = \bm{b_1}\)成立；根据矩阵的线性运算，某个常数乘以\(\bm{X}\)得到的矩阵也仍是一个\(n\)维列向量\(\bm{b_2}\).  于是很自然地想到，是否存在合适的矩阵\(\bm{X}\)和常数\(\lambda\)，使得\(\bm{b_1} = \bm{b_2}\)？就有了以下的定义：
+	
+% 	\begin{definition}
+% 		对于数域\(F\)，设\uline{方阵}\(\bm{A} \in F^{n \times n}\)，若存在常数\(\lambda \in F\)和非零列向量\(\bm{X} \in F^n\)，使得
+% 		\[\bm{AX} = \lambda\bm{X} \leftrightarrow (\lambda \bm{I} - \bm{A})\bm{X} = \bm{0}\]
+% 		成立，则称\(\lambda\)为矩阵 \(\bm{A}\)的\textbf{特征值}\trm{(eigenvalue)}，\(\bm{X}\)为矩阵 \(\bm{A}\)的\uline{属于（或对应于,\trm{correspond to}）}特征值\(\lambda\)的特征向量\trm{(eigenvector)}.\\
+% 		方阵的所有特征值的集合称为该方阵的\textbf{谱}.
+% 	\end{definition}
+	
+% 	由于\((\lambda\bm{I} - \bm{A})\bm{X} = \bm{0}\)看起来像齐次线性方程组\(\bm{A}'\bm{X} = \bm{0}\)的形式（\((\lambda\bm{I} - \bm{A})\)和\(\bm{A}'\)甚至还同型），而且\(\trm{det}(\lambda\bm{I} - \bm{A}) \neq 0\)，所以又有以下的定义：
+	
+% 	\begin{definition}
+% 		对于\(n\)阶方阵 \(\bm{A}\)和它的一个特征值\(\lambda\)，\\
+% 		\(\lambda\bm{I} - \bm{A}\)称为 \(\bm{A}\)的\textbf{特征矩阵}；\\
+% 		\(\trm{det}(\lambda\bm{I} - \bm{A})\)称为 \(\bm{A}\)的\textbf{特征多项式}；\\
+% 		\(\trm{det}(\lambda\bm{I} - \bm{A}) = 0\)称为 \(\bm{A}\)的\textbf{特征方程}；\\
+% 		\((\lambda \bm{I} - \bm{A})\bm{X} = \bm{0}\)称为 \(\bm{A}\)的\textbf{特征方程组}.
+% 	\end{definition}
+	
+% 	\noindent \textbf{【怎样解题】} \\
+% 	求\uline{具体矩阵}的特征值和特征向量的方法：\\
+% 	(1)	解矩阵的关于\(\lambda\)的特征方程\(\trm{det}(\lambda\bm{I} - \bm{A}) = 0\)，所有根都是该具体矩阵的特征值；\\
+% 	(2)	设\(\lambda_1, \lambda_2, \cdots, \lambda_s\)是所有互异的特征值，把它们分别代入特征方程组\((\lambda \bm{I} - \bm{A})\bm{X} = \bm{0}\)中；\\
+% 	(3)	对于每一个特征方程组\((\lambda_i \bm{I} - \bm{A})\bm{X} = \bm{0} \; (i \in [1,s] \cap \mathbb{Z})\)，用高斯消元法求出基础解系（解空间的基），解空间中的所有非零向量都是是属于（或对应于）特征值\(\lambda_i\)的特征向量.
+	
+% 	由上面的第(1)步可知，\(\lambda\)在行列式中出现了\(n\)次，整理出的关于\(\lambda\)的多项式的最高次数是\(n\)，由：
+% 	\begin{fact}
+% 		（代数基本定理）一元\(n\)次多项式方程在复数范围内有且仅有\(n\)个根.
+% 	\end{fact}
+% 	可知特征方程在实数范围内的解至多有\(n\)个，即\(n\)阶矩阵最多有\(n\)个实特征值；从另外一个角度看，特征方程组在复数范围可以因式分解，写成如下的形式：
+% 	\[ f_{\bm{A}}(\lambda) = (\lambda-\lambda_1)^{p_1}(\lambda-\lambda_2)^{p_2}\cdots(\lambda-\lambda_s)^{p_s}\]
+% 	这里\(p_i\)称为特征值\(\lambda_i\)的\textbf{代数重数}，且\(\sum_{i=1}^s p_i = n\).
+	
+% 	\begin{theorem}
+% 		设非零方阵 \(\bm{A}\)的特征值是\(\lambda_1, \lambda_2, \cdots, \lambda_s\)，则：\\
+% 		(1)	\(\trm{det}(\bm{A}) = \prod_{i=1}^s \lambda_i\)；\\
+% 		(2)	\(\trm{tr}(\bm{A}) = \sum_{i=1}^s \lambda_i\)；\\
+% 		对于\(\bm{A}\)的任意一个给定的特征值\(\lambda\)和属于\(\lambda\)的特征向量\(\bm{X}\)，又有：\\
+% 		(3)	对于任意一个多项式函数\(f\)，\(f(\lambda)\)是方阵\(f(\bm{A})\)的特征值，\(\bm{X}\)仍属于该特征值，由此可知\(\lambda^m\)是 \(\bm{A}^m\)的特征值，\(k\lambda\)是\(k\bm{A}\)的特征值；\\
+% 		(4)	当\(\bm{A}\)可逆时，\(\lambda^{-1}\)是\(\bm{A}^{-1}\)的特征值，\(\bm{X}\)也是属于\(\lambda^{-1}\)的特征向量；\\
+% 		(5)	\(\trm{det}(\bm{A})\lambda^{-1}\)是\(\bm{A}^*\)的特征值，\(\bm{X}\)仍该特征值；\\
+% 		(6)	\(\bm{A}\)和 \(\bm{A}^T\)有相同的谱.
+% 	\end{theorem}
+	
+% \subsection{矩阵的相似关系}
+	
+% 	前面线性变换的知识点告诉我们，同一个线性变换在不同的基下的矩阵表示“相似”，现在正式来定义这个关系：
+% 	\begin{definition}
+% 		（矩阵的三大关系之二）设\(\bm{A}, \bm{B}\)是两个\(n\)阶方阵，若存在\(n\)阶可逆矩阵\(\bm{P}\)，使得\(\bm{P}^{-1}\bm{AP} = \bm{B}\)，则称\(\bm{A}\)\textbf{相似于}\(\bm{B}\)，记作\(\bm{A} \sim \bm{B}\)，\(\bm{P}\)称为由\(\bm{A}\)到\(\bm{B}\)的相似变换矩阵.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		矩阵的相似关系有以下几个性质：\\
+% 		(1)	等价性，即矩阵的相似关系是一种等价关系；\\
+% 		(2)	可加性，即\(\bm{A}_i \sim \bm{B}_i \rightarrow \sum \bm{A}_i \sim \sum \bm{B}_i\)；\\
+% 		(3)	可乘性，即\(\bm{A}_i \sim \bm{B}_i \rightarrow \prod \bm{A}_i \sim \prod \bm{B}_i\)，由此可知\(\bm{P}^{-1}\bm{A}^m\bm{P} = (\bm{P}^{-1}\bm{AP})^m\)；\\
+% 		(4)	若\(\bm{A} \sim \bm{B}\)，则\(\bm{A} \cong \bm{B}\)且\(\trm{det}(\bm{A}) = \trm{det}(\bm{B})\)；\\
+% 		(5)	对于任意一个多项式函数\(f\)，若\(\bm{A} \sim \bm{B}\)，则\(f(\bm{A}) \sim f(\bm{B})\)；\\
+% 		(6)	若\(\bm{A} \sim \bm{B}\)，则\(\trm{det}(\lambda\bm{I} - \bm{A}) = \trm{det}(\lambda \bm{I} - \bm{B})\)；\\
+% 		(7)	若\(\bm{A}_i \sim \bm{B}_i\)，则\(\trm{diag}(\bm{A}_1, \bm{A}_2, \cdots, \bm{A}_n) \sim \trm{diag}(\bm{B}_1, \bm{B}_2, \cdots, \bm{B}_n)\).
+% 	\end{theorem}
+	
+% \subsection{相似对角化}
+% 	矩阵相似的可乘性可以把方阵的乘法和幂运算转移到另外一个方阵上，而对角矩阵（包括数量矩阵、单位矩阵）在乘法和幂运算上是最简单的，如果能找到与原矩阵相似的对角矩阵，就可以大大简化运算.
+	
+% 	\begin{theorem}
+% 		\(n\)阶方阵可以对角化的充分必要条件是该方阵有\(n\)线性无关的特征向量.
+% 	\end{theorem}
+% 	证明：以下证明过程同时给出了求与 \(\bm{A}\)相似的对角矩阵以及相似变换矩阵的方法.\\
+% 	假设\(n\)阶方阵可以相似于对角矩阵，即存在可逆的方阵\(\bm{P}\)：
+% 	\[\bm{P}^{-1}\bm{AP} = \trm{diag}(\lambda_1, \lambda_2, \cdots, \lambda_n) \iff \bm{AP} = \bm{P}\trm{diag}(\lambda_1, \lambda_2, \cdots, \lambda_n)\]
+% 	把矩阵\(\bm{P}\)按列分块，即令\(\bm{P} = [\bm{X}_1, \bm{X}_2, \cdots, \bm{X}_n]\)，易知这些列向量线性无关，代入上式，可得：
+% 	\[\bm{A}[\bm{X}_1, \bm{X}_2, \cdots, \bm{X}_n] = [\bm{X}_1, \bm{X}_2, \cdots, \bm{X}_n]\trm{diag}(\lambda_1, \lambda_2, \cdots, \lambda_n)\]
+% 	由矩阵的乘法法则：
+% 	\[[\bm{AX}_1, \bm{AX}_2, \cdots, \bm{AX}_n] = [\lambda_1\bm{X}_1, \lambda_2\bm{X}_2, \cdots, \lambda_n\bm{X}_n]\]
+% 	矩阵的各个元素对应相等，就有：
+% 	\[\bm{A}_i\bm{X} = \lambda_i\bm{X}, \; i \in [1,n] \cap \mathbb{Z}\]
+% 	注意这些\(\bm{X}_i\)线性无关；反之，若\(n\)阶方阵有\(n\)个线性无关的特征向量，那么把过程逆着推导一遍，也可以得出\(\bm{P}\)是可逆的.
+	
+% 	以上的证明过程有几点值得注意：\\
+% 	(1)	与\(\bm{A}\)相似的对角矩阵的主对角元恰为\(\bm{A}\)的\uline{全部}特征值；\\
+% 	(2)	相似变换矩阵\(\bm{P}\)的第\(i\)列（即\(\bm{X}_i\)）恰为对应于特征值\(\lambda_i\)的特征向量，因此当对角矩阵的主对角元改变顺序时，相似变换矩阵也要相应改变；\\
+% 	(3)	由于特征值顺序的不唯一性、对应于给定特征值的特征向量的不唯一性，可知相似变换矩阵也不是唯一的.
+	
+% 	由上述证明过程还可以得出两个结论：
+% 	\begin{theorem}
+% 		(1)	对应于不同的特征值的特征向量线性无关；\\
+% 		(2)	若\(n\)阶方阵有\(n\)个不同的特征值（特征方程没有重根），那么该方阵可以相似对角化.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		设\(\lambda_1, \lambda_2, \cdots, \lambda_m\)是方阵\(\bm{A}\)的\(m\)个互异的特征值，\(\bm{X}_{i1}, \bm{X}_{i2}, \cdots, \bm{X}_{ip_i}\)是属于\(\lambda_i\)的特征向量，则这\(p_1+ p_2+\cdots+p_m\)个向量构成的向量组仍然线性无关.
+% 	\end{theorem}
+% 	证明思路：对于给定的特征值，其线性组合的系数必定全为0，把所有特征值的特征向量的线性组合相加，等于0，同时可以推出所有系数都为0.
+	
+% 	由以上几个定理可以推出，只要属于\(n\)阶方阵\(\bm{A}\)的各个互异的特征值的线性无关的特征向量的总数不少于\(n\)，该方阵就可以相似对角化. 由特征向量的求法中可以知道，特征值\(\lambda_i\)对应的全部特征向量就是矩阵\(\bm{A}\)的解空间中的所有非零向量，而该解空间的基（也就是对应于特征值\(\lambda_i\)的线性无关的特征向量）最多是\(n - r(\lambda_i\bm{I} - \bm{A})\)个.
+	
+% 	\begin{definition}
+% 		对于方阵\(\bm{A}\)和它的一个特征值\(\lambda_i\)，特征方程组\((\lambda_i\bm{I} - \bm{A})\bm{X} = \bm{0}\)的所有解构成的向量空间成为\(\bm{A}\)的\textbf{特征子空间}，一般记作\(V_{\lambda_i}\)；特征子空间的维数\(n - r(\lambda_i\bm{I} - \bm{A})\)称为特征值\(\lambda_i\) 的\textbf{几何重数}.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		(1)	特征值的几何重数\(q_i\)不大于它的代数重数\(p_i\)；\\
+% 		(2)	矩阵可以相似对角化的充要条件是每个特征值的几何重数都等于其代数重数.
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	相似对角化具体矩阵的方法如下：\\
+% 	(1)	求出矩阵的全部\uline{互异}的特征值\(\lambda_1, \lambda_2, \cdots, \lambda_s\)，同时求出每个特征值的代数重数\(p_i\)，最好的方法是保留特征方程的因式分解形式；\\
+% 	(2)	对于每个特征值\(\lambda_i\)，求特征矩阵\(\lambda_i\bm{I} - \bm{A}\)的秩（即\(\lambda_i\)的几何重数\(q_i\)，并判断是否等于其代数重数，只要有一个不等就不能相似对角化（这一步会很麻烦）；\\
+% 	(3)	若可以相似对角化，对每个特征值，求出其特征方程组的基础解系\(\bm{X}_{i1}, \bm{X}_{i2}, \cdots, \bm{X}_{ip_i}\)；\\
+% 	(4)	把上一步求得的所有基础解系都拼在一起，组成一个巨大的按列分块矩阵：
+% 	\[\bm{P} = [\bm{X}_{11}, \bm{X}_{12}, \cdots, \bm{X}_{1p_1}, \cdots, \bm{X}_{s1}, \bm{X}_{s2}, \cdots, \bm{X}_{sp_s}]\]
+% 	(5)	此时的对角矩阵就为
+% 	\[\bm{P}^{-1}\bm{AP} = \trm{diag}(\underbrace{\lambda_1, \lambda_1, \cdots, \lambda_1}_{q_1}, \underbrace{\lambda_2, \lambda_2, \cdots, \lambda_2}_{q_2}, \cdots, \underbrace{\lambda_s, \lambda_s, \cdots, \lambda_s}_{q_s})\]
+
+
+% \subsection{实对称矩阵的正交相似对角化}
+
+% 	对于实对称矩阵时，我们可以在相似对角化的基础上更进一步，要求相似对角矩阵是正交的. 回顾求矩阵特征值的方法，可以发现特征方程是一个高次多项式的形式，多项式的根即为矩阵的特征值. 对于一般方阵，这些根不一定是实数，但是对于实对称矩阵，可以保证：
+% 	\begin{theorem}
+% 		实对称矩阵的特征值都是实数，特征向量都是实向量.
+% 	\end{theorem}
+% 	证明思路：利用\(\bm{A} = \bm{A}^T = \overline{\bm{A}} = \overline{\bm{A}^T} = \overline{\bm{A}}^T\)，从特征值定义式出发，证明特征值\(\lambda\)满足\(\lambda = \overline{\lambda}\).
+	
+% 	\begin{theorem}
+% 		对应于实对称矩阵的不同的特征值的特征向量是正交的.
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	正交相似对角化具体矩阵的方法如下（比一般矩阵的相似对角化多了一些内容）：\\
+% 	(1)	求出矩阵的全部\uline{互异}的特征值\(\lambda_1, \lambda_2, \cdots, \lambda_s\)，同时求出每个特征值的代数重数\(p_i\)，最好的方法是保留特征方程的因式分解形式；\\
+% 	(2)	对于每个特征值\(\lambda_i\)，求特征矩阵\(\lambda_i\bm{I} - \bm{A}\)的秩（即\(\lambda_i\)的几何重数\(q_i\)，并判断是否等于其代数重数，只要有一个不等就不能相似对角化（这一步会很麻烦）；\\
+% 	(3)	若可以相似对角化，对每个特征值，求出其特征方程组的基础解系\(\bm{X}_{i1}, \bm{X}_{i2}, \cdots, \bm{X}_{ip_i}\)，这些解向量即为属于该特征值的线性无关特征向量；\\
+% 	{\color{red} (3.5)}	用施密特正交化方法，把属于同一个特征值的特征向量正交化再单位化（这一步会更麻烦）；\\
+% 	(4)	把上一步求得的所有单位向量都拼在一起，组成一个巨大的按列分块矩阵：
+% 	\[\bm{P} = [\bm{\eta}_{11}, \bm{\eta}_{12}, \cdots, \bm{\eta}_{1p_1}, \cdots, \bm{\eta}_{s1}, \bm{\eta}_{s2}, \cdots, \bm{\eta}_{sp_s}]\]
+% 	(5)	此时的对角矩阵就为
+% 	\[\bm{P}^{-1}\bm{AP} = \trm{diag}(\underbrace{\lambda_1, \lambda_1, \cdots, \lambda_1}_{q_1}, \underbrace{\lambda_2, \lambda_2, \cdots, \lambda_2}_{q_2}, \cdots, \underbrace{\lambda_s, \lambda_s, \cdots, \lambda_s}_{q_s})\]
+
+% \subsection{若尔当标准形}
+% 	有\(n\)个线性无关的特征向量的\(n\)阶方阵才能对角化（存在一个对角矩阵与该方阵相似），而如果方阵没有那么多线性无关的特征向量，与该方阵相似的最简单矩阵是若尔当标准形(Jordan normal form).
+	
+% 	\begin{definition}
+% 		若\(n\)阶上三角矩阵\(\bm{A} = [a_{ij}]\)满足：
+% 		\[\forall i,j \in [1,n] \cap \mathbb{Z}: a_{ii} = a_{jj} \wedge (j = i+1 \rightarrow a_{ij}=1)\]
+% 		则\(\bm{A}\)称为\(n\)阶\textbf{若尔当块}\trm{(Jordan block)}；\\
+% 		由若尔当块构成的准对角矩阵称为\textbf{若尔当形矩阵}\trm{(Jordan matrix)}.
+% 	\end{definition}
+% 	也就是说，若尔当块大概长这个样子：
+% 	\begin{equation*}
+% 		\begin{bmatrix}
+% 		a & 1 &   &   &   & \\
+% 		   & a & 1 &   &   & \\
+% 		   &   & \ddots & \ddots &   & \\
+% 		   &   &   &   & a & 1 &  \\
+% 		   &   &   &   &   & a & 1
+% 		\end{bmatrix}
+% 	\end{equation*}
+	 
+% 	\begin{theorem}
+% 		任意\(n\)阶矩阵都相似于一个若尔当形矩阵，若尔当形矩阵中若尔当块的排列次序由该\(n\)阶矩阵唯一确定.
+% 	\end{theorem}
+	
+% 	上述定理的的证明要用到线性变换的核以及厄米特矩阵，其适用范围至少是复数域\(\mathbb{C}\)，所以对于复矩阵，也可以用与实矩阵相同的方法求与其相似的若尔当矩阵.
+	
+% 	在求实矩阵的若尔当标准形之前要先求矩阵的初等因子，而求初等因子有两种方法：利用不变因子或直接求.
+% 	\begin{definition}
+% 		设\(n\)阶方阵\(\bm{A}\)的特征值为\(\lambda\)，定义以下三种对其特征矩阵\(\lambda\bm{I}-\bm{A}\)的操作（姑且称为初等变换）：
+% 		(1)	互换\(\lambda\bm{I}-\bm{A}\)的两行或两列；\\
+% 		(2)	用一个非零数乘以\(\lambda\bm{I}-\bm{A}\)的某一行或某一列；\\
+% 		(3)	将\(\lambda\bm{I}-\bm{A}\)的某一行/列的\(f(\lambda)\)倍加到另一行/列上，其中\(f \in F[x]\). 
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		设\(\bm{A}\)为\(n\)阶方阵，那么\(\lambda\bm{I}-\bm{A}\)可以通过有限次初等变换化成\(\trm{diag}(d_1(\lambda), d_2(\lambda), \cdots, d_n(\lambda)\)，其中\(d_{i+1}(\lambda)\)是\(d_i(\lambda)\)的整数倍，且\(d_i\)均为\uline{最高次项系数为1}的关于\(\lambda\)多项式.
+% 		此对角矩阵称为\textbf{史密斯标准形}，其中的主对角元称为\textbf{不变因子}；\\
+% 		对\(d_i(\lambda)\)因式分解为\(\prod (\lambda-\lambda_k)^{p_k}\)，称\(p_k > 0\)的\((\lambda-\lambda_k)^{p_k}\)为方阵\(\bm{A}\)或其特征矩阵的\textbf{初等因子}.
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		\(n\)阶若尔当块\([a_{ij}]\)的不变因子为\(\underbrace{1,1,\cdots, 1}_{m-1},(\lambda-a_{11})^m\).
+% 	\end{corollary}
+	
+% 	求初等因子还有另一种办法：
+% 	\begin{theorem}
+% 		 设\(\bm{A}\)是\(n\)阶复方阵，用初等变换将\(\lambda\bm{I}-\bm{A}\)化为对角矩阵(其主对角元的最高次项系数均为1)，然后把主对角元分解成互不相同的的一次因式方幂的乘积，则其中所有指数大于零的一次因式的幂就是\(\bm{A}\)的全部初等因子.
+% 	\end{theorem}
+	
+% 	需要注意的是，两个相同的初等因子不可合并，比如方阵有两个相同的初等因子\(\lambda - 1\)，不代表\((\lambda_1)^2\)也一定是该方阵的初等因子.
+	
+% 	\begin{theorem}
+% 		设\(n\)阶方阵\(\bm{A}\)的初等因子为\((\lambda-\lambda_1)^{m_1},(\lambda-\lambda_2)^{m_2},\cdots, (\lambda-\lambda_s)^{m_s}\)，则\(\bm{A}\)的若尔当标准形为\\
+% 		\(\trm{diag}(\bm{J}_1, \bm{J}_2, \cdots, \bm{J}_s)\)，其中
+% 		\[\bm{J}_i = 
+% 		\begin{bmatrix}
+% 		\lambda_i & 1 &   &   &   & \\
+% 		   & \lambda_i & 1 &   &   & \\
+% 		   &   & \ddots & \ddots &   & \\
+% 		   &   &   &   & \lambda_i & 1 &  \\
+% 		   &   &   &   &   & \lambda_i & 1 
+% 		\end{bmatrix}_{m_i \times m_i}
+% 		\]
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求若尔当标准形及相似变换矩阵的方法：
+% 	(1)	求方阵的初等因子；\\
+% 	(2)	根据初等因子写出若尔当标准形\(\bm{J}\)；\\
+% 	(3)	设相似变换矩阵为\(\bm{P}\)，则由\(\bm{P}^{-1}\bm{AP} = \bm{J}\)可得\(\bm{AP} = \bm{PJ}\)，然后把\(\bm{P}\)按列分块为\([\bm{X}_1, \bm{X}_2, \cdots, \bm{X}_n]\)，得到一些形如\(\bm{AX} = \lambda\bm{X}\)的矩阵方程，把它们解了就可以得到\(\bm{P}\).
+	
+% \section{矩阵的应用：二次型}
+% 	本章的内容算是线性代数在多项式处理方面的一个纯数学应用，拉格朗日乘数法就与此有关.
+	
+% \subsection{二次型的矩阵表示}
+
+% 	\begin{definition}
+% 		含有\(n\)个未知数的\uline{二次齐次}多项式，形如：
+% 		\begin{equation*}
+% 		\begin{array}{ccccccccccc}
+% 			f(x_1, x_2, \cdots, x_n) & = & d_{11}x_1^2 & + & d_{12}x_1x_2 & + & d_{13}x_1x_3 & + & \cdots & + &  d_{1n}x_1x_n \\
+% 			& & & + & d_{22}x_2^2 & + & d_{23}x_2x_3 &+& \cdots & + & d_{2n}x_2x_n \\
+% 			& & & & &  + & d_{33}x_3^2 & + & \cdots & + & d_{3n}x_3x_n \\
+% 			& & & & & & & & & & \vdots \\
+% 			& & & & & & & + & \cdots & + & d_{nn}x_n^2
+% 		\end{array}
+% 		\end{equation*}
+% 		称为\(n\)元\textbf{二次型}，其中形如\(d_{ii}x_i^2\)的单项式称为\textbf{平方项}，其余的称为\textbf{交叉项}；根据系数\(d_{ii}\)的取值范围，可以把二次型分为实二次型和复二次型.
+% 	\end{definition}
+	
+% 	可以看出这个二次型的通式看起来像三角形，如果能把通式写成有规律且可以逐行因式分解的看起来像矩形的样子，就可以改写成矩阵乘法的形式. 通式中的系数\(d_{ik}\)满足的条件是\(i \leq k\)，才造成了“下三角形区域”为空白的结果，手动补齐系数就解决问题了.
+	
+% 	令\(a_{ii}=d_{ii}, a_{ik} = a_{ki} = \dfrac{d_{ik}}{2} \; (i < k) \)，通式就可以改写成这样：
+% 	\begin{equation*}
+% 		\begin{array}{ccccccccccc}
+% 			f(x_1, x_2, \cdots, x_n) & = & a_{11}x_1^2 & + & a_{12}x_1x_2 & + & a_{13}x_1x_3 & + & \cdots & + &  a_{1n}x_1x_n \\
+% 			&+& a_{21}x_2x_1 & + & a_{22}x_2^2 & + & a_{23}x_2x_3  & + & \cdots & + & a_{2n}x_2x_n \\
+% 			&+& a_{31}x_3x_1& + & a_{32}x_3x_2&  + & a_{33}x_3^2 & + & \cdots & + & a_{3n}x_3x_n \\
+% 			& & \vdots & & \vdots && \vdots & & & & \vdots \\ 
+% 			&+& a_{n1}x_nx_1 & + & a_{n2}x_nx_2 & + & a_{n3}x_nx_3 & + & \cdots & + & a_{nn}x_n^2
+% 		\end{array}
+% 	\end{equation*}
+% 	写成矩阵的形式就是：
+% 	\begin{equation*}
+% 		f(x_1, x_2, \cdots, x_n)  = 
+% 		\begin{bmatrix}
+% 			x_1 & x_2 & \cdots & x_n
+% 		\end{bmatrix}
+% 		\begin{bmatrix}
+% 			a_{11} & a_{12} & \cdots & a_{1n} \\
+% 			a_{21} & a_{22} & \cdots & a_{2n} \\
+% 			\vdots & \vdots &  & \vdots \\
+% 			a_{n1} & a_{n2}  & \cdots & a_{nn}
+% 		\end{bmatrix}
+% 		\begin{bmatrix}
+% 			x_1 \\ x_2 \\ \vdots \\ x_n
+% 		\end{bmatrix}
+% 	\end{equation*}
+	
+% 	所以二次型的正式定义出来了：
+% 	\begin{definition}
+% 		设\(f(x_1, x_2, \cdots, x_n)\)是一个二次型，令\(\bm{X} = (x_1, x_2, \cdots, x_n)^T\)，则满足
+% 		\[f(x_1, x_2, \cdots, x_n)  = \bm{X}^T\bm{AX}\]
+% 		的\uline{对称矩阵}\(\bm{A}\)称为该二次型对应的矩阵，矩阵\(\bm{A}\)的秩称为该二次型的秩.
+% 	\end{definition}
+	
+% 	由于刚才把交叉项系数\(d_{ik}\)对半分成了\(a_{ik}\)和\(a_{ki}\)，所以这个系数矩阵是一个对称矩阵. 当然也可以不对半分，但无论怎么分，都可以简单地把系数矩阵与中关于主对角线对称的两项相加，得到原二次型一般式对应项的系数.
+% 	\begin{theorem}
+% 		二次型对应的矩阵由二次型唯一确定.
+% 	\end{theorem}
+% 	证明思路：用定义.
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	求二次型（未知数用\(x_1, x_2, \cdots\)表示）的一种系数矩阵：\\
+% 	(1)	确定矩阵的“尺寸”，有多少个未知数，系数矩阵就是几阶方阵；\\
+% 	(2)	填写主对角元，把\(x_{ii}\)的系数填入\((i,i)-\)元；\\
+% 	(2)	填写其他非零元，把\(x_i\)和\(x_k\)乘积的项除以2，填入\((i,k)-\)元和\((k,i)-\)元；\\
+% 	(4)	把其他元填0.\\
+% 	根据二次型的系数矩阵表示求原二次型的表达式的方法就是以上过程逆着执行一遍.
+	
+% 	\begin{definition}
+% 		（矩阵的三大关系之三）对于任意\(n\)阶方阵\(\bm{A}, \bm{B}\)，若存在\(n\)阶可逆方阵\(\bm{C}\)，使得\(\bm{B} = \bm{C}^T\bm{AC}\)，则称\(\bm{A}\)与\(\bm{B}\)合同，记作\(\bm{A} \simeq \bm{B}\).
+% 	\end{definition}
+% 	\begin{theorem}
+% 		矩阵的合同有以下性质：\\
+% 		(1)	合同关系是一种等价关系；\\
+% 		(2)	合同一定相抵，即\(\bm{A} \simeq \bm{B} \rightarrow \bm{A} \cong \bm{B}\)；\\
+% 		(3)	与对称矩阵合同的矩阵一定是对称矩阵.
+% 	\end{theorem}
+% \subsection{二次型的标准形}
+	
+% 	\begin{definition}
+% 		只含有平方项，不含交叉项的二次型称为\textbf{二次型的标准形}.
+% 	\end{definition}
+	
+% 	二次型化为标准形的原理是什么？二次型可以看做是关于列向量\(\bm{\alpha} = (x_1, x_2, \cdots, x_n)^T\)的一个函数：\(f(\bm{\alpha}) = \bm{\alpha}^T\bm{A}\bm{\alpha}\)，把二次型化为标准形，即找到一个可能存在的基\(\mathcal{A}\)，使得在系数矩阵\(\bm{A}\)不变时，向量 \(\bm{\alpha}\)在该基下的坐标\([\bm{\alpha}]_{\mathcal{A}} = (y_1, y_2, \cdots, y_n)^T\)恰好能使\(f([\bm{\alpha}]_{\mathcal{A}})\)成为标准形.
+	
+% 	设自然基到基\(\mathcal{A}\)的过渡矩阵为\(\bm{C}\)，则\(\bm{\alpha} = \bm{C}[\bm{\alpha}]_{\mathcal{A}}\)，此时：
+% 	\[f(\bm{\alpha}) = f(\bm{C}[\bm{\alpha}]_{\mathcal{A}}) = (\bm{C}[\bm{\alpha}]_{\mathcal{A}})^T\bm{A}(\bm{C}[\bm{\alpha}]_{\mathcal{A}}) = [\bm{\alpha}]_{\mathcal{A}}^T(\bm{C}^T\bm{A}\bm{C})[\bm{\alpha}]_{\mathcal{A}}\]
+	
+% 	此时\(\bm{C}^T\bm{A}\bm{C}\)就是关于\(y_1, y_2, \cdots, y_n\)的二次型的系数矩阵，我们想让这个二次型只有平方项，就是要让交叉项系数为0，即让这个系数矩阵关于主对角元对称的元素（也就是\(a_{ij}\)和\(a_{ji}\)，其中\(i \neq j\)）相加为0.  最简单的情况就是让它们都为0，即让\(\bm{C}^T\bm{A}\bm{C}\)成为对角矩阵.
+	
+% 	有一个重要定理保证化为对角矩阵的可行性：
+% 	\begin{theorem}
+% 		对数域\(F\)上任何一个对称矩阵\(\bm{A}\)，一定存在\(F\)上的可逆矩阵\(\bm{C}\)，使得\(\bm{C}^T\bm{AC}\)为对角矩阵.
+% 	\end{theorem}
+	
+% 	以上用\(\bm{C}[\bm{\alpha}]_{\mathcal{A}}\)代替\(\bm{\alpha}\)的做法称为\textbf{线性替换}，其几何意义就是旋转、伸缩坐标系，是一种仿射变换.
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	把二次型化为标准形的方法：
+	
+% 	方法一：\uline{配方法}，在二次型原始式上配方，用不到关于矩阵的任何知识.  具体操作是：把含有\(x_1\)的单项式括在一起，配凑成平方项（使得\(x_1\)只出现在带有平方的括号里），接着再对\(x_2\)如此操作，然后是\(x_3, x_4, \cdots\)直到把所有未知数都配成平方式.
+	
+% 	方法一怎样找过渡矩阵\(\bm{C}\)？现在带有平方的括号中都是是\(x_1, x_2, \cdots, x_n\)的线性组合，把它们简单地用\(y_i\)代替，再把每个\(x_i\)用\(y_i\)线性表出，线性表出的系数按行组成的矩阵即为过渡矩阵\(\bm{C}\).
+	
+% 	方法一还需要注意一点，如果给出的二次型没有平方项，可以设\(x_1 = y_1+y_2, x_2 = y_1 - y_2, x_3 = y_3, x_4 = y_4, \cdots\)通过平方差公式“捏造”出平方项.
+	
+% 	方法二：\uline{初等变换法}，将系数矩阵\(\bm{A}\)用初等变换化为对角矩阵，在单位矩阵上进行相同的初等变换就可以化为过渡矩阵（这个方法看起来最短，而且对复二次型也适用，还能够同时求出标准形的系数和过渡矩阵），也就是：
+% 	\[\left[\begin{array}{c|c}\bm{A} & \bm{I}\end{array}\right] \rightarrow \left[\begin{array}{c|c} \bm{C}^T\bm{AC} & \bm{C} \end{array}\right]\]
+	
+% 	方法三：\uline{正交变换法}，只适用于实二次型. 考虑到\(\bm{A}\)为实对称矩阵，根据以前实对称矩阵对角化的知识，有\(\bm{C}^T\bm{AC} = \bm{C}^{-1}\bm{AC}\)，所以可以像前面那样，求出系数矩阵\(\bm{A}\)的特征方程、特征值，然后每个特征值对应的特征矩阵都正交化、单位化等等等就行啦.
+	
+% 	有一个定理保证方法三的可行性：
+% 	\begin{theorem}
+% 		（主轴定理）对于任意一个\(n\)元实二次型\(f(x_1, x_2, \cdots, x_n) = \bm{X}^T\bm{AX}\)，一定存在正交线性替换（意思是过渡矩阵为正交矩阵）\(\bm{X} = \bm{QY}\)，使得\
+% 		\[\bm{X}^T\bm{AX} = \bm{Y}^T(\bm{Q}^T\bm{AQ})\bm{Q} = \sum_{i = 1}^n \lambda_iy_i^2\]
+% 		其中\(\lambda_1, \lambda_2, \cdots, \lambda_n\)是实对称矩阵的全部特征值.
+% 	\end{theorem}
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	将二次曲面方程化为标准方程的方法如下：\\
+% 	(1)	将二次曲面方程的二次型部分化为标准形（用正交变换法），假设标准形的未知数为\(y_1, y_2, \cdots, y_n\)；\\
+% 	(2)	用\(y_i\)线性替换一次型部分；\\
+% 	(3)	配方成标准形，再次线性替换.
+	
+% \subsection{二次型的规范形}
+
+% 	合同一定相抵，因此与一个二次型\(f(x_1, x_2, \cdots, x_n) = \bm{X}^T\bm{AX}\)的系数矩阵\(\bm{A}\)合同的对角矩阵的主对角线上一定有\(r(\bm{A})\)个非零元（平方项的个数），即：
+% 	\begin{theorem}
+% 		二次型\(f(x_1, x_2, \cdots, x_n) = \bm{X}^T\bm{AX}\)一定能化为标准形\(\sum_{i=1}^{r(\bm{A})} b_iy_i^2\).
+% 	\end{theorem}
+	
+% 	对于复二次型的标准形，可以再做一次可逆线性替换：
+% 	\begin{equation*}
+% 		 \left\{\begin{aligned}
+% 			& z_i = \frac{1}{\sqrt{b_i}}y_i &  i \leq r(\bm{A}), & \\
+% 			& z_i = y_i & r(\bm{A}) < i \leq n. & 
+% 			\end{aligned} \right.
+% 	\end{equation*}
+% 	此时得到的二次型\(f(x_1, x_2, \cdots, x_n) =  z_1^2 + z_2^2 + \cdots + z_{r(\bm{A})}^2\)称为该复二次型的\textbf{规范形}.
+	
+% 	\begin{theorem}
+% 		以下两个命题等价：\\
+% 		(1)	每个复二次型均可以通过可逆线性替换化为规范形，且规范形唯一；\\
+% 		(2)	对于任意一个秩为\(r\)的\(n\)阶复对称矩阵\(\bm{A}\)，都存在同型可逆复矩阵\(\bm{C}\)，使得
+% 		\begin{equation*}
+% 			\bm{C}^T\bm{AC} = \begin{bmatrix} \bm{I}_r & \bm{0} \\ \bm{0} & \bm{0} \end{bmatrix}_{n \times n}
+% 		\end{equation*}
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		两个复矩阵合同必相抵，相抵必合同.
+% 	\end{corollary}
+	
+% 	对于实二次型的标准形，考虑到负数不可在实数范围内开方，所以做另一种可逆线性变换：
+% 	\begin{equation*}
+% 		 \left\{\begin{aligned}
+% 			& z'_i = \frac{1}{\sqrt{|b_i|}}y_i &  i \leq r(\bm{A}), & \\
+% 			& z'_i = y_i & r(\bm{A}) < i \leq n. &
+% 			\end{aligned} \right.
+% 	\end{equation*}
+% 	此时得到的二次型是这个样子：
+% 	\[f(x_1, x_2, \cdots, x_n) =  \trm{sgn}(b_1){z'}_1^2 +\trm{sgn}(b_1) {z'}_2^2 + \cdots + \trm{sgn}(b_{r(\bm{A})}){z'}_{r(\bm{A})}^2\]
+% 	假设系数\(b_1, b_2, \cdots, b_{r(\bm{A})}\)中有\(p\)个正数（正惯性指数），重新排列一下各个\(z'\)，得到
+% 	\[f(x_1, x_2, \cdots, x_n) =  z_1^2 +z_2^2 + \cdots + z_p^2 - z_{p+1}^2- \cdots - z_{r(\bm{A})}^2\]
+% 	称为该实二次型的\textbf{规范形}.
+	
+% 	\begin{theorem}
+% 		（惯性定理）以下两个命题等价：\\
+% 		(1)	每个复二次型均可以通过可逆线性替换化为规范形，且规范形唯一；
+% 		(2)	对于任意一个秩为\(r\)的\(n\)阶复对称矩阵\(\bm{A}\)，都存在同型可逆复矩阵\(\bm{C}\)，使得
+% 		\begin{equation*}
+% 			\bm{C}^T\bm{AC} = 
+% 			\begin{bmatrix} 
+% 			\bm{I}_p & \bm{0} & \bm{0} \\ 
+% 			\bm{0} & -\bm{I}_{r-p} & \bm{0} \\ 
+% 			\bm{0} & \bm{0} & \bm{0}
+% 			\end{bmatrix}_{n \times n}
+% 		\end{equation*}
+% 		其中的\(p\)，即规范形中符号为正的项的个数称为\textbf{正惯性指数}；\(r-p\)称为\textbf{负惯性指数}；正惯性指数与负惯性指数的差\(2p-r\)称为\textbf{符号差}.
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		两个实矩阵合同的充分必要条件是：相抵的同时正（负）惯性指数也要相等.
+% 	\end{corollary}
+	
+% \subsection{实二次型的定性}
+% 	“定性”的意思就是实二次型整体的正负号是否确定、确定为什么符号的性质.
+	
+% 	\begin{definition}
+% 		对于一个\uline{非零}\(n\)维列向量\(\bm{X}\)以及由它构成的\(n\)元实二次型\(f(\bm{X}) = \bm{X}^T\bm{AX}\)：\\
+% 		(1)	若\(\forall \bm{X}: f(\bm{X}) > 0\)，称该二次型是\textbf{正定的}，\(\bm{A}\)称为\textbf{正定矩阵}；\\
+% 		(2)	若\(\forall \bm{X} : f(\bm{X}) < 0\)，称该二次型是\textbf{负定的}，\(\bm{A}\)称为\textbf{负定矩阵}；\\
+% 		(3)	若\(\forall \bm{X} : f(\bm{X}) \geq 0 \wedge \exists \bm{X} : f(\bm{X}) = 0\)，称该二次型是\textbf{半正定的}，\(\bm{A}\)称为\textbf{半正定矩阵}；\\
+% 		(4)	若\(\forall \bm{X} : f(\bm{X}) \leq 0 \wedge \exists \bm{X}: f(\bm{X}) = 0\)，称该二次型是\textbf{半负定的}，\(\bm{A}\)称为\textbf{半负定矩阵}；\\
+% 		(5)	以上条件都不满足的二次型是\textbf{不定的}.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		可逆的实线性替换不改变实二次型的定性，合同的矩阵具有相同的定性.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		若\(\bm{A}\)是正定矩阵，则：\\
+% 		(1)	对于任意正定的矩阵\(\bm{B}\)，\(\bm{A}\ + \bm{B}\)和\(k\bm{A}\)都正定，即定性对矩阵加法和数量乘法封闭；\\
+% 		(2)	\(\bm{A}^{-1}, \bm{A}^*, \bm{A}^m\)都是正定矩阵；\\
+% 		(3)	对于任意可逆实矩阵\(\bm{C}\)，\(\bm{C}^T\bm{AC}\)正定.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		对于\(n\)元实二次型\(f(\bm{X}) = \bm{X}^T\bm{AX}\)，以下命题等价：\\
+% 		(1)	该二次型是正定的；\\
+% 		(2)	该二次型的正惯性指数是\(n\)，即系数矩阵能与单位矩阵合同；\\
+% 		(3)	存在可逆的实矩阵\(\bm{B}\)，使得\(\bm{A} = \bm{B}^T\bm{B}\)；\\
+% 		(4)	\(\bm{A}\)的所有特征值都严格大于0；\\
+% 		(5)	二次型的规范形为\(y_1^2 + y_2 + \cdots + y_n^2\)，即每一项的符号都为正.\\
+% 		对于另外一个\(n\)元实二次型\(f(\bm{X}) = \bm{X}^T\bm{AX}\)，以下命题等价：\\
+% 		(1)	该二次型是负定的；\\
+% 		(2)	该二次型的负惯性指数是\(n\)，即系数矩阵能与单位矩阵合同；\\
+% 		(3)	存在可逆的实矩阵\(\bm{B}\)，使得\(-\bm{A} = \bm{B}^T\bm{B}\)；\\
+% 		(4)	\(\bm{A}\)的所有特征值都严格小于0；\\
+% 		(5)	二次型的规范形为\(-y_1^2 - y_2 - \cdots -y_n^2\)，即每一项的符号都为负；\\
+% 		(6)	\(\bm{A}\)的顺序主子式有规律：\((-1)^k\Delta_k > 0\).
+% 	\end{theorem}
+	
+% 	\begin{corollary}
+% 		（快速判断二次型是否正定的方法）若二次型正定，则其系数矩阵的顺序主子式都大于0.
+% 	\end{corollary}
+% 	不过需要注意，推论的逆命题不成立.
+% 	\;\\
+	
+% 	\noindent \textbf{【怎样解题】}\\
+% 	如何判断二次型是否正定：\\
+% 	(1)	配方法，利用定义，观察配方后每一项的符号是否全正；\\
+% 	(2)	初等变换法，将系数矩阵\(\bm{A}\)通过初等变换化成对角矩阵，观察主对角元是否全正；\\
+% 	(3)	利用特征值，求出每一个特征值，观察它们是否全正；\\
+% 	(4)	利用顺序主子式.
+	
+% 	\begin{theorem}
+% 		对于\(n\)元实二次型\(f(\bm{X}) = \bm{X}^T\bm{AX}\)，以下命题等价：\\
+% 		(1)	该二次型是半正定的；\\
+% 		(2)	该二次型的正惯性指数等于\(r(\bm{A})\)，且小于\(n\)；\\
+% 		(3)	\(\bm{A} \simeq \trm{diag}(1,1,\cdots, 1, 0,0, \cdots, 0)\)；\\
+% 		(4)	存在不可逆的实矩阵\(\bm{B}\)，使得\(\bm{A} = \bm{B}^T\bm{B}\)；\\
+% 		(5)	\(\bm{A}\)的特征值非负且至少有一个为0；\\
+% 		(6)	\(\bm{A}\)的顺序主子式非负且至少有一个为0.
+% 	\end{theorem}
+	
+	
+% \section{附录I：某些小总结}
+
+% 	对于\(n\)阶方阵\(\bm{A}\)，以下命题是等价的，即它们互为充要条件：\\
+% 	(1.1)	齐次线性方程组\(\bm{AX} = \bm{0}\)有且仅有零解；\\
+% 	(1.2)	非齐次线性方程组\(\bm{AX}=\bm{b}\)有且仅有唯一解；\\
+% 	(1.3)	线性方程组\(\bm{AX} = \bm{0}\)和\(\bm{AX}=\bm{b}\)没有自由未知数且没有矛盾方程；\\
+% 	(2.1)	\(\bm{A}\)是可逆矩阵；\\
+% 	(2.2)	\(\bm{A}^T\)是可逆矩阵；\\
+% 	(3.1)	\(\bm{A}\)满秩，即\(r(\bm{A}) = n\)；\\
+% 	(3.2)	\(\bm{A}\)可用初等行变换化为同型单位矩阵，即存在初等矩阵\(\bm{E}_1, \bm{E}_2, \cdots, \bm{E}_m\) ，使得\((\prod_{i=1}^m \bm{E}_i)\bm{A} = \bm{I}_n\)；\\
+% 	(3.3)	\(\bm{A}\)的相抵标准型是\(n\)阶单位矩阵，即\(\bm{A} \cong \bm{I}_n\)；\\
+% 	(4.1)	\(\bm{A}\)化为上三角矩阵后，\(\trm{tr}(\bm{A}) \neq 0\)；\\
+% 	(5.1)	\(\bm{A}\)的行向量和列向量都线性无关；\\
+% 	(5.2)	\(\bm{A}\)的行空间、列空间的维数都为\(n\)；\\
+% 	(5.3)	\(\bm{A}\)对应的线性变换是由\(\mathbb{R}^n\)到\(\mathbb{R}^n\)的双射；\\
+% 	(6.1)	\(\trm{det}(\bm{A}) \neq 0\).
+	
+% 	\;\\
+	
+% 	关于矩阵的秩的公式：\\
+% 	(1)	（三角不等式）\(r(\bm{A} + \bm{B}) \leq r(\bm{A}) + r(\bm{B})\)；\\
+% 	(2)	\(r(\bm{A}_{p \times n}\bm{B}_{n \times q}) \geq r(\bm{A}) + r(\bm{B}) - n\)；\\
+% 	(3)	\(r(\bm{AB}) \leq \trm{min}(r(\bm{A}), r(\bm{B}))\)；\\
+% 	(4)	若\(\bm{A}_{p \times n}\bm{B}_{n \times q} = \bm{0}\)，则\(r(\bm{A}) + r(\bm{B}) \leq n\)；\\
+% 	(5)	满秩的矩阵相乘还是满秩矩阵.
+	
+% 	\;\\
+	
+% 	关于矩阵\(\bm{A}\)的秩，以下定义等价：\\
+% 	(1)	\(\bm{A}\)化为阶梯形矩阵后主元的个数；\\
+% 	(2)	\(\bm{A}\)的列数减去对应的线性方程组的自由未知数的个数；\\
+% 	(3)	\(\bm{A}\)的行向量组的极大无关组中向量的个数（行向量组的秩）；\\
+% 	(4)	\(\bm{A}\)的列向量组的极大无关组中向量的个数（列向量组的秩）；\\
+% 	(5)	\(\bm{A}\)的行空间的维数；\\
+% 	(6)	\(\bm{A}\)的列空间的维数；\\
+% 	(7)	（满秩分解）\(\trm{max}\{k|\bm{A}_{m \times n} = \bm{B}_{m \times k}\bm{C}_{k \times n} \wedge r(\bm{B}) = r(\bm{C}) = k\}\)；\\
+% 	(8)	（方阵的秩）\(\bm{A}\)对应的线性变换的值域的维数；\\
+% 	(9)	（方阵的秩）\(\trm{det}(\bm{A})\)非零子式的最高阶数.
+	
+% \section{附录II：矩阵博物馆}
+% 	这个博物馆展出的是自身就具有某些性质的矩阵，伴随矩阵依赖原矩阵的存在而存在，所以没有展出资格.
+% \subsection{对称矩阵}
+
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}\)，若\(\bm{A} = \bm{A}^T\)，则称矩阵\(\bm{A}\)是对称矩阵；若\(\bm{A} = -\bm{A}^T\)则称矩阵\(\bm{A}\)是反对称矩阵.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		若\(\bm{A}\)是方阵，则\(\bm{A} + \bm{A}^T\)是对称矩阵，\(\bm{A}-\bm{A}^T\)是反对称矩阵；\\ \(\bm{A}\)可以表示成一个对称矩阵与反对称矩阵的和（其实就是\(\dfrac{\bm{A} + \bm{A}^T}{2} + \dfrac{\bm{A} - \bm{A}^T}{2}\)）.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		若\(\bm{A}\)和\(\bm{B}\)都是对称矩阵，则\(\bm{A} \pm \bm{B}, c\bm{A}, \bm{A}^k, \bm{A}^{-1}\)都是对称矩阵；\\
+% 		若\(\bm{A}\)和\(\bm{B}\)都是反对称矩阵，则\(\bm{A} \pm \bm{B}, c \bm{A}, \bm{A}^{-1}\)都是反对称矩阵，\(\bm{A}^{2k}\)是对称矩阵，\(\bm{A}^{2k+1}\)是反对称矩阵.
+% 	\end{theorem}	
+	
+% 	\begin{corollary}
+% 		若\(\bm{A}, \bm{B}\)都是\(n\)阶对称矩阵，则\(\bm{AB}\)对称的充分必要条件是\(\bm{AB}=\bm{BA}\).
+% 	\end{corollary}
+	
+% 	 \begin{theorem}
+% 		反对称实矩阵的特征值是0或纯虚数.
+% 	\end{theorem}
+	
+% \subsection{对角矩阵}
+	
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}=[a_{ij}]_{n \times n}\)，若\(\forall i,j: i \neq j \rightarrow a_{ij}=0\)，则称矩阵\(\bm{A}\)为对角矩阵，通常简记为\({\rm diag}(a_1,a_2, a_3,\cdots , a_n)\)，其中\(a_1, a_2, \cdots, a_n\)为主对角元；
+% 		若\(\forall m \in [1,n] \cap \mathbb{Z} : a_m=k\)，则称该对角矩阵为数量矩阵；
+% 		若\(k=1\)，则称该矩阵为单位矩阵.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		若\(\bm{A}, \bm{B}\)是对角矩阵或准对角矩阵，则\(\bm{A} \pm \bm{B}, c\bm{A}, \bm{A}^k, \bm{A}^{-1}\)都是对角矩阵或准对角矩阵.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		对于一个对角矩阵或准对角矩阵\(\bm{A} = {\rm diag}(a_1,a_2,a_3,\cdots ,a_n)\)，\(\bm{A}\)可逆且\(\bm{A}^{-1} = {\rm diag}(a_1^{-1}, a_2^{-1}, a_3^{-1}, \cdots , a_n^{-1})\)的充分必要条件是主对角元都不是零.
+% 	\end{theorem}
+
+% \subsection{三角矩阵}
+	
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}=[a_{ij}]_{n \times n}\)，若\( \forall i,j \in [1,n] \cap \mathbb{Z}: m \geq n \rightarrow a_{ij}=0\)则称该方阵为上三角矩阵，若\( \forall i,j \in [1,n] \cap \mathbb{Z}: m \leq n \rightarrow a_{ij}=0\)则称该方阵为下三角矩阵，上三角矩阵和下三角矩阵统称为三角矩阵；若主对角元全为1，则称该矩阵为单位三角矩阵.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		若方阵\(\bm{A},\bm{B}\)为上/下三角矩阵，则\(\bm{A} \pm \bm{B}, c\bm{A}, \bm{A}^k, \bm{AB}\)仍然是上/下三角矩阵，\(\bm{A}^T\)是下/上三角矩阵.
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		若方阵\(\bm{A}\)是三角矩阵，则\(\bm{A}\)可逆的充分必要条件是主对角元全都不为零，且上/下三角矩阵的逆矩阵仍然是上/下三角矩阵.
+% 	\end{theorem}
+% 	证明思路：充分性，因为满秩所以可逆；必要性，使用数学归纳法，在证递推步骤时，将矩阵分块.
+
+% \subsection{复矩阵}
+
+% 	复矩阵就是把矩阵的元素取值范围扩大到了复数，它们的性质在这里集中讨论.
+% 	\begin{definition}
+% 		元素是复数的矩阵称为\textbf{复矩阵}\trm{(complex matrix)}，对于任意复矩阵\(\bm{A} = [a_{ij}]\)，称\(\overline{\bm{A}} = [\overline{a_{ij}}]\)为其\textbf{共轭矩阵}\trm{(conjugate matrix)}.
+% 	\end{definition}
+% 	\begin{theorem}
+% 		共轭矩阵有以下性质：\\
+% 		\begin{eqnarray*}
+% 			\overline{\overline{\bm{A}}} &=& \bm{A};\\
+% 			\overline{(\bm{AB})^T} &=& \overline{\bm{B}^T}\;\overline{\bm{A}^T};\\
+% 			\overline{\bm{A}}^T &=& \overline{\bm{A}^T};\\
+% 			\overline{\bm{A}^{-1}} &=& (\overline{\bm{A}})^{-1};\\
+% 			\overline{k\bm{A}} &=& \overline{k}\;\overline{\bm{A}};\\
+% 			\overline{\bm{A}+\bm{B}} &=& \overline{\bm{A}} + \overline{\bm{B}};\\
+% 			\overline{\bm{AB}} &=& \overline{\bm{A}}\;\overline{\bm{B}};\\
+% 			\trm{det}(\overline{\bm{A}}) &=& \overline{\trm{det}(\bm{A})};\\
+% 			r(\bm{A}) &=& r(\overline{\bm{A}}).
+% 		\end{eqnarray*}
+% 		此外，对于\(n\)元复向量\(\bm{\alpha}\)，有\(\overline{\bm{\alpha}^T}\bm{\alpha} \geq 0\)，等号成立的充要条件是 \(\bm{\alpha} = \bm{\theta}\).
+% 	\end{theorem}
+	
+% 	可以看到，共轭运算对于其他大部分矩阵的运算（姑且称为“常规运算”)，例如线性运算、矩阵乘法（线性变换）、转置、求逆和求行列式等，都可以交换顺序，也就是说可以先进行“常规运算”再求共轭，或者先求共轭再进行“常规运算”，原因是这些运算都在实数域及实数域上的线性空间内封闭，也在复数域及复数域上的线性空间内内封闭，求共轭对象的过程实际上就是把“常规运算”的定义域扩大到了复数相关的空间中，而保持它们的性质不变.
+	
+% 	求秩又是另外一番景象，\(r(\bm{A}) = r(\overline{\bm{A}})\)等价于\(\bm{A} \cong \overline{\bm{A}}\).
+	
+% \subsection{正交矩阵}
+	
+% 	\begin{definition}
+% 		设\(\bm{A} \in \mathbb{R}^{n \times n}\)，若\(\bm{AA}^T = \bm{I}\)，则称\(\bm{A}\)是正交矩阵.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		\(\bm{A}\)是正交矩阵的充分必要条件是下列之一：\\
+% 		(1)	 \(\bm{AA}^T = \bm{I}\)；\\
+% 		(2)	\(\bm{A}^{-1} = \bm{A}^T\)；\\
+% 		(3)	\(\bm{A}\)的行向量是标准正交的；\\
+% 		(4)	\(\bm{A}\)的列向量是标准正交的；
+% 	\end{theorem}
+	
+% 	\begin{theorem}
+% 		设\(\bm{A} \in \mathbb{R}^{n \times n}\)，若\(\bm{A}\)可逆，则
+% 		\[(\exists \bm{Q} \in \mathbb{R}^{n \times n})(\exists \bm{R} \in \mathbb{R}^{n \times n})(\bm{A} = \bm{QR},)\]
+% 		其中\(\bm{Q}\)为正交矩阵，\(\bm{R}\)是可逆上三角矩阵.
+% 	\end{theorem}
+% 	该式称为实方阵的\textbf{正交分解}或\textbf{QR分解}.
+	
+% \subsection{幂等矩阵}
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}\)，若\(\bm{A}^2 = \bm{A}\)，则称\(\bm{A}\)是\textbf{幂等矩阵}\trm{(idempotent matrix)}.
+% 	\end{definition}
+% 	\begin{theorem}
+% 		（唯一可逆性质）单位矩阵是唯一的可逆幂等矩阵.
+% 	\end{theorem}
+% 	证明：设\(\bm{A}\)为可逆幂等矩阵，则\(\bm{A} = \bm{IA} = \bm{A}^{-1}\bm{A}^2 = \bm{A}^{-1}\bm{A} = \bm{I}\)，证毕.
+% 	\begin{theorem}
+% 		（相似性质）\\
+% 		(1)	任意幂等矩阵都可以对角化，且其特征值（相似对角矩阵的主对角元）只能是0或1；\\
+% 		(2)	与幂等矩阵相似、相抵的矩阵一定是幂等矩阵；\\
+% 		(3)	幂等矩阵的任意次幂都是幂等矩阵.
+% 	\end{theorem}
+% 	\begin{theorem}
+% 		设\(\bm{A}\)是幂等矩阵，则\(r(\bm{A}) = \trm{tr}(\bm{A})\).
+% 	\end{theorem}
+	
+% \subsection{幂零矩阵}
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}\)，若\(\exists c \in  \mathbb{Z}_+ :c\bm{A} = \bm{0}\)，则称 \(\bm{A}\)为\textbf{幂零矩阵}\trm{(nilpotent matrix)}.
+% 	\end{definition}
+	
+% 	\begin{theorem}
+% 		（不可逆性质）幂零矩阵一定不可逆.
+% 	\end{theorem}
+% 	\begin{theorem}
+% 		（相似性质）唯一可对角化的幂零矩阵是零矩阵，其特征值当然只能是0.
+% 	\end{theorem}
+% 	\begin{theorem}
+% 		若\(\bm{A}\)为幂零矩阵，则\(\bm{A}^T, \bm{A}^*\)均为幂零矩阵.
+% 	\end{theorem}
+	
+% \subsection{对合矩阵}
+
+% 	\begin{definition}
+% 		对于\uline{方阵}\(\bm{A}\)，若\(\bm{A}^2 = \bm{I}\)，则称 \(\bm{A}\)为\textbf{对合矩阵}\trm{(involutory matrix)}.
+% 	\end{definition}
+% 	例如\(\begin{bmatrix}\cos \theta & \sin \theta \\ \sin \theta & -\cos \theta\end{bmatrix}\)是对合矩阵.
+	
+\end{document}

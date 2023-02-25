@@ -18,7 +18,8 @@
 \usepackage{cancel} % 公式的删除线
 \usepackage{autobreak} % 公式自动换行
 \usepackage{extarrows} % 等号上下写东西
-\usepackage{enumitem}
+%\usepackage{enumitem}
+\usepackage{tableof}
 
 \usetikzlibrary{shapes, shadows, arrows}
 \geometry{a4paper,left=2cm,right=2cm,top=3cm,bottom=2cm}
@@ -26,7 +27,7 @@
 \newcommand{\trm}[1]{{\rm #1}}
 
 \newenvironment{definition}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=false, frame hidden, borderline west={1.5mm}{-2mm}{DarkGreen}, segmentation style = {draw = DarkGreen, solid}, boxsep = 0pt]
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkGreen}, segmentation style = {draw = DarkGreen, solid}, boxsep = 0pt]
     {\bfseries {\color{DarkGreen} 定义}\quad #1} \tcblower}
     {\end{tcolorbox}}
 
@@ -46,7 +47,7 @@
     {\end{tcolorbox}}
 
 \newenvironment{lemma}[1]
-    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkRed}, boxsep = 0pt]
+    {\begin{tcolorbox}[enhanced, colback=LightYellow, breakable=true, frame hidden, borderline west={1.5mm}{-2mm}{DarkRed}, segmentation style = {draw = DarkRed, solid}, boxsep = 0pt]
     {\bfseries {\color{DarkRed} 引理}\quad \ifx!#1! \relax \else #1 \fi} \ifx!#1! \relax\else \tcblower \fi}
     {\end{tcolorbox}}
 

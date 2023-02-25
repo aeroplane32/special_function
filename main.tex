@@ -1,5 +1,5 @@
-\documentclass[UTF8]{ctexart}
-\CTEXsetup[format={\Large\bfseries}]{section}
+\documentclass{article}
+% \CTEXsetup[format={\Large\bfseries}]{section}
 
 \usepackage{preamble}
 \usepackage{subfiles}
@@ -15,27 +15,29 @@
 \author{riversky}
 \date{2019-2023}
 
+% \AtBeginDocument{\tofOpenTocFileForWrite}
 \begin{document}
 
 \maketitle
 
-\subfile{section0.tex}
+% \subfile{section0.tex}
 
 \newpage
 
 \tableofcontents
+\let\tableofcontents\relax
 
 \newpage
 
 \subfile{section1.tex}
-\subfile{xdnote.tex}
-\subfile{section2.tex}
-\subfile{section3.tex}
-\subfile{section4.tex}
-\subfile{section5.tex}
-\subfile{section6.tex}
-\subfile{section7.tex}
-\subfile{section8.tex}
-\subfile{section_tail.tex}
+% \subfile{xdnote.tex}
+% \subfile{section2.tex}
+% \subfile{section3.tex}
+% \subfile{section4.tex}
+% \subfile{section5.tex}
+% \subfile{section6.tex}
+% \subfile{section7.tex}
+% \subfile{section8.tex}
+% \subfile{section_tail.tex}
 
 \end{document}
