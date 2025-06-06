@@ -1,11 +1,7 @@
-\documentclass{article}
-% \CTEXsetup[format={\Large\bfseries}]{section}
 
-\usepackage{preamble}
-\usepackage{subfiles}
-%\usepackage{sectsty}
-%\definecolor{tssteelblue}{RGB}{70,130,180}
-%\sectionfont{\sf\color{tssteelblue}\sectionrule{0ex}{0pt}{-1ex}{1pt}}
+\documentclass{ctexbook}
+
+\usepackage{preamble/preamble}
 
 % \title{特殊函数博物馆}
 % \author{riversky}
@@ -13,25 +9,25 @@
 
 \title{A Garden of Mathematics}
 \author{riversky}
-\date{2019-2023}
+\date{2019-2029}
 
-% \AtBeginDocument{\tofOpenTocFileForWrite}
+% \contentsname{目录}
+% \chaptername{chapter \thechapter hhhh}
+
 \begin{document}
 
-\maketitle
+{\let \cleardoublepage \relax \maketitle}
 
-% \subfile{section0.tex}
+% \newpage
 
-\newpage
-
-\tableofcontents
-\let\tableofcontents\relax
-
-\newpage
-
-\subfile{section1.tex}
+% \tableofcontents
+\include{chapters/chap0}
+\include{chapters/chap1}
+\include{chapters/chap1.5}
 % \subfile{xdnote.tex}
-% \subfile{section2.tex}
+\include{chapters/chap2}
+\include{chapters/chap3}
+\include{chapters/chap4}
 % \subfile{section3.tex}
 % \subfile{section4.tex}
 % \subfile{section5.tex}

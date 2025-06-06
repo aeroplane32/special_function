@@ -1,22 +1,20 @@
-\documentclass[main.tex]{subfiles}
-
-\begin{document}
 
 \section*{前言：函数的究极定义（数学哲学向）}
 
 现代数学大厦建立在\textbf{集合论}(set theory)上. 从集合论的角度看来：
 \begin{itemize}
-    \item [\(\bullet\)] \uline{原始观念}(primitive notion)，即不能被其他更基本的概念定义的概念，只有\uline{集合}(set)、\uline{类}(class)和\uline{属于}(“\(\in\)”)三个，其中“属于”是二元谓词，用来连接数学对象.
-    \item [\(\bullet\)] 其他一切数学对象可以解释为集合或类，其他一切谓词都可解释为基本的逻辑连接词（或、且、非）以及“属于”.
+    \item \underline{原始观念}(primitive notion)，即不能被其他更基本的概念定义的概念，只有\underline{集合}(set)、\underline{类}(class)和\underline{属于}(“\(\in\)”)三个，其中“属于”是二元谓词，用来连接数学对象.
+    \item 其他一切数学对象可以解释为集合或类，其他一切谓词都可解释为基本的逻辑连接词（或、且、非）以及“属于”.
 \end{itemize}
 例如命题“\(1+1=2\)”在集合论中改写为（在ZF集合论和冯·诺依曼序数定义的框架下）
 \[\{\emptyset\} \cup \{\{\emptyset\}\} = \{\emptyset, \{\emptyset\}\}\]
 上式仍然是“给人看”的表达式，还可以继续形式化展开，用一阶形式语言描述上面这个式子，最终结果为：
 \begin{align*}
     &(\exists x(x \in l) \wedge \neg\exists y((y \in x) \wedge (x \in l))) \wedge \\
-    &(\neg \exists x(((x \in m) \wedge (\exists y(((y \in x) \wedge \neg(y \in l)) \vee (\neg (y \in x) \wedge (y \in l))))) \vee (\neg(x \in m) \wedge (\exists y((y \in x) \wedge (y \in l)))))) \wedge \\
+    &(\neg \exists x(((x \in m) \wedge (\exists y(((y \in x) \wedge \neg(y \in l)) \vee \\
+    &(\neg (y \in x) \wedge (y \in l))))) \vee (\neg(x \in m) \wedge (\exists y((y \in x) \wedge (y \in l)))))) \wedge \\
     &(\neg \exists x(((x \in l) \vee (x \in m)) \wedge \neg(x \in n)) \vee (\neg((x \in l) \vee (x \in m)) \wedge (x \in n))) \wedge \\
-    &(\exists x(\exists y((y \in x) \wedge (x \in p) \wedge (y \in p))) \wedge (\neg\exists z(\exists x(\exists y((z \in y) \wedge (y \in x) \wedge (x \in p) \wedge (y \in p)))) \wedge \\
+    &(\exists x(\exists y((y \in x) \wedge (x \in p) \wedge (y \in p))) \wedge (\neg\exists z(\exists x(\exists y((z \in y) \wedge (y \in x) \wedge (x \in p) \wedge (y \in p)))))) \wedge \\
     &(\neg\exists x(((x \in n) \wedge \neg(x \in p)) \vee (\neg(x \in n) \wedge (x \in p))))
 \end{align*}
 
@@ -45,7 +43,7 @@
         \item [\(\bullet\)] 左元组成的集合称为\uline{定义域}(domain)，记作\(\trm{dom}(f)= \{x | \langle x,y \rangle \in f\}\)； 右元组成的集合称为\uline{值域}(range)，记作\(\trm{ran}(f)= \{y | \langle x,y \rangle \in f\}\)；陪域的超集称为\uline{陪域}(codomain)；将函数写作\(f:A \to B\)以表明函数\(f\)的定义域是\(A\)、陪域是\(B\).
         \item [\(\bullet\)] 定义域中的元素或定义域的子集都称为\uline{原象}(preimage)，定义域中的元素\(x\)所唯一确定的值域中的元素\(y\)称为\(x\)的\uline{像}(image)，记作\(y=f(x)\)；定义域的子集\(X\)所唯一确定的值域的子集\(Y=\{f(x)|x \in X\}\)称为集合\(X\)在\(f\)下的象，也记作\(Y=f(X)\). 这两种原象和象需要注意区分，但以下将不再强调这两种原象和象的区别.
         \item [\(\bullet\)] 若\(f\)在定义域上也有外延性，即\(f(x)=f(y) \rightarrow x=y\)，则称\(f\)是\uline{单射}(injection)；若\(X\subseteq\trm{dom}(f), Y=f(Y)\)，则称\(f:X\to Y\)是\uline{满射}(surjection)，注意这里需要强调定义域和值域；若\(f:X \to Y\)既是单射又是满射，则称\(f\)为\uline{双射}(bijection).
-        \item [\(\bullet\)] 对于定义域的子集\(X\)，\(f\upharpoonright X=\{\langle x,y \rangle|x \in X\}\)称为\(f\)的\uline{限制}(restriction)；在满足定义域外延性的前提下，\(f^{-1}=\{\langle y,x \rangle | \langle x,y \rangle \in f\}\)称为\(f\)的\uline{反函数}(inversion)；对于两个函数\(f,g\)，称\(g \circ f = \{\langle x,z | \exists y(y=f(x) \wedge z=g(x))\}\)称为\(f\)和\(g\)的\uline{复合函数}(composition).
+        \item [\(\bullet\)] 对于定义域的子集\(X\)，\(f\upharpoonright X=\{\langle x,y \rangle|x \in X\}\)称为\(f\)的\uline{限制}(restriction)；在满足定义域外延性的前提下，\(f^{-1}=\{\langle y,x \rangle | \langle x,y \rangle \in f\}\)称为\(f\)的\uline{反函数}(inversion)；对于两个函数\(f,g\)，称\(g \circ f = \{\langle x,z \rangle| \exists y(y=f(x) \wedge z=g(x))\}\)称为\(f\)和\(g\)的\uline{复合函数}(composition).
     \end{itemize}
 \end{definition}
 
@@ -70,5 +68,3 @@
     % \item Iverson括号：\(⁅P⁆ = \left\{\begin{aligned} & 1, & P\mbox{是真命题} \\ & 0, &P\mbox{是假命题} \end{aligned}\right.\)
     \item 示性函数：\(\chi_A(x) := \left\{\begin{aligned} & 1, & x \in A \\ & 0, &x \not \in A \end{aligned}\right.\) 
 \end{itemize}
-
-\end{document}

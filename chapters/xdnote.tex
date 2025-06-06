@@ -165,11 +165,11 @@
     每个线性空间都有基底.
 \end{proposition}
 
-\subsection{线性代数的核心：线性变换}
+\section{线性映射和基变换}
 
-*这是非常重要的内容，除了线性变换以外，矩阵也将首次出现.
+% *这是非常重要的内容，除了线性变换以外，矩阵也将首次出现.
 
-\subsubsection{定义和性质}
+\subsection{线性映射}
 
 什么是“线性”？在初等数学中，如果某个因变量正比于自变量，或者某事物的发展与另一事物总是相差某个倍数，亦或者某个量在等长的两段时间间隔内的变化是相等的，那么我们就会为这种情况打上“线性”的标签. 不难发现，这三个例子中，“线性”的背后总暗含着关系：因变量与自变量的关系、两个事物发展情况的关系、某个量与时间的关系，因此“线性”一词实际上是对于联系的描述. 联系在数学中体现为函数，我们可以为函数定下线性的定义，既严格又符合我们的直觉.
 
@@ -182,7 +182,85 @@
     则称\(f\)为\uline{线性映射}(linear mapping)；如果\(S=T\)，那么一般又称为\uline{线性变换}(linear transformation).
 \end{definition}
 
-\subsubsection{矩阵："Hello World!"}
+容易验证，如果一个映射\(f\)满足\(f(c_1\bm\alpha+c_2\bm\beta) = c_1f(\bm\alpha) + c_2f(\bm\beta)\)，那么\(f\)就是一个线性映射，反之成立. 
+
+\subsection{矩阵："Hello World!"}
+
+很多教材一上来就讲矩阵，而按照凯莱(Arthur Cayley)的设想，矩阵是线性变换的一种表达. 我们从一个例子出发，在一个线性空间中，有一组基底\(\mathcal A = \{\bm\alpha_1,\bm\alpha_2,\bm\alpha_3\}\)，现在有一个向量
+\[\bm\beta = 5\bm\alpha_1+2\bm\alpha_2+7\bm\alpha_3\]
+一个线性变换\(f\)作用于该向量，由于它是“线性”变换，所以有
+\[f(\bm\beta) = f(5\bm\alpha_1+2\bm\alpha_2+7\bm\alpha_3) = 5f(\bm\alpha_1)+2f(\bm\alpha_2)+7f(\bm\alpha_3)\]
+这就把求\(f(\bm\beta)\)问题转化到了求\(f(\bm\alpha_i)\)上，也就是说，只要知道了各\(f(\bm\alpha_i)\)以及\(\beta\)的坐标\([\bm\beta]_\mathcal{A}\)，那么就可以求出\(f(\bm\beta)\)了.
+
+因为\(\mathcal A\)是该空间的一个基底，所以\(f(\bm\alpha_i)\)也能被\(\{\bm\alpha_1,\bm\alpha_2,\bm\alpha_3\}\)线性表出，例如
+\begin{align*}
+    f(\bm\alpha_1) &= 1\bm\alpha_1+4\bm\alpha_2+7\bm\alpha_3 \\
+    f(\bm\alpha_2) &= 2\bm\alpha_1+5\bm\alpha_2+8\bm\alpha_3 \\
+    f(\bm\alpha_3) &= 3\bm\alpha_1+6\bm\alpha_2+9\bm\alpha_3
+\end{align*}
+换成坐标的形式，
+\[[f(\bm\alpha_1)]_\mathcal{A} = \begin{bmatrix} 1 \\ 4 \\ 7 \end{bmatrix} \quad [f(\bm\alpha_2)]_\mathcal{A} = \begin{bmatrix} 2 \\ 5 \\ 8 \end{bmatrix} \quad [f(\bm\alpha_3)]_\mathcal{A} = \begin{bmatrix} 3 \\ 6 \\ 9 \end{bmatrix}\]
+把坐标拼在一起，就是
+\[\big[
+    [f(\bm\alpha_1)]_\mathcal{A} , [f(\bm\alpha_2)]_\mathcal{A} , [f(\bm\alpha_3)]_\mathcal{A} 
+    \big] = 
+    \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}
+\]
+这张矩形表就是一个矩阵，完全定义了每个基底向量经过线性变换后的坐标，因此只要拿着这张表，以及某个向量的坐标，就可以知道该向量经过线性变换后的坐标，因此该矩阵也称为线性变换\(f\)在基底\(\mathcal A\)下的\uline{坐标表示}(transformation matrix)，可记作\(f(\mathcal{A})\). 本例中这两个要素都给出来了，所以我们可以算出
+\[
+    \begin{aligned}
+        f(\bm\beta) & = 5f(\bm\alpha_1)+2f(\bm\alpha_2)+7f(\bm\alpha_3) \\
+        &= 5(1\bm\alpha_1+4\bm\alpha_2+7\bm\alpha_3) + 2(2\bm\alpha_1+5\bm\alpha_2+8\bm\alpha_3) + 7(3\bm\alpha_1+6\bm\alpha_2+9\bm\alpha_3) \\
+        &= 30\bm\alpha_1 + 72\bm\alpha_2 + 114\bm\alpha_3
+    \end{aligned}
+\]
+我们规定，该运算过程可以形式化地写作\(f(\mathcal{A})\cdot[\beta]_\mathcal{A}\)，即
+\[\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix} \begin{bmatrix} 5 \\ 2 \\ 7 \end{bmatrix} = \begin{bmatrix} 30 \\ 72 \\ 114 \end{bmatrix}\]
+这就是矩阵乘以坐标（狭义向量）的由来. 那右边的结果是怎么得来的呢？矩阵只是一种简要的写法，上面的式子才是本质，对照式子和矩阵中数字出现的位置：
+
+\[
+    \begin{bmatrix} 
+        {\color{red} 1} & {\color{red} 2} & {\color{red} 3} \\ 
+        {\color{green} 4} & {\color{green} 5} & {\color{green} 6} \\ 
+        {\color{blue} 7} & {\color{blue} 8} & {\color{blue} 9} 
+    \end{bmatrix} 
+    \begin{bmatrix} 5 \\ 2 \\ 7 \end{bmatrix} = \begin{bmatrix} 30 \\ 72 \\ 114 \end{bmatrix}
+\]
+
+\begin{align*}
+    {\color{red} 1} \times 5 + {\color{red} 2} \times 2 + {\color{red} 3} \times 7 &= 30 \\
+    {\color{green} 4} \times 5 + {\color{green} 5} \times 2 +{\color{green} 6} \times 7 &= 72 \\
+    {\color{blue} 7} \times 5 + {\color{blue} 8} \times 2 + {\color{blue} 9}  \times 7 &= 114
+\end{align*}
+
+这里贴心地把矩阵中\(\bm\alpha_1,\bm\alpha_2,\bm\alpha_3\)的系数用不同的颜色标出来了，可以看到，右边坐标中的第\(i\)行就是矩阵的第\(i\)行与左边坐标加权求和而来，权值由左边的坐标提供. 
+
+\vspace{1cm}
+
+接下来我们扩展到，矩阵与矩阵的乘法，这里使用两种方式去诠释，这两种方式的相通之处后面会解释. 首先是第一种解释，上面已经得出了\((5,2,7) \mapsto (30,72,114)\)，现在举例另一个向量\((6,4,3)\)，同样的套路，经过线性变换之后结果是\((23,62,101)\)，然后把这两个结果拼起来：
+\[
+    \begin{bmatrix} 
+        {\color{red} 1} & {\color{red} 2} & {\color{red} 3} \\ 
+        {\color{green} 4} & {\color{green} 5} & {\color{green} 6} \\ 
+        {\color{blue} 7} & {\color{blue} 8} & {\color{blue} 9} 
+    \end{bmatrix} 
+    \begin{bmatrix} 5 \\ 2 \\ 7 \end{bmatrix} = \begin{bmatrix} 30 \\ 72 \\ 114 \end{bmatrix}
+    ,\quad 
+    \begin{bmatrix} 
+        {\color{red} 1} & {\color{red} 2} & {\color{red} 3} \\ 
+        {\color{green} 4} & {\color{green} 5} & {\color{green} 6} \\ 
+        {\color{blue} 7} & {\color{blue} 8} & {\color{blue} 9} 
+    \end{bmatrix} 
+    \begin{bmatrix} 6 \\ 3 \\ 2 \end{bmatrix} = \begin{bmatrix} 23 \\ 62 \\ 101 \end{bmatrix}
+    \Longrightarrow
+    \begin{bmatrix} 
+        {\color{red} 1} & {\color{red} 2} & {\color{red} 3} \\ 
+        {\color{green} 4} & {\color{green} 5} & {\color{green} 6} \\ 
+        {\color{blue} 7} & {\color{blue} 8} & {\color{blue} 9} 
+    \end{bmatrix} 
+    \begin{bmatrix} 5 & 6 \\ 2 & 3 \\ 7 & 2 \end{bmatrix} = \begin{bmatrix} 30 & 23 \\ 72 & 62 \\ 114 & 101 \end{bmatrix}
+\]
+这就是矩阵乘矩阵的诠释之一，仅仅是为了一次能计算向量的坐标的变换结果. 第二种诠释就直观一些。
 
 既然向量空间中都存在基底，那么每一个向量都可被基底表现出来. 设某个向量空间中的基底是\(\mathcal A = \{\bm\alpha_i\}_{i=1}^{n}\)，某个向量\(\displaystyle{\bm\beta = \sum_{i=1}^{n}c_i\bm\alpha_i}\)，现在把\(\bm\beta\)放入一个线性变换\(f\)中：
 \[f(\bm\beta) = f\left(\sum_{i=1}^{n}c_i\bm\alpha_i\right) = \sum_{i=1}^{n}c_if(\bm\alpha_i)\]
@@ -243,7 +321,78 @@
 
 本节仅仅叙述了矩阵的加法和乘法的由来，并没有对其性质深入讨论，这些工作将在后面的章节完成.
 
+\subsection{基底变换}
+
+正如前面所说，线性无关的基底的每个向量都会引入独特的方向，但并没有规定这些向量具体如何引入独特的方向，比如在初等数学中，两个不重叠的向量确定一个平面，第三个向量若要引入新方向，就不能与这两个向量共面，而要“稍稍偏离”该平面，它可以以任意角度翘起，甚至可以垂直该平面，这就造成了基底的不唯一. 再比如，自然基底
+\[\hat i = (1,0), \quad \hat j = (0,1)\]
+是二维平面的一个基底，将其逆时针旋转90度，得到的
+\[\hat i' = (0,1), \quad \hat j' = (-1,0)\]
+也是一个基底，或者将\(\hat j\)的终点往右移动一个单位（该操作称为\uline{剪切}(shear)），得到的
+\[\hat i'' = (1,0), \quad \hat j'' = (1,1)\]
+也是一个基底，或者将\(\hat j\)长度加倍，得到的
+\[\hat i''' = (1,0), \quad \hat j''' = (0,2)\]
+也是一个基底. 这一节我们要寻求的是，向量的坐标在不同的基底之间有什么关系. 要确定向量坐标之间的关系，首先要寻找两个基底之间有什么关系，而这种关系仍然通过线性组合/坐标表示. 假设线性空间中有两组基底\(\mathcal A = \{\bm\alpha_i\}_{i=1}^n\)和\(\mathcal B = \{\bm\beta_i\}_{i=1}^n\)，既然是基底，那么\(\mathcal B\)的向量就可以使用\(\mathcal A\)的线性组合表示：
+\[
+    \begin{array}{ccccccccc}
+        \bm{\beta}_1 &=& c_{11} \bm{\alpha}_1  & + & c_{21} \bm{\alpha}_2 & + & \cdots & + & c_{n1} \bm{\alpha}_n \\
+        \bm{\beta}_2 &=& c_{12} \bm{\alpha}_1  & + & c_{22} \bm{\alpha}_2 & + & \cdots & + & c_{n2} \bm{\alpha}_n \\
+        \vdots & & \vdots & & \vdots & & & & \vdots\\
+        \bm{\beta}_n &=& c_{1n} \bm{\alpha}_1  & + & c_{2n} \bm{\alpha}_2 & + & \cdots & + & c_{nn} \bm{\alpha}_n \\
+    \end{array}
+\]
+写成矩阵乘法的形式，就是
+\[ 
+    [\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n] = 
+    [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n]
+    \begin{bmatrix}
+        c_{11} & c_{12} & \cdots & c_{1n} \\
+        c_{21} & c_{22} & \cdots & c_{2n} \\
+        \vdots & \vdots &  & \vdots \\
+        c_{n1} & c_{n2}  & \cdots & c_{nn}
+    \end{bmatrix}
+\]
+这个矩阵称为\(\mathcal{A}\)到\(\mathcal{B}\)的\uline{基变换矩阵}(change of basis matrix)，记作\(\bm C_\mathcal{AB}\)，它记录了新基\(\mathcal B\)的基底向量在旧基\(\mathcal{A}\)中的坐标. 不难发现，如果是基底\(\mathcal{A}\)到自己的变换，就有
+\[
+    \begin{array}{ccccccccc}
+        \bm{\alpha}_1 &=& 1 \bm{\alpha}_1  & + & 0 \bm{\alpha}_2 & + & \cdots & + & 0 \bm{\alpha}_n \\
+        \bm{\alpha}_2 &=& 0 \bm{\alpha}_1  & + & 1 \bm{\alpha}_2 & + & \cdots & + & 0 \bm{\alpha}_n \\
+        \vdots & & \vdots & & \vdots & & & & \vdots\\
+        \bm{\alpha}_n &=& 0 \bm{\alpha}_1  & + & 0 \bm{\alpha}_2 & + & \cdots & + & 1 \bm{\alpha}_n \\
+    \end{array}
+\]
+得到的基变换矩阵\(\bm C_\mathcal{AA} = I\).
+
+如果向量\(\bm\gamma\)在新基\(\mathcal A, \mathcal B\)中的坐标是\([\bm\gamma]_\mathcal{A}, [\bm\gamma]_\mathcal{B}\)，那么有
+\[\gamma = [\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n] [\bm\gamma]_\mathcal{B} = [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n][\bm\gamma]_\mathcal{A}\]
+但又有\([\bm{\beta}_1, \bm{\beta}_2, \cdots, \bm{\beta}_n] = [\bm{\alpha}_1, \bm{\alpha}_2,\cdots,\bm{\alpha}_n]\bm C_\mathcal{AB}\)，所以立即得到
+\[[\bm\gamma]_\mathcal{A} = C_\mathcal{AB}[\bm\gamma]_\mathcal{B}\]
+即：旧基坐标\(=\)旧基到新基的变换矩阵 \(\times\) 新基坐标. 在逻辑上有些不太好理解，为什么不是旧坐标乘上矩阵后等于新坐标呢？
+
+如果我们从“视角”的角度理解就会通顺一些. 基变换矩阵\(\bm C_\mathcal{AB}\)的每一列记录的是基底\(\mathcal{B}\)的向量在基底\(\mathcal{A}\)中的坐标，告诉我们怎样从基底\(\mathcal{A}\)变换到基底\(\mathcal{B}\)，但变换的结果\(\mathcal{B}\)是在\(\mathcal{A}\)视角看的（因为如果在\(\mathcal{B}\)的视角看\(\mathcal{B}\)，那么就是单位阵，或者恒等的线性变换）. 同理，坐标\([\bm\gamma]_\mathcal{B}\)是在\(\mathcal{B}\)的视角看向量\(\bm\gamma\)的结果，它乘以基变换矩阵后得到的\([\bm\gamma]_\mathcal{A}\)，是\(\mathcal{A}\)视角看到的\(\bm\gamma\)的结果. 所以，基变换矩阵至始至终都承担着“视角转换”的作用，把新基的基底或新基中的坐标都转化到旧基的视角中.
+
+
+\subsection{相似}
+
+前两节我们讨论了线性变换和基底变换，若在同一个线性空间中给定了基底\(\mathcal{A},\mathcal{B}\)，线性变换\(f\)在其中就可以使B用矩阵表示为\([f]_\mathcal{A},[f]_\mathcal{B}\)；同理，向量\(\bm\gamma\)就拥有了坐标\([\bm\gamma]_\mathcal{A},[\bm\gamma]_\mathcal{B}\).
+
+向量\(\bm\gamma\)经过\(f\)变换后，得到的向量在两个基底下的坐标分别是
+\[[f(\bm\gamma)]_\mathcal{A} = [f]_\mathcal{A}[\bm\gamma]_\mathcal{A}, \quad [f(\bm\gamma)]_\mathcal{B} = [f]_\mathcal{B}[\bm\gamma]_\mathcal{B}\]
+这样，我们就借助基底把线性变换转化成了矩阵的乘法. 但是线性变换本身依赖基底吗？不依赖，即\([f]_\mathcal{A},[f]_\mathcal{B}\)是同一个线性变换在不同基底的视角罢了. 设\(\bm C\)是\(\mathcal{A}\)到\(\mathcal{B}\)的基变换矩阵，则
+\[\bm\gamma = \mathcal{A}[f]_\mathcal{A}[\bm\gamma]_\mathcal{A} = \mathcal{B}[f]_\mathcal{B}[\bm\gamma]_\mathcal{B}\]
+又有\(\mathcal{A} = \mathcal{B}\bm{C}^{-1}\)，且\([\bm\gamma]_\mathcal{A} = \bm{C}[\bm\gamma]_{\mathcal{B}}\)，代入上式，得到
+\[\bm{C}^{-1}[f]_\mathcal{A}\bm{C} = [f]_\mathcal{B}\]
+这样我们就得到了同一个线性变换在不同基底下的矩阵表示之间的关系，由于它们是实际上表示的是同一个线性变换，所以\([f]_\mathcal{A},[f]_\mathcal{B}\)虽然不等，但含义是相同的，我们说这样的两个矩阵是\uline{相似的}(similar). 
+
+% \begin{definition}{相似（直观定义）}
+%     设\(\rm{span}\mathcal{A} = \rm{span}\mathcal{B}\)且两组向量都线性无关，则线性变换
+% \end{definition}
+
+这一章我们和盘托出了线性代数的核心思想，但遗留下了一大堆问题，比如我们默认基底是线性无关的，如果出现了线性相关的向量会怎样？就算基底是线性无关的，如果\(f\)将基底变换后得到的向量组是线性相关的，那么会怎样？我们怎样从其矩阵表示中得知会不会发生这种情况？这些遗留问题交给接下来几章回答. 此外，方便起见，我们接下来仅讨论有限维的线性空间，并默认有一个标准正交基，所以空间中的向量就有了默认的坐标，我们不再使用\([\bm\gamma]_\mathcal{A}\)来表示其该默认坐标，而直接使用\(\bm\gamma\)本身.
+
 \section{矩阵运算}
+
+\subsection{初等变换}
+
 
 \section{行列式}
 
